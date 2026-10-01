@@ -53,14 +53,13 @@
         </div>
     </div>
 
-    <!-- CABEÇALHO SUPERIOR COMPACTO COM ENGRENAGEM DE CONFIGURAÇÃO INTEGRADA -->
+    <!-- CABEÇALHO SUPERIOR COMPACTO COM TRADUTOR E ATUALIZAR -->
     <header class="bg-slate-900 text-white px-3 py-2 shadow-md border-b border-slate-800 text-xs flex justify-between items-center z-50 relative gap-1 flex-wrap">
         <span class="font-bold tracking-wide flex items-center gap-1.5">
             <span>🚄</span> Roteiro Europa - Mariana
         </span>
         <div class="flex items-center gap-1.5 flex-wrap">
             <a href="https://translate.google.com/?hl=pt&sl=auto&tl=pt&op=images" target="_blank" class="bg-indigo-600 hover:bg-indigo-700 text-white px-2.5 py-1.5 rounded-lg font-bold text-[10px] transition shadow-xs flex items-center gap-1 active:scale-95" title="Google Tradutor & Câmera">🌐 Tradutor</a>
-            <button onclick="toggleClockConfig()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white px-2.5 py-1.5 rounded-lg font-bold text-[10px] transition shadow-xs border border-slate-700 active:scale-95" title="Configurar Relógios & Cores Neon">⚙️</button>
             <button onclick="window.location.reload()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white px-2.5 py-1.5 rounded-lg font-bold text-[10px] transition shadow-xs border border-slate-700 active:scale-95" title="Atualizar Página">🔄</button>
             <button onclick="exportarPdfPrint()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1.5 rounded-lg font-bold text-[10px] transition shadow-xs active:scale-95" title="Imprimir Tudo">🖨️</button>
             <span class="bg-indigo-950/80 text-indigo-200 border border-indigo-800/50 px-2 py-0.5 rounded-md font-mono font-bold text-[9px]">v270.0 (Pro)</span>
@@ -70,26 +69,25 @@
     <!-- CONTEÚDO PRINCIPAL -->
     <div class="max-w-4xl mx-auto p-3 sm:p-6 space-y-4 pt-4">
 
-        <!-- BARRA DE RELÓGIOS: EUROPA & BRASIL (100% SIMÉTRICA E BALANCEADA) -->
-        <div class="bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-900 text-white p-2.5 rounded-2xl shadow-md border border-indigo-800/40">
-            <div class="flex items-center gap-2.5 w-full py-0.5" id="barClockItems">
-                <!-- Relógios de Europa e Brasil dividem o espaço de forma igual (50% / 50%) -->
+        <!-- BARRA INTEGRADA DE RELÓGIOS COM CORES NEON (COMPACTA E REORDENÁVEL) -->
+        <div class="bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-900 text-white p-2 sm:p-2.5 rounded-2xl shadow-md border border-indigo-800/40 flex items-center justify-between gap-1.5">
+            <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar flex-1 py-0.5 px-0.5" id="barClockItems">
+                <!-- Relógios entram aqui automaticamente com as cores neon e cabem na tela -->
             </div>
+            <button onclick="toggleClockConfig()" class="bg-white/10 hover:bg-white/20 text-white w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center shrink-0 border border-white/20 transition active:scale-95 text-xs" title="Configurar Cidades e Cores">⚙️</button>
         </div>
 
-        <!-- MODAL DE CONFIGURAÇÃO DOS RELÓGIOS & CORES NEON -->
+        <!-- MODAL DE CONFIGURAÇÃO DOS RELÓGIOS & CORES -->
         <div id="barClockModal" class="fixed inset-0 z-[300] bg-slate-900/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
             <div class="bg-white p-5 rounded-3xl shadow-2xl max-w-sm w-full space-y-3.5 text-xs border border-slate-200">
                 <div class="flex justify-between items-center border-b pb-2">
-                    <h3 class="font-black text-xs text-slate-900 flex items-center gap-1.5">
-                        <span>⚙️</span> Relógios & Cores Neon
-                    </h3>
+                    <h3 class="font-black text-xs text-slate-900 flex items-center gap-1.5"><span>⚙️</span> Cidades, Fusos & Ordem</h3>
                     <button onclick="toggleClockConfig()" class="text-slate-400 hover:text-slate-600 font-bold text-sm p-1 rounded-lg">✕</button>
                 </div>
-                <div class="bg-indigo-50 text-indigo-950 p-2.5 rounded-xl text-[11px] font-bold">
-                    Personalize o nome e escolha a cor neon para cada relógio:
+                <div class="bg-indigo-50 text-indigo-900 p-2 rounded-xl text-[10px] font-bold">
+                    💡 Dica: Toque em <b>Fixar no Topo (📌)</b> ou dê um clique direto no relógio da barra para colocá-lo como seu país atual!
                 </div>
-                <div id="barClockForm" class="space-y-3 max-h-[60vh] overflow-y-auto pr-1"></div>
+                <div id="barClockForm" class="space-y-2.5 max-h-[55vh] overflow-y-auto pr-1"></div>
                 <div class="flex gap-2 pt-2 border-t border-slate-100">
                     <button onclick="saveClockConfig()" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-xl font-bold text-xs shadow-xs active:scale-95 transition">Salvar</button>
                     <button onclick="toggleClockConfig()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-xl text-xs font-bold border border-slate-300 active:scale-95 transition">Cancelar</button>
@@ -100,32 +98,32 @@
         <script>
             (function() {
                 const coresNeon = [
-                    { nome: "Ciano Neon", hex: "#00ffff" },
                     { nome: "Verde Neon", hex: "#00ff66" },
-                    { nome: "Amarelo Neon", hex: "#ccff00" },
+                    { nome: "Ciano Neon", hex: "#00ffff" },
                     { nome: "Rosa Neon", hex: "#ff007f" },
+                    { nome: "Amarelo Neon", hex: "#ccff00" },
                     { nome: "Roxo Elétrico", hex: "#a855f7" },
                     { nome: "Laranja Neon", hex: "#ff5500" },
                     { nome: "Branco", hex: "#ffffff" }
                 ];
 
                 const defaultClocks = [
-                    { name: "Europa", tz: "Europe/Paris", color: "#00ffff" },
+                    { name: "Zurique", tz: "Europe/Zurich", color: "#00ff66" },
+                    { name: "França", tz: "Europe/Paris", color: "#00ffff" },
+                    { name: "Alemanha", tz: "Europe/Berlin", color: "#ff007f" },
                     { name: "Brasil", tz: "America/Sao_Paulo", color: "#ccff00" }
                 ];
 
                 const timezoneOptions = [
-                    { label: "Europa / Paris / Zurique (CET)", tz: "Europe/Paris" },
+                    { label: "Suíça / Zurique (CET)", tz: "Europe/Zurich" },
+                    { label: "França / Paris (CET)", tz: "Europe/Paris" },
+                    { label: "Alemanha / Freiburg (CET)", tz: "Europe/Berlin" },
                     { label: "Brasil / Rio - SP (UTC-3)", tz: "America/Sao_Paulo" },
                     { label: "Reino Unido / Londres (UTC+0)", tz: "Europe/London" },
                     { label: "EUA / Nova York (UTC-5)", tz: "America/New_York" }
                 ];
 
-                let userClocks = JSON.parse(localStorage.getItem("app_travel_clocks_v2"));
-                if (!userClocks || userClocks.length !== 2) {
-                    userClocks = defaultClocks;
-                    localStorage.setItem("app_travel_clocks_v2", JSON.stringify(userClocks));
-                }
+                let userClocks = JSON.parse(localStorage.getItem("app_travel_clocks")) || defaultClocks;
 
                 function updateClocks() {
                     const container = document.getElementById("barClockItems");
@@ -133,7 +131,7 @@
                     container.innerHTML = "";
                     const now = new Date();
 
-                    userClocks.forEach((c) => {
+                    userClocks.forEach((c, idx) => {
                         if (!c.name.trim()) return;
                         const time = new Intl.DateTimeFormat("pt-BR", {
                             timeZone: c.tz,
@@ -141,21 +139,36 @@
                             minute: "2-digit"
                         }).format(now);
 
-                        const corAtual = c.color || "#00ffff";
+                        const corAtual = c.color || "#00ff66";
+                        const ehPrimeiro = idx === 0;
 
-                        const pill = document.createElement("div");
-                        pill.className = "bg-white/10 px-3 py-2 rounded-xl flex items-center justify-between gap-2 flex-1 min-w-0 shadow-2xs transition-all";
+                        const pill = document.createElement("button");
+                        pill.type = "button";
+                        pill.onclick = () => window.moverPaisParaPrimeiro(idx);
+                        pill.className = "bg-white/10 px-2 py-1 rounded-xl flex items-center gap-1.5 shrink-0 shadow-2xs transition-all active:scale-95";
                         pill.style.border = `1px solid ${corAtual}66`;
+                        pill.title = "Toque para destacar como país onde você está";
 
                         pill.innerHTML = `
-                            <span class="text-[10px] uppercase font-black tracking-wide flex items-center gap-1.5 truncate" style="color: ${corAtual}; text-shadow: 0 0 8px ${corAtual}66;">
-                                <span style="font-size: 7px;">●</span>${c.name}
+                            <span class="text-[9px] uppercase font-black tracking-wide flex items-center gap-1" style="color: ${corAtual}; text-shadow: 0 0 6px ${corAtual}66;">
+                                <span style="font-size: 7px;">${ehPrimeiro ? '📍' : '●'}</span>${c.name}
                             </span>
-                            <span class="text-sm font-black text-white tracking-wide font-mono">${time}</span>
+                            <span class="text-[11px] font-black text-white tracking-tight">${time}</span>
                         `;
                         container.appendChild(pill);
                     });
                 }
+
+                window.moverPaisParaPrimeiro = function(index) {
+                    if (index === 0) return;
+                    const item = userClocks.splice(index, 1)[0];
+                    userClocks.unshift(item);
+                    localStorage.setItem("app_travel_clocks", JSON.stringify(userClocks));
+                    updateClocks();
+                    if (window.mostrarToast) {
+                        window.mostrarToast(`📍 ${item.name} definido como país atual!`, 'sucesso');
+                    }
+                };
 
                 window.toggleClockConfig = function() {
                     const modal = document.getElementById("barClockModal");
@@ -174,24 +187,29 @@
                     form.innerHTML = "";
                     userClocks.forEach((c, i) => {
                         const row = document.createElement("div");
-                        row.className = "bg-slate-50 p-3 rounded-2xl border border-slate-200 space-y-2";
+                        row.className = "bg-slate-50 p-2.5 rounded-xl border border-slate-200 space-y-1.5";
                         const optionsHtml = timezoneOptions.map(opt => 
                             `<option value="${opt.tz}" ${opt.tz === c.tz ? 'selected' : ''}>${opt.label}</option>`
                         ).join("");
 
-                        const corAtual = c.color || (i === 0 ? "#00ffff" : "#ccff00");
+                        const corAtual = c.color || "#00ff66";
 
-                        let paletaHtml = '<div class="flex items-center gap-1.5 pt-1 flex-wrap"><span class="text-[10px] font-bold text-slate-500">Cor Neon:</span>';
+                        let paletaHtml = '<div class="flex items-center gap-1 pt-0.5 flex-wrap"><span class="text-[10px] font-bold text-slate-500">Cor:</span>';
                         coresNeon.forEach(cor => {
                             const ativo = corAtual.toLowerCase() === cor.hex.toLowerCase() ? 'ring-2 ring-slate-900 scale-110 shadow-xs' : 'opacity-80 hover:opacity-100';
-                            paletaHtml += `<button type="button" onclick="selecionarCorRelogio(${i}, '${cor.hex}')" style="background-color: ${cor.hex};" class="w-5 h-5 rounded-full border border-black/20 transition active:scale-90 ${ativo}" title="${cor.nome}"></button>`;
+                            paletaHtml += `<button type="button" onclick="selecionarCorRelogio(${i}, '${cor.hex}')" style="background-color: ${cor.hex};" class="w-4 h-4 rounded-full border border-black/20 transition active:scale-90 ${ativo}" title="${cor.nome}"></button>`;
                         });
-                        paletaHtml += `<input type="color" value="${corAtual}" onchange="selecionarCorRelogio(${i}, this.value)" class="w-6 h-6 rounded cursor-pointer border-0 p-0 bg-transparent ml-1" title="Cor livre"></div>`;
+                        paletaHtml += `<input type="color" value="${corAtual}" onchange="selecionarCorRelogio(${i}, this.value)" class="w-5 h-5 rounded cursor-pointer border-0 p-0 bg-transparent ml-1" title="Cor livre"></div>`;
 
                         row.innerHTML = `
-                            <label class="text-[10px] font-black text-slate-700 uppercase block">Relógio ${i + 1} (${i === 0 ? 'Local da Viagem' : 'Origem'})</label>
-                            <div class="flex gap-2">
-                                <input type="text" id="clk-name-${i}" value="${c.name}" class="w-1/2 p-2 bg-white border border-slate-300 rounded-xl font-bold text-xs outline-none focus:border-indigo-600" placeholder="Nome (ex: Europa)">
+                            <div class="flex justify-between items-center">
+                                <label class="text-[10px] font-bold text-slate-500 uppercase block">Relógio ${i + 1}</label>
+                                <button type="button" onclick="moverPaisParaPrimeiro(${i}); buildForm();" class="text-[10px] font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-0.5">
+                                    ${i === 0 ? '📍 País Atual' : '📌 Pôr em 1º'}
+                                </button>
+                            </div>
+                            <div class="flex gap-1.5">
+                                <input type="text" id="clk-name-${i}" value="${c.name}" class="w-1/2 p-2 bg-white border border-slate-300 rounded-xl font-bold text-xs outline-none focus:border-indigo-600" placeholder="Nome">
                                 <select id="clk-tz-${i}" class="w-1/2 p-2 bg-white border border-slate-300 rounded-xl font-bold text-xs outline-none">${optionsHtml}</select>
                             </div>
                             <input type="hidden" id="clk-color-${i}" value="${corAtual}">
@@ -217,7 +235,7 @@
                         if (tzEl) c.tz = tzEl.value;
                         if (colorEl) c.color = colorEl.value;
                     });
-                    localStorage.setItem("app_travel_clocks_v2", JSON.stringify(userClocks));
+                    localStorage.setItem("app_travel_clocks", JSON.stringify(userClocks));
                     window.toggleClockConfig();
                     updateClocks();
                 };
@@ -534,76 +552,40 @@
         </div>
     </div>
 
-        <!-- BARRA DE FERRAMENTAS FLUTUANTE MODERNA (DOCK GLASSMORPHISM) -->
-    <nav class="fixed bottom-3 left-3 right-3 sm:left-auto sm:right-auto sm:w-[460px] sm:left-1/2 sm:-translate-x-1/2 z-50 bg-slate-950/90 backdrop-blur-xl text-white px-3 py-2 rounded-2xl shadow-2xl border border-white/10 flex items-center justify-between gap-1.5 transition-all">
+    <!-- BARRA DE FERRAMENTAS FIXA MODERNA COM BACKUP E RESTAURAÇÃO -->
+    <nav class="fixed bottom-0 left-0 right-0 z-50 bg-slate-900/95 backdrop-blur-md text-white px-3 py-2.5 shadow-2xl border-t border-slate-800 text-xs flex items-center justify-around gap-1 overflow-x-auto no-scrollbar max-w-4xl mx-auto rounded-t-2xl">
+        <span class="bg-indigo-600/30 text-indigo-300 border border-indigo-500/30 px-2 py-1 rounded-lg font-mono font-bold text-[9px] shrink-0">v270.0</span>
         
-        <!-- BOTÃO GEMINI EM DESTAQUE -->
-        <button onclick="abrirGeminiModal()" class="bg-gradient-to-r from-purple-600 via-indigo-600 to-indigo-700 hover:from-purple-500 hover:to-indigo-600 text-white px-3.5 py-2 rounded-xl font-bold transition flex items-center gap-1.5 text-xs shadow-md shadow-purple-950/40 active:scale-95 shrink-0">
-            <span class="text-sm">✨</span>
-            <span class="tracking-wide">Gemini</span>
+        <button onclick="abrirGeminiModal()" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white px-3 py-1.5 rounded-xl font-bold transition shrink-0 flex items-center gap-1.5 text-xs shadow-sm shadow-purple-900/30 active:scale-95">
+            <span>✨</span> Gemini
         </button>
-
-        <!-- DITAR -->
-        <button onclick="ativarMicrofone()" class="bg-white/10 hover:bg-white/15 text-white px-3 py-2 rounded-xl font-bold transition flex items-center gap-1.5 text-xs border border-white/10 active:scale-95 shrink-0">
-            <span>🎤</span>
-            <span class="tracking-wide">Ditar</span>
+        
+        <button onclick="ativarMicrofone()" class="bg-purple-600/90 hover:bg-purple-600 text-white px-3 py-1.5 rounded-xl font-bold transition shrink-0 flex items-center gap-1 text-xs shadow-xs active:scale-95">
+            <span>🎤</span> Ditar
         </button>
-
-        <!-- ALTERNAR TEMA -->
-        <button onclick="alternarTema()" class="bg-white/10 hover:bg-white/15 text-white px-3 py-2 rounded-xl font-bold transition flex items-center gap-1 text-xs border border-white/10 active:scale-95 shrink-0" title="Alternar Modo Claro / Escuro">
-            <span>🌓</span>
-            <span class="tracking-wide">Tema</span>
+        
+        <button onclick="baixarBackupJson()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 px-2.5 py-1.5 rounded-xl font-bold transition shrink-0 flex items-center gap-1 text-xs shadow-xs active:scale-95" title="Baixar Backup do Roteiro">
+            <span>📥</span> Backup
         </button>
-
-        <!-- MENU SISTEMA (BACKUP, RESTAURAR, SENHA, APP) -->
-        <button onclick="document.getElementById('menu-sistema-modal').classList.remove('hidden')" class="bg-white/10 hover:bg-white/15 text-slate-200 hover:text-white px-3 py-2 rounded-xl font-bold transition flex items-center gap-1 text-xs border border-white/10 active:scale-95 shrink-0">
-            <span>⚙️</span>
-            <span class="text-[11px] text-slate-300">Mais</span>
+        
+        <label class="bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 px-2.5 py-1.5 rounded-xl font-bold transition shrink-0 flex items-center gap-1 text-xs shadow-xs cursor-pointer active:scale-95" title="Restaurar Backup">
+            <span>📤</span> Restaurar
+            <input type="file" accept=".json" onchange="restaurarBackupJson(event)" class="hidden">
+        </label>
+        
+        <button onclick="alternarTema()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 px-2.5 py-1.5 rounded-xl font-bold transition shrink-0 flex items-center gap-1 text-xs active:scale-95">
+            <span>🌓</span> Tema
+        </button>
+        
+        <button onclick="alterarSenhaPin()" class="bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 px-2.5 py-1.5 rounded-xl font-bold transition shrink-0 flex items-center gap-1 text-xs active:scale-95">
+            <span>🔑</span> Senha
+        </button>
+        
+        <button onclick="instalarApp()" class="bg-emerald-600/90 hover:bg-emerald-600 text-white px-2.5 py-1.5 rounded-xl font-bold transition shrink-0 flex items-center gap-1 text-xs shadow-xs active:scale-95">
+            <span>📱</span> App
         </button>
     </nav>
 
-    <!-- POPUP ELEGANTE DO MENU "MAIS" (SISTEMA & FERRAMENTAS) -->
-    <div id="menu-sistema-modal" class="fixed inset-0 z-[250] bg-slate-950/70 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-3">
-        <div class="bg-slate-900 border border-slate-800 text-white p-5 rounded-3xl shadow-2xl max-w-sm w-full space-y-3.5 text-xs">
-            <div class="flex justify-between items-center border-b border-slate-800 pb-2.5">
-                <div class="flex items-center gap-2">
-                    <span class="text-base">🛠️</span>
-                    <div>
-                        <h4 class="font-black text-xs text-white">Ferramentas & Sistema</h4>
-                        <span class="text-[10px] text-indigo-400 font-mono font-bold">Versão 270.0 (Pro)</span>
-                    </div>
-                </div>
-                <button onclick="document.getElementById('menu-sistema-modal').classList.add('hidden')" class="text-slate-400 hover:text-white font-bold text-sm p-1 rounded-lg">✕</button>
-            </div>
-
-            <div class="grid grid-cols-2 gap-2 pt-1">
-                <button onclick="baixarBackupJson(); document.getElementById('menu-sistema-modal').classList.add('hidden');" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 p-3 rounded-2xl font-bold text-left flex flex-col gap-1 active:scale-95 transition">
-                    <span class="text-base">📥</span>
-                    <span class="text-white text-xs">Baixar Backup</span>
-                    <span class="text-[10px] text-slate-400 font-normal">Exportar arquivo JSON</span>
-                </button>
-
-                <label class="bg-slate-800 hover:bg-slate-700 border border-slate-700 p-3 rounded-2xl font-bold text-left flex flex-col gap-1 active:scale-95 transition cursor-pointer">
-                    <span class="text-base">📤</span>
-                    <span class="text-white text-xs">Restaurar</span>
-                    <span class="text-[10px] text-slate-400 font-normal">Importar JSON</span>
-                    <input type="file" accept=".json" onchange="restaurarBackupJson(event); document.getElementById('menu-sistema-modal').classList.add('hidden');" class="hidden">
-                </label>
-
-                <button onclick="alterarSenhaPin(); document.getElementById('menu-sistema-modal').classList.add('hidden');" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 p-3 rounded-2xl font-bold text-left flex flex-col gap-1 active:scale-95 transition">
-                    <span class="text-base">🔑</span>
-                    <span class="text-amber-300 text-xs">Senha PIN</span>
-                    <span class="text-[10px] text-slate-400 font-normal">Alterar código</span>
-                </button>
-
-                <button onclick="instalarApp(); document.getElementById('menu-sistema-modal').classList.add('hidden');" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 p-3 rounded-2xl font-bold text-left flex flex-col gap-1 active:scale-95 transition">
-                    <span class="text-base">📱</span>
-                    <span class="text-emerald-400 text-xs">Instalar App</span>
-                    <span class="text-[10px] text-slate-400 font-normal">Adicionar à tela</span>
-                </button>
-            </div>
-        </div>
-    </div>
     <!-- MODAL DA GEMINI IA -->
     <div id="modal-gemini" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
         <div class="bg-white p-4 rounded-3xl shadow-2xl max-w-sm w-full space-y-3 text-xs flex flex-col h-[400px] border border-slate-200">
@@ -3574,5 +3556,204 @@
     border: none;
   }
 </style>
+<!-- Botão flutuante que abre o relógio -->
+<button class="fab-relogio" onclick="togglePopupRelogio()" title="Abrir Relógio">🕒</button>
+
+<!-- Janela flutuante (Pop-up) -->
+<div id="popup-relogio" class="popup-relogio">
+  <div class="popup-relogio-header">
+    <span>🕒 Relógio Mundial</span>
+    <button onclick="togglePopupRelogio()">✕</button>
+  </div>
+  <iframe src="Relógio.html"></iframe>
+</div>
+
+<script>
+  function togglePopupRelogio() {
+    var p = document.getElementById('popup-relogio');
+    if (p) {
+      p.style.display = (p.style.display === 'flex') ? 'none' : 'flex';
+    }
+  }
+</script>
+<style id="modern-patch">
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap');
+body{font-family:'Bricolage Grotesque',system-ui,sans-serif!important;background:linear-gradient(180deg,#eaf0f6 0%,#f4f7fa 60%)!important;letter-spacing:.005em}
+.text-xs{font-size:13px!important}
+.shadow-xs,.shadow-sm,.shadow-md,.shadow-2xs{box-shadow:0 1px 2px rgba(15,23,42,.04),0 8px 20px -10px rgba(15,23,42,.16)!important}
+.border-slate-200,.border-slate-300{border-color:rgba(148,163,184,.3)!important}
+.rounded-2xl{border-radius:20px!important}.rounded-3xl{border-radius:26px!important}
+button,a,label{transition:transform .15s,background-color .2s,box-shadow .2s}
+
+/* barra de cima flutuante (some ao descer, volta ao subir) */
+body>header{position:fixed!important;top:0;left:0;right:0;z-index:45!important;background:rgba(15,23,42,.8)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:0!important;border-radius:0 0 22px 22px;padding-top:calc(env(safe-area-inset-top,0px) + 8px)!important;transition:transform .3s}
+body.bars-off>header{transform:translateY(-115%)}
+
+/* abas viram barra flutuante inferior */
+div.grid-cols-5{position:fixed!important;left:12px;right:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 62px);max-width:640px;margin:0 auto!important;z-index:45;background:rgba(255,255,255,.82)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(148,163,184,.35)!important;border-radius:24px!important;padding:6px!important;box-shadow:0 12px 30px -12px rgba(15,23,42,.35)!important;transition:bottom .3s}
+body.bars-off div.grid-cols-5{bottom:calc(env(safe-area-inset-bottom,0px) + 12px)}
+div.grid-cols-5>button{border-radius:18px!important;box-shadow:none!important;background:transparent!important;color:#64748b!important;padding:8px 2px!important}
+div.grid-cols-5>button.bg-indigo-600{background:linear-gradient(135deg,#4f46e5,#7c3aed)!important;color:#fff!important;box-shadow:0 6px 16px -6px rgba(79,70,229,.7)!important}
+div.grid-cols-5>button>span:first-child{font-size:20px}
+div.grid-cols-5 .text-\[8px\]{font-size:10px!important;letter-spacing:.04em}
+
+/* barra de ferramentas inferior recolhe junto */
+body>nav{z-index:44!important;border-radius:20px!important;bottom:calc(env(safe-area-inset-bottom,0px) + 6px)!important;left:12px!important;right:12px!important;transition:transform .3s}
+body.bars-off>nav{transform:translateY(160%)}
+body{padding-bottom:190px!important}
+
+/* troca de tela com deslize */
+.slide-r{animation:mp-r .28s ease}.slide-l{animation:mp-l .28s ease}
+@keyframes mp-r{from{opacity:0;transform:translateX(34px)}}
+@keyframes mp-l{from{opacity:0;transform:translateX(-34px)}}
+
+/* modo escuro de verdade */
+body.dark{background:#0b1820!important}
+.dark .bg-white,.dark .bg-white\/95{background-color:#13262f!important;color:#e8f1f5}
+.dark .bg-slate-50,.dark .bg-slate-50\/50,.dark .bg-slate-100{background-color:#1a313c!important;color:#e8f1f5}
+.dark .bg-slate-200\/80,.dark .bg-slate-200\/90{background-color:#10222b!important}
+.dark .border-slate-100,.dark .border-slate-200,.dark .border-slate-300{border-color:#26404c!important}
+.dark .text-slate-900,.dark .text-slate-800,.dark .text-slate-700{color:#e8f1f5!important}
+.dark .text-slate-600,.dark .text-slate-500{color:#9fb4c0!important}
+.dark input,.dark select,.dark textarea{background-color:#1a313c!important;color:#e8f1f5!important}
+.dark div.grid-cols-5{background:rgba(15,32,41,.85)!important}
+.dark .text-indigo-950,.dark .text-amber-900,.dark .text-blue-900{color:#e8f1f5!important}
+@media(prefers-reduced-motion:reduce){.slide-r,.slide-l{animation:none}}
+</style>
+<script id="modern-patch-js">
+(function(){
+  var T=['leitura','itinerario','utilidades','orcamento','compras'];
+  function atual(){for(var i=0;i<T.length;i++){var e=document.getElementById('tab-'+T[i]);if(e&&!e.classList.contains('hidden'))return i}return 0}
+
+  /* anima a troca de aba sem alterar a função original */
+  var orig=window.mudarTab;
+  window.mudarTab=function(t){
+    var de=atual();orig.apply(this,arguments);
+    var para=T.indexOf(t),el=document.getElementById('tab-'+t);
+    if(el&&para!==de){el.classList.remove('slide-l','slide-r');void el.offsetWidth;el.classList.add(para>de?'slide-r':'slide-l');window.scrollTo({top:0})}
+  };
+
+  /* deslizar o dedo para os lados troca de tela */
+  var sx=0,sy=0,st=0,ign=false;
+  var BLOQ='input,textarea,select,iframe,.overflow-x-auto,[draggable="true"],[id^="modal-"],#barClockModal,#tela-bloqueio';
+  document.addEventListener('touchstart',function(e){var t=e.touches[0];sx=t.clientX;sy=t.clientY;st=Date.now();ign=!!e.target.closest(BLOQ)},{passive:true});
+  document.addEventListener('touchend',function(e){
+    if(ign||Date.now()-st>700)return;
+    var t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy;
+    if(Math.abs(dx)<70||Math.abs(dy)>55)return;
+    var i=atual()+(dx<0?1:-1);
+    if(i>=0&&i<T.length)window.mudarTab(T[i]);
+  },{passive:true});
+
+  /* barras somem ao descer e voltam ao subir */
+  var ly=0;
+  window.addEventListener('scroll',function(){
+    var y=window.scrollY;
+    if(y>ly+6&&y>90)document.body.classList.add('bars-off');
+    else if(y<ly-6||y<40)document.body.classList.remove('bars-off');
+    ly=y;
+  },{passive:true});
+
+  /* espaço para a barra de cima fixa */
+  function ajusta(){var h=document.querySelector('body>header');if(h)document.body.style.paddingTop=h.offsetHeight+'px'}
+  ajusta();window.addEventListener('resize',ajusta);setTimeout(ajusta,400);
+
+  /* segue o tema do celular na primeira vez */
+  window.addEventListener('load',function(){
+    try{if(!localStorage.getItem('tema_v269')&&matchMedia('(prefers-color-scheme:dark)').matches&&window.alternarTema)alternarTema()}catch(e){}
+  });
+})();
+</script>
+<style id="modern-patch">
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap');
+body{font-family:'Bricolage Grotesque',system-ui,sans-serif!important;background:linear-gradient(180deg,#eaf0f6 0%,#f4f7fa 60%)!important;letter-spacing:.005em}
+.text-xs{font-size:13px!important}
+.shadow-xs,.shadow-sm,.shadow-md,.shadow-2xs{box-shadow:0 1px 2px rgba(15,23,42,.04),0 8px 20px -10px rgba(15,23,42,.16)!important}
+.border-slate-200,.border-slate-300{border-color:rgba(148,163,184,.3)!important}
+.rounded-2xl{border-radius:20px!important}.rounded-3xl{border-radius:26px!important}
+button,a,label{transition:transform .15s,background-color .2s,box-shadow .2s}
+
+/* barra de cima flutuante */
+body>header{position:fixed!important;top:0;left:0;right:0;z-index:45!important;background:rgba(15,23,42,.85)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:0!important;border-radius:0 0 22px 22px;padding-top:calc(env(safe-area-inset-top,0px) + 8px)!important;transition:transform .3s}
+body.bars-off>header{transform:translateY(-115%)}
+
+/* abas flutuantes inferiores */
+div.grid-cols-5{position:fixed!important;left:12px;right:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 62px);max-width:640px;margin:0 auto!important;z-index:45;background:rgba(255,255,255,.9)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(148,163,184,.35)!important;border-radius:24px!important;padding:6px!important;box-shadow:0 12px 30px -12px rgba(15,23,42,.35)!important;transition:bottom .3s}
+body.bars-off div.grid-cols-5{bottom:calc(env(safe-area-inset-bottom,0px) + 12px)}
+div.grid-cols-5>button{border-radius:18px!important;box-shadow:none!important;background:transparent!important;color:#64748b!important;padding:8px 2px!important}
+div.grid-cols-5>button.bg-indigo-600{background:linear-gradient(135deg,#4f46e5,#7c3aed)!important;color:#fff!important;box-shadow:0 6px 16px -6px rgba(79,70,229,.7)!important}
+div.grid-cols-5>button>span:first-child{font-size:20px}
+div.grid-cols-5 .text-\[8px\]{font-size:10px!important;letter-spacing:.04em}
+
+/* barra inferior com menu recolhível */
+body>nav{z-index:44!important;border-radius:20px!important;bottom:calc(env(safe-area-inset-bottom,0px) + 6px)!important;left:12px!important;right:12px!important;transition:transform .3s}
+body.bars-off>nav{transform:translateY(160%)}
+body{padding-bottom:220px!important}
+
+/* ajuste na posição do botão flutuante do relógio para não ficar por baixo das barras */
+.fab-relogio{bottom:130px!important;right:16px!important;z-index:60!important}
+.popup-relogio{bottom:190px!important;right:16px!important;z-index:60!important}
+
+/* transição lateral de ecrãs */
+.slide-r{animation:mp-r .28s ease}.slide-l{animation:mp-l .28s ease}
+@keyframes mp-r{from{opacity:0;transform:translateX(34px)}}
+@keyframes mp-l{from{opacity:0;transform:translateX(-34px)}}
+</style>
+<script id="modern-patch-js">
+(function(){
+  var T=['leitura','itinerario','utilidades','orcamento','compras'];
+  function atual(){for(var i=0;i<T.length;i++){var e=document.getElementById('tab-'+T[i]);if(e&&!e.classList.contains('hidden'))return i}return 0}
+
+  var orig=window.mudarTab;
+  window.mudarTab=function(t){
+    var de=atual();
+    if(orig) orig.apply(this,arguments);
+    var para=T.indexOf(t),el=document.getElementById('tab-'+t);
+    if(el&&para!==de){
+      el.classList.remove('slide-l','slide-r');
+      void el.offsetWidth;
+      el.classList.add(para>de?'slide-r':'slide-l');
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+  };
+
+  /* Detecção de gesto mais abrangente */
+  var sx=0,sy=0,st=0,ign=false;
+  document.addEventListener('touchstart',function(e){
+    var t=e.touches[0];
+    sx=t.clientX;
+    sy=t.clientY;
+    st=Date.now();
+    /* Ignora apenas campos de escrita para permitir digitar normalmente */
+    ign=!!e.target.closest('input, textarea, select, iframe, [id^="modal-"], #barClockModal, #tela-bloqueio');
+  },{passive:true});
+
+  document.addEventListener('touchend',function(e){
+    if(ign||Date.now()-st>800) return;
+    var t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy;
+    /* Reduzida a distância mínima necessária para trocar a aba */
+    if(Math.abs(dx)<45||Math.abs(dy)>60) return;
+    var i=atual()+(dx<0?1:-1);
+    if(i>=0&&i<T.length) window.mudarTab(T[i]);
+  },{passive:true});
+
+  /* Barra recolhe ao rolar */
+  var ly=0;
+  window.addEventListener('scroll',function(){
+    var y=window.scrollY;
+    if(y>ly+5&&y>40) document.body.classList.add('bars-off');
+    else if(y<ly-5||y<20) document.body.classList.remove('bars-off');
+    ly=y;
+  },{passive:true});
+
+  function ajusta(){
+    var h=document.querySelector('body>header');
+    if(h) document.body.style.paddingTop=(h.offsetHeight+10)+'px';
+  }
+  ajusta();
+  window.addEventListener('resize',ajusta);
+  setTimeout(ajusta,300);
+})();
+</script>    
 </body>
-</html>
+    </html>
