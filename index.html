@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roteiro Europa - Mariana (v272.0 Pro)</title>
+    <title>Roteiro Europa - Mariana (v270.0 Pro)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -24,76 +24,6 @@
         .no-scrollbar {
             -ms-overflow-style: none;
             scrollbar-width: none;
-        }
-        /* Botão redondo flutuante no canto inferior direito */
-        .fab-relogio {
-            position: fixed;
-            bottom: 85px;
-            right: 18px;
-            width: 50px;
-            height: 50px;
-            background-color: #4f46e5;
-            color: #ffffff;
-            border-radius: 50%;
-            border: 2px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
-            cursor: pointer;
-            font-size: 22px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 45;
-            transition: transform 0.2s, background-color 0.2s;
-        }
-        .fab-relogio:hover {
-            background-color: #4338ca;
-            transform: scale(1.05);
-        }
-        /* Janela flutuante (Pop-up) */
-        .popup-relogio {
-            display: none;
-            position: fixed;
-            bottom: 145px;
-            right: 18px;
-            width: 350px;
-            max-width: calc(100vw - 36px);
-            height: 480px;
-            max-height: 70vh;
-            background: #ffffff;
-            border-radius: 20px;
-            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-            z-index: 48;
-            flex-direction: column;
-            border: 1px solid #cbd5e1;
-        }
-        .popup-relogio-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 14px;
-            background-color: #0f172a;
-            color: #ffffff;
-            border-bottom: 1px solid #334155;
-        }
-        .popup-relogio-header span {
-            font-size: 0.8rem;
-            font-weight: 700;
-        }
-        .popup-relogio-header button {
-            background: none;
-            border: none;
-            font-size: 1.1rem;
-            cursor: pointer;
-            color: #94a3b8;
-        }
-        .popup-relogio-header button:hover {
-            color: #ffffff;
-        }
-        .popup-relogio iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
         }
     </style>
 </head>
@@ -123,47 +53,41 @@
         </div>
     </div>
 
-    <!-- CABEÇALHO SUPERIOR COMPACTO COM ENGRENAGEM DE CONFIGURAÇÃO INTEGRADA -->
+    <!-- CABEÇALHO SUPERIOR COMPACTO COM TRADUTOR E ATUALIZAR -->
     <header class="bg-slate-900 text-white px-3 py-2 shadow-md border-b border-slate-800 text-xs flex justify-between items-center z-50 relative gap-1 flex-wrap">
         <span class="font-bold tracking-wide flex items-center gap-1.5">
             <span>🚄</span> Roteiro Europa - Mariana
         </span>
         <div class="flex items-center gap-1.5 flex-wrap">
             <a href="https://translate.google.com/?hl=pt&sl=auto&tl=pt&op=images" target="_blank" class="bg-indigo-600 hover:bg-indigo-700 text-white px-2.5 py-1.5 rounded-lg font-bold text-[10px] transition shadow-xs flex items-center gap-1 active:scale-95" title="Google Tradutor & Câmera">🌐 Tradutor</a>
-            <button onclick="toggleClockConfig()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white px-2.5 py-1.5 rounded-lg font-bold text-[10px] transition shadow-xs border border-slate-700 active:scale-95" title="Configurar Relógios & Cores Neon">⚙️</button>
             <button onclick="window.location.reload()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white px-2.5 py-1.5 rounded-lg font-bold text-[10px] transition shadow-xs border border-slate-700 active:scale-95" title="Atualizar Página">🔄</button>
             <button onclick="exportarPdfPrint()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1.5 rounded-lg font-bold text-[10px] transition shadow-xs active:scale-95" title="Imprimir Tudo">🖨️</button>
-            <span class="bg-indigo-950/80 text-indigo-200 border border-indigo-800/50 px-2 py-0.5 rounded-md font-mono font-bold text-[9px]">v272.0 (Pro)</span>
+            <span class="bg-indigo-950/80 text-indigo-200 border border-indigo-800/50 px-2 py-0.5 rounded-md font-mono font-bold text-[9px]">v270.0 (Pro)</span>
         </div>
     </header>
 
     <!-- CONTEÚDO PRINCIPAL -->
     <div class="max-w-4xl mx-auto p-3 sm:p-6 space-y-4 pt-4">
 
-        <!-- PAINEL SEPARADO DE RELÓGIOS: EUROPA & BRASIL + CONTAGEM REGRESSIVA INTEGRADA -->
-        <div class="bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-900 text-white p-3 rounded-2xl shadow-md border border-indigo-800/40 space-y-2">
-            <div class="flex items-center gap-2.5 w-full py-0.5 overflow-x-auto no-scrollbar" id="barClockItems"></div>
-            <div class="border-t border-indigo-800/40 pt-2 flex items-center justify-between gap-2 px-1">
-                <div class="text-[10px] uppercase font-black tracking-wide text-indigo-200 flex items-center gap-1.5">
-                    <span>⏳</span> CONTAGEM PARA A VIAGEM
-                </div>
-                <div id="relogio-contagem-topo" class="font-mono font-black text-xs text-amber-300">--d --h --m --s</div>
+        <!-- BARRA INTEGRADA DE RELÓGIOS COM CORES NEON (COMPACTA E REORDENÁVEL) -->
+        <div class="bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-900 text-white p-2 sm:p-2.5 rounded-2xl shadow-md border border-indigo-800/40 flex items-center justify-between gap-1.5">
+            <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar flex-1 py-0.5 px-0.5" id="barClockItems">
+                <!-- Relógios entram aqui automaticamente com as cores neon e cabem na tela -->
             </div>
+            <button onclick="toggleClockConfig()" class="bg-white/10 hover:bg-white/20 text-white w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center shrink-0 border border-white/20 transition active:scale-95 text-xs" title="Configurar Cidades e Cores">⚙️</button>
         </div>
 
-        <!-- MODAL DE CONFIGURAÇÃO DOS RELÓGIOS & CORES NEON -->
+        <!-- MODAL DE CONFIGURAÇÃO DOS RELÓGIOS & CORES -->
         <div id="barClockModal" class="fixed inset-0 z-[300] bg-slate-900/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
             <div class="bg-white p-5 rounded-3xl shadow-2xl max-w-sm w-full space-y-3.5 text-xs border border-slate-200">
                 <div class="flex justify-between items-center border-b pb-2">
-                    <h3 class="font-black text-xs text-slate-900 flex items-center gap-1.5">
-                        <span>⚙️</span> Relógios & Cores Neon
-                    </h3>
+                    <h3 class="font-black text-xs text-slate-900 flex items-center gap-1.5"><span>⚙️</span> Cidades, Fusos & Ordem</h3>
                     <button onclick="toggleClockConfig()" class="text-slate-400 hover:text-slate-600 font-bold text-sm p-1 rounded-lg">✕</button>
                 </div>
-                <div class="bg-indigo-50 text-indigo-950 p-2.5 rounded-xl text-[11px] font-bold">
-                    Personalize o nome e escolha a cor neon para cada relógio:
+                <div class="bg-indigo-50 text-indigo-900 p-2 rounded-xl text-[10px] font-bold">
+                    💡 Dica: Toque em <b>Fixar no Topo (📌)</b> ou dê um clique direto no relógio da barra para colocá-lo como seu país atual!
                 </div>
-                <div id="barClockForm" class="space-y-3 max-h-[60vh] overflow-y-auto pr-1"></div>
+                <div id="barClockForm" class="space-y-2.5 max-h-[55vh] overflow-y-auto pr-1"></div>
                 <div class="flex gap-2 pt-2 border-t border-slate-100">
                     <button onclick="saveClockConfig()" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-xl font-bold text-xs shadow-xs active:scale-95 transition">Salvar</button>
                     <button onclick="toggleClockConfig()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-xl text-xs font-bold border border-slate-300 active:scale-95 transition">Cancelar</button>
@@ -171,9 +95,158 @@
             </div>
         </div>
 
+        <script>
+            (function() {
+                const coresNeon = [
+                    { nome: "Verde Neon", hex: "#00ff66" },
+                    { nome: "Ciano Neon", hex: "#00ffff" },
+                    { nome: "Rosa Neon", hex: "#ff007f" },
+                    { nome: "Amarelo Neon", hex: "#ccff00" },
+                    { nome: "Roxo Elétrico", hex: "#a855f7" },
+                    { nome: "Laranja Neon", hex: "#ff5500" },
+                    { nome: "Branco", hex: "#ffffff" }
+                ];
+
+                const defaultClocks = [
+                    { name: "Zurique", tz: "Europe/Zurich", color: "#00ff66" },
+                    { name: "França", tz: "Europe/Paris", color: "#00ffff" },
+                    { name: "Alemanha", tz: "Europe/Berlin", color: "#ff007f" },
+                    { name: "Brasil", tz: "America/Sao_Paulo", color: "#ccff00" }
+                ];
+
+                const timezoneOptions = [
+                    { label: "Suíça / Zurique (CET)", tz: "Europe/Zurich" },
+                    { label: "França / Paris (CET)", tz: "Europe/Paris" },
+                    { label: "Alemanha / Freiburg (CET)", tz: "Europe/Berlin" },
+                    { label: "Brasil / Rio - SP (UTC-3)", tz: "America/Sao_Paulo" },
+                    { label: "Reino Unido / Londres (UTC+0)", tz: "Europe/London" },
+                    { label: "EUA / Nova York (UTC-5)", tz: "America/New_York" }
+                ];
+
+                let userClocks = JSON.parse(localStorage.getItem("app_travel_clocks")) || defaultClocks;
+
+                function updateClocks() {
+                    const container = document.getElementById("barClockItems");
+                    if (!container) return;
+                    container.innerHTML = "";
+                    const now = new Date();
+
+                    userClocks.forEach((c, idx) => {
+                        if (!c.name.trim()) return;
+                        const time = new Intl.DateTimeFormat("pt-BR", {
+                            timeZone: c.tz,
+                            hour: "2-digit",
+                            minute: "2-digit"
+                        }).format(now);
+
+                        const corAtual = c.color || "#00ff66";
+                        const ehPrimeiro = idx === 0;
+
+                        const pill = document.createElement("button");
+                        pill.type = "button";
+                        pill.onclick = () => window.moverPaisParaPrimeiro(idx);
+                        pill.className = "bg-white/10 px-2 py-1 rounded-xl flex items-center gap-1.5 shrink-0 shadow-2xs transition-all active:scale-95";
+                        pill.style.border = `1px solid ${corAtual}66`;
+                        pill.title = "Toque para destacar como país onde você está";
+
+                        pill.innerHTML = `
+                            <span class="text-[9px] uppercase font-black tracking-wide flex items-center gap-1" style="color: ${corAtual}; text-shadow: 0 0 6px ${corAtual}66;">
+                                <span style="font-size: 7px;">${ehPrimeiro ? '📍' : '●'}</span>${c.name}
+                            </span>
+                            <span class="text-[11px] font-black text-white tracking-tight">${time}</span>
+                        `;
+                        container.appendChild(pill);
+                    });
+                }
+
+                window.moverPaisParaPrimeiro = function(index) {
+                    if (index === 0) return;
+                    const item = userClocks.splice(index, 1)[0];
+                    userClocks.unshift(item);
+                    localStorage.setItem("app_travel_clocks", JSON.stringify(userClocks));
+                    updateClocks();
+                    if (window.mostrarToast) {
+                        window.mostrarToast(`📍 ${item.name} definido como país atual!`, 'sucesso');
+                    }
+                };
+
+                window.toggleClockConfig = function() {
+                    const modal = document.getElementById("barClockModal");
+                    if (!modal) return;
+                    const isVisible = !modal.classList.contains("hidden");
+                    if (isVisible) {
+                        modal.classList.add("hidden");
+                    } else {
+                        buildForm();
+                        modal.classList.remove("hidden");
+                    }
+                };
+
+                function buildForm() {
+                    const form = document.getElementById("barClockForm");
+                    form.innerHTML = "";
+                    userClocks.forEach((c, i) => {
+                        const row = document.createElement("div");
+                        row.className = "bg-slate-50 p-2.5 rounded-xl border border-slate-200 space-y-1.5";
+                        const optionsHtml = timezoneOptions.map(opt => 
+                            `<option value="${opt.tz}" ${opt.tz === c.tz ? 'selected' : ''}>${opt.label}</option>`
+                        ).join("");
+
+                        const corAtual = c.color || "#00ff66";
+
+                        let paletaHtml = '<div class="flex items-center gap-1 pt-0.5 flex-wrap"><span class="text-[10px] font-bold text-slate-500">Cor:</span>';
+                        coresNeon.forEach(cor => {
+                            const ativo = corAtual.toLowerCase() === cor.hex.toLowerCase() ? 'ring-2 ring-slate-900 scale-110 shadow-xs' : 'opacity-80 hover:opacity-100';
+                            paletaHtml += `<button type="button" onclick="selecionarCorRelogio(${i}, '${cor.hex}')" style="background-color: ${cor.hex};" class="w-4 h-4 rounded-full border border-black/20 transition active:scale-90 ${ativo}" title="${cor.nome}"></button>`;
+                        });
+                        paletaHtml += `<input type="color" value="${corAtual}" onchange="selecionarCorRelogio(${i}, this.value)" class="w-5 h-5 rounded cursor-pointer border-0 p-0 bg-transparent ml-1" title="Cor livre"></div>`;
+
+                        row.innerHTML = `
+                            <div class="flex justify-between items-center">
+                                <label class="text-[10px] font-bold text-slate-500 uppercase block">Relógio ${i + 1}</label>
+                                <button type="button" onclick="moverPaisParaPrimeiro(${i}); buildForm();" class="text-[10px] font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-0.5">
+                                    ${i === 0 ? '📍 País Atual' : '📌 Pôr em 1º'}
+                                </button>
+                            </div>
+                            <div class="flex gap-1.5">
+                                <input type="text" id="clk-name-${i}" value="${c.name}" class="w-1/2 p-2 bg-white border border-slate-300 rounded-xl font-bold text-xs outline-none focus:border-indigo-600" placeholder="Nome">
+                                <select id="clk-tz-${i}" class="w-1/2 p-2 bg-white border border-slate-300 rounded-xl font-bold text-xs outline-none">${optionsHtml}</select>
+                            </div>
+                            <input type="hidden" id="clk-color-${i}" value="${corAtual}">
+                            ${paletaHtml}
+                        `;
+                        form.appendChild(row);
+                    });
+                }
+
+                window.selecionarCorRelogio = function(index, hex) {
+                    const inputColor = document.getElementById(`clk-color-${index}`);
+                    if (inputColor) inputColor.value = hex;
+                    userClocks[index].color = hex;
+                    buildForm();
+                };
+
+                window.saveClockConfig = function() {
+                    userClocks.forEach((c, i) => {
+                        const nameEl = document.getElementById(`clk-name-${i}`);
+                        const tzEl = document.getElementById(`clk-tz-${i}`);
+                        const colorEl = document.getElementById(`clk-color-${i}`);
+                        if (nameEl) c.name = nameEl.value;
+                        if (tzEl) c.tz = tzEl.value;
+                        if (colorEl) c.color = colorEl.value;
+                    });
+                    localStorage.setItem("app_travel_clocks", JSON.stringify(userClocks));
+                    window.toggleClockConfig();
+                    updateClocks();
+                };
+
+                setInterval(updateClocks, 1000);
+                setTimeout(updateClocks, 50);
+            })();
+        </script>
         <!-- SEPARADORES (TABS) - OS 5 CARTÕES PRINCIPAIS ALINHADOS -->
         <div class="grid grid-cols-5 gap-1.5 bg-slate-200/90 p-1.5 rounded-2xl shadow-inner text-center border border-slate-300/50">
-            <button onclick="mudarTab('leitura')" id="tab-btn-leitura" class="py-2.5 px-1 rounded-xl bg-indigo-600 text-white font-extrabold shadow-sm transition text-[11px] flex flex-col items-center gap-0.5 active:scale-95"><span>✈️️</span><span class="text-[8px] uppercase tracking-wider">Roteiro</span></button>
+            <button onclick="mudarTab('leitura')" id="tab-btn-leitura" class="py-2.5 px-1 rounded-xl bg-indigo-600 text-white font-extrabold shadow-sm transition text-[11px] flex flex-col items-center gap-0.5 active:scale-95"><span>✈️</span><span class="text-[8px] uppercase tracking-wider">Roteiro</span></button>
             <button onclick="mudarTab('itinerario')" id="tab-btn-itinerario" class="py-2.5 px-1 rounded-xl bg-white text-slate-700 font-extrabold shadow-xs transition text-[11px] flex flex-col items-center gap-0.5 hover:bg-slate-50 active:scale-95"><span>📅</span><span class="text-[8px] uppercase tracking-wider">Editar</span></button>
             <button onclick="mudarTab('utilidades')" id="tab-btn-utilidades" class="py-2.5 px-1 rounded-xl bg-white text-slate-700 font-extrabold shadow-xs transition text-[11px] flex flex-col items-center gap-0.5 hover:bg-slate-50 active:scale-95"><span>📋</span><span class="text-[8px] uppercase tracking-wider">Hub</span></button>
             <button onclick="mudarTab('orcamento')" id="tab-btn-orcamento" class="py-2.5 px-1 rounded-xl bg-white text-slate-700 font-extrabold shadow-xs transition text-[11px] flex flex-col items-center gap-0.5 hover:bg-slate-50 active:scale-95"><span>💰</span><span class="text-[8px] uppercase tracking-wider">Orç.</span></button>
@@ -188,7 +261,7 @@
                 <div class="flex items-center gap-2.5">
                     <span class="text-2xl animate-pulse">⏳</span>
                     <div>
-                        <div id="contagem-dias-texto" class="text-xs font-black uppercase tracking-wider text-indigo-200">A carregar data de viagem...</div>
+                        <div id="contagem-dias-texto" class="text-xs font-black uppercase tracking-wider text-indigo-200">Calculando data de viagem...</div>
                         <div id="contagem-dias-sub" class="text-[10px] text-slate-300">Baseado nas datas do seu itinerário oficial</div>
                     </div>
                 </div>
@@ -199,18 +272,12 @@
                 </div>
             </div>
 
-            <!-- STATUS DE CONEXÃO E CONTROLE DE BLOCOS -->
-            <div class="bg-white p-3.5 rounded-2xl shadow-xs border border-slate-200 flex justify-between items-center flex-wrap gap-2">
+            <div class="bg-white p-3.5 rounded-2xl shadow-xs border border-slate-200 flex justify-between items-center">
                 <div>
                     <h2 class="text-xs font-black uppercase tracking-wider text-slate-800 flex items-center gap-1"><span>✈️</span> Roteiro Oficial (Aprovados)</h2>
                     <p class="text-[10px] text-slate-500">Tranque blocos no Editar (🔒) para aparecerem aqui.</p>
                 </div>
-                <div class="flex items-center gap-2">
-                    <span id="status-conexao-texto" class="text-[10px] font-bold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-lg border border-slate-200">
-                        <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-1 animate-pulse"></span> Sistema Pronto
-                    </span>
-                    <div id="progresso-viagem" class="bg-indigo-600 text-white px-3 py-1.5 rounded-xl text-xs font-black shadow-inner">0 / 0 Aprovados</div>
-                </div>
+                <div id="progresso-viagem" class="bg-indigo-600 text-white px-3 py-1.5 rounded-xl text-xs font-black shadow-inner">0 / 0 Aprovados</div>
             </div>
 
             <!-- Filtros por Destino -->
@@ -485,85 +552,39 @@
         </div>
     </div>
 
-    <!-- BOTÃO FLUTUANTE E MODAL DE RELÓGIOS MUNDIAIS -->
-    <button class="fab-relogio" onclick="togglePopupRelogio()" title="Abrir Relógio de Fusos">🕒</button>
-    <div id="popupRelogioContainer" class="popup-relogio">
-        <div class="popup-relogio-header">
-            <span>🌍 Relógio de Fusos</span>
-            <button onclick="togglePopupRelogio()">✕</button>
-        </div>
-        <iframe src="Relógio.html" id="iframeRelogio"></iframe>
-    </div>
-
-    <!-- BARRA DE FERRAMENTAS FLUTUANTE MODERNA (DOCK GLASSMORPHISM) -->
-    <nav class="fixed bottom-3 left-3 right-3 sm:left-auto sm:right-auto sm:w-[460px] sm:left-1/2 sm:-translate-x-1/2 z-50 bg-slate-950/90 backdrop-blur-xl text-white px-3 py-2 rounded-2xl shadow-2xl border border-white/10 flex items-center justify-between gap-1.5 transition-all">
-        <!-- BOTÃO GEMINI -->
-        <button onclick="abrirGeminiModal()" class="bg-gradient-to-r from-purple-600 via-indigo-600 to-indigo-700 hover:from-purple-500 hover:to-indigo-600 text-white px-3.5 py-2 rounded-xl font-bold transition flex items-center gap-1.5 text-xs shadow-md shadow-purple-950/40 active:scale-95 shrink-0">
-            <span class="text-sm">✨</span>
-            <span class="tracking-wide">Gemini</span>
+    <!-- BARRA DE FERRAMENTAS FIXA MODERNA COM BACKUP E RESTAURAÇÃO -->
+    <nav class="fixed bottom-0 left-0 right-0 z-50 bg-slate-900/95 backdrop-blur-md text-white px-3 py-2.5 shadow-2xl border-t border-slate-800 text-xs flex items-center justify-around gap-1 overflow-x-auto no-scrollbar max-w-4xl mx-auto rounded-t-2xl">
+        <span class="bg-indigo-600/30 text-indigo-300 border border-indigo-500/30 px-2 py-1 rounded-lg font-mono font-bold text-[9px] shrink-0">v270.0</span>
+        
+        <button onclick="abrirGeminiModal()" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white px-3 py-1.5 rounded-xl font-bold transition shrink-0 flex items-center gap-1.5 text-xs shadow-sm shadow-purple-900/30 active:scale-95">
+            <span>✨</span> Gemini
         </button>
-
-        <!-- DITAR -->
-        <button onclick="ativarMicrofone()" class="bg-white/10 hover:bg-white/15 text-white px-3 py-2 rounded-xl font-bold transition flex items-center gap-1.5 text-xs border border-white/10 active:scale-95 shrink-0">
-            <span>🎤</span>
-            <span class="tracking-wide">Ditar</span>
+        
+        <button onclick="ativarMicrofone()" class="bg-purple-600/90 hover:bg-purple-600 text-white px-3 py-1.5 rounded-xl font-bold transition shrink-0 flex items-center gap-1 text-xs shadow-xs active:scale-95">
+            <span>🎤</span> Ditar
         </button>
-
-        <!-- ALTERNAR TEMA -->
-        <button onclick="alternarTema()" class="bg-white/10 hover:bg-white/15 text-white px-3 py-2 rounded-xl font-bold transition flex items-center gap-1 text-xs border border-white/10 active:scale-95 shrink-0" title="Alternar Modo Claro / Escuro">
-            <span>🌓</span>
-            <span class="tracking-wide">Tema</span>
+        
+        <button onclick="baixarBackupJson()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 px-2.5 py-1.5 rounded-xl font-bold transition shrink-0 flex items-center gap-1 text-xs shadow-xs active:scale-95" title="Baixar Backup do Roteiro">
+            <span>📥</span> Backup
         </button>
-
-        <!-- MENU SISTEMA (BACKUP, RESTAURAR, SENHA, APP) -->
-        <button onclick="document.getElementById('menu-sistema-modal').classList.remove('hidden')" class="bg-white/10 hover:bg-white/15 text-slate-200 hover:text-white px-3 py-2 rounded-xl font-bold transition flex items-center gap-1 text-xs border border-white/10 active:scale-95 shrink-0">
-            <span>⚙️</span>
-            <span class="text-[11px] text-slate-300">Mais</span>
+        
+        <label class="bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 px-2.5 py-1.5 rounded-xl font-bold transition shrink-0 flex items-center gap-1 text-xs shadow-xs cursor-pointer active:scale-95" title="Restaurar Backup">
+            <span>📤</span> Restaurar
+            <input type="file" accept=".json" onchange="restaurarBackupJson(event)" class="hidden">
+        </label>
+        
+        <button onclick="alternarTema()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 px-2.5 py-1.5 rounded-xl font-bold transition shrink-0 flex items-center gap-1 text-xs active:scale-95">
+            <span>🌓</span> Tema
+        </button>
+        
+        <button onclick="alterarSenhaPin()" class="bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 px-2.5 py-1.5 rounded-xl font-bold transition shrink-0 flex items-center gap-1 text-xs active:scale-95">
+            <span>🔑</span> Senha
+        </button>
+        
+        <button onclick="instalarApp()" class="bg-emerald-600/90 hover:bg-emerald-600 text-white px-2.5 py-1.5 rounded-xl font-bold transition shrink-0 flex items-center gap-1 text-xs shadow-xs active:scale-95">
+            <span>📱</span> App
         </button>
     </nav>
-
-    <!-- POPUP ELEGANTE DO MENU "MAIS" -->
-    <div id="menu-sistema-modal" class="fixed inset-0 z-[250] bg-slate-950/70 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-3">
-        <div class="bg-slate-900 border border-slate-800 text-white p-5 rounded-3xl shadow-2xl max-w-sm w-full space-y-3.5 text-xs">
-            <div class="flex justify-between items-center border-b border-slate-800 pb-2.5">
-                <div class="flex items-center gap-2">
-                    <span class="text-base">🛠️</span>
-                    <div>
-                        <h4 class="font-black text-xs text-white">Ferramentas & Sistema</h4>
-                        <span class="text-[10px] text-indigo-400 font-mono font-bold">Versão 272.0 (Pro)</span>
-                    </div>
-                </div>
-                <button onclick="document.getElementById('menu-sistema-modal').classList.add('hidden')" class="text-slate-400 hover:text-white font-bold text-sm p-1 rounded-lg">✕</button>
-            </div>
-
-            <div class="grid grid-cols-2 gap-2 pt-1">
-                <button onclick="baixarBackupJson(); document.getElementById('menu-sistema-modal').classList.add('hidden');" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 p-3 rounded-2xl font-bold text-left flex flex-col gap-1 active:scale-95 transition">
-                    <span class="text-base">📥</span>
-                    <span class="text-white text-xs">Baixar Backup</span>
-                    <span class="text-[10px] text-slate-400 font-normal">Exportar arquivo JSON</span>
-                </button>
-
-                <label class="bg-slate-800 hover:bg-slate-700 border border-slate-700 p-3 rounded-2xl font-bold text-left flex flex-col gap-1 active:scale-95 transition cursor-pointer">
-                    <span class="text-base">📤</span>
-                    <span class="text-white text-xs">Restaurar</span>
-                    <span class="text-[10px] text-slate-400 font-normal">Importar JSON</span>
-                    <input type="file" accept=".json" onchange="restaurarBackupJson(event); document.getElementById('menu-sistema-modal').classList.add('hidden');" class="hidden">
-                </label>
-
-                <button onclick="alterarSenhaPin(); document.getElementById('menu-sistema-modal').classList.add('hidden');" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 p-3 rounded-2xl font-bold text-left flex flex-col gap-1 active:scale-95 transition">
-                    <span class="text-base">🔑</span>
-                    <span class="text-amber-300 text-xs">Senha PIN</span>
-                    <span class="text-[10px] text-slate-400 font-normal">Alterar código</span>
-                </button>
-
-                <button onclick="instalarApp(); document.getElementById('menu-sistema-modal').classList.add('hidden');" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 p-3 rounded-2xl font-bold text-left flex flex-col gap-1 active:scale-95 transition">
-                    <span class="text-base">📱</span>
-                    <span class="text-emerald-400 text-xs">Instalar App</span>
-                    <span class="text-[10px] text-slate-400 font-normal">Adicionar à tela</span>
-                </button>
-            </div>
-        </div>
-    </div>
 
     <!-- MODAL DA GEMINI IA -->
     <div id="modal-gemini" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
@@ -583,18 +604,10 @@
     </div>
 
     <script>
-        // CONFIGURAÇÃO SUPABASE COM PROTEÇÃO CONTRA FALHAS E OFFLINE-FIRST
+        // CONFIGURAÇÃO SUPABASE
         const SUPABASE_URL = 'https://jmeepzdvmmjngxwvayqb.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_54ORrLbP7naW7n-KlKCdUA_hZnpjguH';
-        
-        let supabaseClient = null;
-        try {
-            if (window.supabase && typeof window.supabase.createClient === 'function') {
-                supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-            }
-        } catch(err) {
-            console.warn("Supabase SDK indisponível. Modo offline ativo.", err);
-        }
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         const CHAVE_APP = "mariana_viagem_europa_dados_fixos_definitiva";
         let destinoFiltro = 'todos';
@@ -641,6 +654,7 @@
             ordemHub: ['voos', 'contatos', 'tarefas', 'checklist', 'vouchers', 'chat']
         };
 
+        // NOTIFICAÇÕES TOAST MODERNAS
         function mostrarToast(mensagem, tipo = 'sucesso') {
             const container = document.getElementById('toast-container');
             if (!container) return;
@@ -720,6 +734,7 @@
             return paletaNeon[Math.abs(hash) % paletaNeon.length];
         }
 
+        // COMPRESSÃO AUTOMÁTICA DE IMAGENS VIA CANVAS
         function comprimirImagem(file, maxDim = 800, qualidade = 0.7) {
             return new Promise((resolve) => {
                 const reader = new FileReader();
@@ -743,7 +758,27 @@
             });
         }
 
-        function garantirIntegridadeDados() {
+        // CARREGAMENTO INICIAL
+        window.addEventListener('DOMContentLoaded', async () => {
+            try {
+                let { data, error } = await supabaseClient
+                    .from('app_dados')
+                    .select('conteudo')
+                    .eq('id', '1')
+                    .single();
+
+                if (data && data.conteudo) {
+                    dadosApp = data.conteudo;
+                    localStorage.setItem(CHAVE_APP, JSON.stringify(dadosApp));
+                } else {
+                    let salvo = localStorage.getItem(CHAVE_APP);
+                    if (salvo) dadosApp = JSON.parse(salvo);
+                }
+            } catch (e) {
+                let salvo = localStorage.getItem(CHAVE_APP);
+                if (salvo) dadosApp = JSON.parse(salvo);
+            }
+
             if(!dadosApp.ordemHub) dadosApp.ordemHub = ['voos', 'contatos', 'tarefas', 'checklist', 'vouchers', 'chat'];
             if(!dadosApp.diasConcluidos) dadosApp.diasConcluidos = {};
             if(!dadosApp.coresDestinos) dadosApp.coresDestinos = { "Zurique": "#3b82f6", "Freiburg": "#f59e0b", "França": "#ec4899", "Interlaken": "#10b981", "Disney": "#8b5cf6" };
@@ -752,7 +787,6 @@
             if(!dadosApp.cotacaoChf) dadosApp.cotacaoChf = 6.50;
             if(dadosApp.saldoEur === undefined) dadosApp.saldoEur = "";
             if(dadosApp.saldoChf === undefined) dadosApp.saldoChf = "";
-            if(!dadosApp.itinerario) dadosApp.itinerario = [];
             if(!dadosApp.voos) dadosApp.voos = [];
             if(!dadosApp.tarefas) dadosApp.tarefas = [];
             if(!dadosApp.vouchers) dadosApp.vouchers = [];
@@ -764,22 +798,9 @@
             if(!dadosApp.compras) dadosApp.compras = [];
             if(!dadosApp.origensCadastrados) dadosApp.origensCadastrados = ["Zurich HB", "Zurich Bus Station (Sihlquai)", "Freiburg Hbf (Estação Central)", "Gare de Lyon (Paris)", "Interlaken Ost"];
             if(!dadosApp.destinosCadastradosLocais) dadosApp.destinosCadastradosLocais = ["ibis budget Zurich City West", "Premier Inn Freiburg City Süd", "Europa-Park Rust", "Disney Hotel Santa Fe", "Grindelwald", "Jungfraujoch"];
+            
             if(dadosApp.comprasOrdenacao) comprasOrdenacao = dadosApp.comprasOrdenacao;
             if(dadosApp.blocoOrdenacao) blocoOrdenacao = dadosApp.blocoOrdenacao;
-        }
-
-        // CARREGAMENTO INICIAL OFFLINE-FIRST (ZERO ESPERA, NUNCA TRAVA)
-        window.addEventListener('DOMContentLoaded', () => {
-            try {
-                let salvo = localStorage.getItem(CHAVE_APP);
-                if (salvo) {
-                    dadosApp = Object.assign({}, dadosApp, JSON.parse(salvo));
-                }
-            } catch (e) {
-                console.warn("Erro ao ler localStorage:", e);
-            }
-
-            garantirIntegridadeDados();
 
             if ('serviceWorker' in navigator) {
                 const swCode = `
@@ -818,111 +839,10 @@
                 atualizarTudo();
                 let tabSalva = localStorage.getItem('tab_ativa_v269') || 'leitura';
                 mudarTab(tabSalva);
-                inicializarRelogiosTopo();
             } catch(e) {
-                console.error("Erro ao iniciar interface:", e);
-            }
-
-            if (supabaseClient) {
-                const promessaSupabase = supabaseClient
-                    .from('app_dados')
-                    .select('conteudo')
-                    .eq('id', '1')
-                    .single();
-
-                const timeout = new Promise((_, reject) => setTimeout(() => reject("timeout"), 3500));
-
-                Promise.race([promessaSupabase, timeout])
-                    .then(({ data }) => {
-                        if (data && data.conteudo) {
-                            dadosApp = Object.assign({}, dadosApp, data.conteudo);
-                            localStorage.setItem(CHAVE_APP, JSON.stringify(dadosApp));
-                            garantirIntegridadeDados();
-                            atualizarTudo();
-                            const st = document.getElementById('status-conexao-texto');
-                            if(st) st.innerHTML = '<span class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span> Conectado & Nuvem OK';
-                        }
-                    })
-                    .catch(() => {
-                        const st = document.getElementById('status-conexao-texto');
-                        if(st) st.innerHTML = '<span class="inline-block w-2 h-2 rounded-full bg-amber-500"></span> Modo Offline (Dados Salvos no Celular)';
-                    });
+                console.error("Erro ao iniciar:", e);
             }
         });
-
-        // RELÓGIOS MUNDIAIS NO PAINEL SEPARADO
-        let clockConfigs = [
-            { id: 'zurique', label: 'Zurique', tz: 'Europe/Zurich', color: '#3b82f6' },
-            { id: 'paris', label: 'Paris', tz: 'Europe/Paris', color: '#ec4899' },
-            { id: 'brasilia', label: 'Brasil', tz: 'America/Sao_Paulo', color: '#10b981' }
-        ];
-
-        function inicializarRelogiosTopo() {
-            try {
-                let salvo = localStorage.getItem('relogios_config_v272');
-                if (salvo) clockConfigs = JSON.parse(salvo);
-            } catch(e){}
-            atualizarRelogiosTopo();
-            setInterval(atualizarRelogiosTopo, 1000);
-        }
-
-        function atualizarRelogiosTopo() {
-            const bar = document.getElementById('barClockItems');
-            if(!bar) return;
-            let html = '';
-            clockConfigs.forEach(c => {
-                let horaStr = "--:--:--";
-                try {
-                    let d = new Date();
-                    horaStr = d.toLocaleTimeString('pt-BR', { timeZone: c.tz, hour: '2-digit', minute: '2-digit', second: '2-digit' });
-                } catch(e){}
-                html += `
-                    <div class="flex items-center gap-1.5 bg-slate-900/90 px-2.5 py-1.5 rounded-xl border border-indigo-800/50 shadow-2xs shrink-0">
-                        <span class="w-2 h-2 rounded-full inline-block" style="background-color: ${c.color};"></span>
-                        <span class="font-bold text-[10px] text-slate-300">${c.label}:</span>
-                        <span class="font-mono font-black text-xs text-white">${horaStr}</span>
-                    </div>
-                `;
-            });
-            bar.innerHTML = html;
-        }
-
-        function toggleClockConfig() {
-            const modal = document.getElementById('barClockModal');
-            if(!modal) return;
-            if(modal.classList.contains('hidden')) {
-                let form = document.getElementById('barClockForm');
-                let html = '';
-                clockConfigs.forEach((c, idx) => {
-                    html += `
-                        <div class="bg-slate-50 p-2.5 rounded-2xl border border-slate-200 space-y-1.5">
-                            <div class="font-bold text-xs text-slate-700">Relógio ${idx+1} (${c.tz})</div>
-                            <div class="flex gap-1.5">
-                                <input type="text" id="clk-lbl-${idx}" value="${c.label}" class="flex-1 p-1.5 bg-white border border-slate-300 rounded-xl font-bold text-xs outline-none" placeholder="Nome...">
-                                <input type="color" id="clk-col-${idx}" value="${c.color}" class="w-9 h-8 p-0 border border-slate-300 rounded-xl cursor-pointer bg-transparent">
-                            </div>
-                        </div>
-                    `;
-                });
-                form.innerHTML = html;
-                modal.classList.remove('hidden');
-            } else {
-                modal.classList.add('hidden');
-            }
-        }
-
-        function saveClockConfig() {
-            clockConfigs.forEach((c, idx) => {
-                let lbl = document.getElementById('clk-lbl-' + idx);
-                let col = document.getElementById('clk-col-' + idx);
-                if(lbl && lbl.value.trim() !== '') c.label = lbl.value.trim();
-                if(col) c.color = col.value;
-            });
-            localStorage.setItem('relogios_config_v272', JSON.stringify(clockConfigs));
-            toggleClockConfig();
-            atualizarRelogiosTopo();
-            mostrarToast("Configurações dos relógios salvas!", "sucesso");
-        }
 
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
@@ -953,6 +873,7 @@
             }
         }
 
+        // BIOMETRIA REAL NATIVA (WebAuthn / Fallback)
         async function desbloquearComBiometria() {
             try {
                 if (window.PublicKeyCredential && window.PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable) {
@@ -1035,19 +956,19 @@
             }, 500);
         }
 
+        // SALVAMENTO AUTOMÁTICO NA NUVEM (SUPABASE) E LOCAL
         async function salvarStorage() {
             localStorage.setItem(CHAVE_APP, JSON.stringify(dadosApp));
-            if (supabaseClient) {
-                try {
-                    await supabaseClient
-                        .from('app_dados')
-                        .upsert({ id: '1', conteudo: dadosApp });
-                } catch (err) {
-                    console.warn("Erro ao sincronizar com nuvem:", err);
-                }
+            try {
+                await supabaseClient
+                    .from('app_dados')
+                    .upsert({ id: '1', conteudo: dadosApp });
+            } catch (err) {
+                console.error("Erro ao sincronizar com nuvem:", err);
             }
         }
 
+        // BACKUP & RESTAURAÇÃO DE SEGURANÇA (JSON)
         function baixarBackupJson() {
             try {
                 const dadosJson = JSON.stringify(dadosApp, null, 2);
@@ -1078,7 +999,6 @@
                         if (confirm("Deseja restaurar este backup? Os dados atuais serão substituídos.")) {
                             registarEstadoAnterior();
                             dadosApp = dadosImportados;
-                            garantirIntegridadeDados();
                             await salvarStorage();
                             atualizarTudo();
                             mostrarToast("Backup restaurado com sucesso!", "sucesso");
@@ -1117,6 +1037,7 @@
             document.getElementById('visualizador-conteudo-area').innerHTML = '<iframe id="pdf-iframe-view" class="w-full h-full rounded-2xl border bg-white shadow-inner hidden" src=""></iframe>';
         }
 
+        // MODAL DE TAREFA
         function abrirModalTarefa(tarefaId) {
             let t = dadosApp.tarefas.find(item => String(item.id) === String(tarefaId));
             if(!t) return;
@@ -1259,6 +1180,7 @@
             }
         }
 
+        // COTAÇÃO AO VIVO EM TEMPO REAL VIA AWESOMEAPI
         async function buscarCotacaoAoVivo() {
             mostrarToast("Buscando cotação em tempo real...", "info");
             try {
@@ -1287,6 +1209,7 @@
             }
         }
 
+        // CLIMA AO VIVO EM TEMPO REAL VIA OPEN-METEO
         async function mostrarClimaModal(cidade) {
             const modal = document.getElementById('modal-clima');
             const titulo = document.getElementById('clima-cidade-nome');
@@ -1371,6 +1294,7 @@
             document.getElementById('modal-clima').classList.add('hidden');
         }
 
+        // DIVISOR DE CONTA DE RESTAURANTE
         function calcularDivisaoConta() {
             const valorInput = document.getElementById('split-valor');
             const moedaInput = document.getElementById('split-moeda');
@@ -1414,8 +1338,9 @@
             `;
         }
 
+        // COMPARTILHAMENTO INTELIGENTE NO WHATSAPP
         function compartilharRoteiroWhatsApp() {
-            let blocosAprovados = (dadosApp.itinerario || []).filter(item => item.bloqueado === true);
+            let blocosAprovados = dadosApp.itinerario.filter(item => item.bloqueado === true);
             if(blocosAprovados.length === 0) {
                 mostrarToast("Nenhum bloco de roteiro aprovado para compartilhar.", "info");
                 return;
@@ -1474,10 +1399,10 @@
             }
         }
 
+        // CONTAGEM REGRESSIVA PARA A VIAGEM
         function atualizarContagemRegressiva() {
             const diasTexto = document.getElementById('contagem-dias-texto');
             const diasSub = document.getElementById('contagem-dias-sub');
-            const topoRegressiva = document.getElementById('relogio-contagem-topo');
             if(!diasTexto || !diasSub) return;
 
             let datasInicio = [];
@@ -1495,37 +1420,29 @@
             if(datasInicio.length === 0) {
                 diasTexto.innerText = "Datas não definidas no itinerário";
                 diasSub.innerText = "Preencha a data do primeiro bloco para ativar a contagem regressiva";
-                if(topoRegressiva) topoRegressiva.innerText = "--d --h --m --s";
                 return;
             }
 
             datasInicio.sort((a, b) => a - b);
             let primeiraData = datasInicio[0];
-            let agora = new Date();
-            let diffTime = primeiraData.getTime() - agora.getTime();
+            let hoje = new Date();
+            hoje.setHours(0,0,0,0);
+
+            let diffTime = primeiraData - hoje;
+            let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
             let dataFormatada = primeiraData.toLocaleDateString('pt-BR');
 
-            if (diffTime > 0) {
-                let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-                let diffHours = Math.floor((diffTime / (1000 * 60 * 60)) % 24);
-                let diffMinutes = Math.floor((diffTime / 1000 / 60) % 60);
-                let diffSeconds = Math.floor((diffTime / 1000) % 60);
-
+            if (diffDays > 0) {
                 diasTexto.innerText = `⏳ Faltam ${diffDays} dias para o embarque!`;
                 diasSub.innerText = `Início da viagem em ${dataFormatada}. Malas quase prontas!`;
-                if(topoRegressiva) topoRegressiva.innerText = `${diffDays}d ${diffHours}h ${diffMinutes}m ${diffSeconds}s`;
-            } else if (diffTime > -86400000) {
+            } else if (diffDays === 0) {
                 diasTexto.innerText = `🎉 O grande dia chegou! Embarque hoje!`;
                 diasSub.innerText = `Tenha uma excelente e inesquecível viagem!`;
-                if(topoRegressiva) topoRegressiva.innerText = "Embarque Hoje!";
             } else {
                 diasTexto.innerText = `✈️ Viagem em andamento!`;
                 diasSub.innerText = `Aproveite cada momento deste roteiro maravilhoso!`;
-                if(topoRegressiva) topoRegressiva.innerText = "Em Viagem!";
             }
         }
-
-        setInterval(atualizarContagemRegressiva, 1000);
 
         function imprimirSeccaoCustom(titulo, htmlConteudo) {
             let win = window.open('', '_blank');
@@ -2038,13 +1955,14 @@
             renderizarComprasTab();
         }
 
+        // ROTEIRO (LEITURA COM FOTOS E AÇÕES RÁPIDAS)
         function renderizarModoLeitura() {
             const container = document.getElementById('lista-leitura-html');
             const progressoEl = document.getElementById('progresso-viagem');
             if(!container) return;
             container.innerHTML = '';
 
-            let blocosAprovados = (dadosApp.itinerario || []).filter(item => item.bloqueado === true);
+            let blocosAprovados = dadosApp.itinerario.filter(item => item.bloqueado === true);
             if(destinoFiltro !== 'todos') {
                 blocosAprovados = blocosAprovados.filter(i => (i.categoria || "").toLowerCase().includes(destinoFiltro.toLowerCase()));
             }
@@ -2129,12 +2047,13 @@
             });
         }
 
+        // RENDERIZAR BLOCOS NO EDITAR
         function renderizarBlocos() {
             const container = document.getElementById('lista-blocos');
             if(!container) return;
             container.innerHTML = '';
             
-            let filtrados = [...(dadosApp.itinerario || [])];
+            let filtrados = [...dadosApp.itinerario];
             if(destinoFiltro !== 'todos') {
                 filtrados = filtrados.filter(i => (i.categoria || "").toLowerCase().includes(destinoFiltro.toLowerCase()));
             }
@@ -2187,7 +2106,7 @@
                         if(!tr.conducoes) tr.conducoes = [{ id: Date.now(), transporte: "Trem", valor: 0, moeda: "EUR", notas: "", fotosExtras: [] }];
 
                         let conducoesEditHtml = '';
-                        tr.conducoes.forEach((cond) => {
+                        tr.conducoes.forEach((cond, condIdx) => {
                             let listaFotosExtrasEdit = '';
                             if(cond.fotosExtras && cond.fotosExtras.length > 0) {
                                 cond.fotosExtras.forEach((fUrl, fIdx) => {
@@ -2212,6 +2131,7 @@
                                             <option value="CHF" ${cond.moeda==='CHF'?'selected':''}>CHF</option>
                                         </select>
                                         
+                                        <!-- BOTÕES MODERNOS DE ANEXO E CÂMERA -->
                                         <label class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-2.5 py-1.5 rounded-xl font-bold text-[10px] cursor-pointer border border-slate-300 inline-flex items-center gap-1 shadow-2xs shrink-0 transition active:scale-95" title="Anexar imagem guardada">📁 Anexar<input type="file" accept="image/*" onchange="adicionarFotoExtraTrecho('${item.id}', '${tr.id}', '${cond.id}', event)" class="hidden"></label>
                                         
                                         <label class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-2.5 py-1.5 rounded-xl font-bold text-[10px] cursor-pointer border border-slate-300 inline-flex items-center gap-1 shadow-2xs shrink-0 transition active:scale-95" title="Tirar foto com a câmera">📷 Câmera<input type="file" accept="image/*" capture="environment" onchange="adicionarFotoExtraTrecho('${item.id}', '${tr.id}', '${cond.id}', event)" class="hidden"></label>
@@ -2303,7 +2223,7 @@
                             '<button onclick="alternarBloqueio(\'' + item.id + '\')" class="' + lockBg + ' px-3.5 py-1.5 rounded-xl font-bold text-xs shadow-xs transition active:scale-95">' + lockIcon + '</button>' +
                             '<button onclick="moverBloco(\'' + item.id + '\', -1)" class="bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 px-2.5 py-1.5 rounded-xl font-bold transition shadow-2xs active:scale-95">⬆️</button>' +
                             '<button onclick="moverBloco(\'' + item.id + '\', 1)" class="bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 px-2.5 py-1.5 rounded-xl font-bold transition shadow-2xs active:scale-95">⬇️</button>' +
-                            '<button onclick="apagarBloco(\'' + item.id + '\')" class="bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 px-3 py-1.5 rounded-bold transition active:scale-95">Excluir ✕</button>' +
+                            '<button onclick="apagarBloco(\'' + item.id + '\')" class="bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 px-3 py-1.5 rounded-xl font-bold transition active:scale-95">Excluir ✕</button>' +
                         '</div>' +
                     '</div>';
                 container.appendChild(card);
@@ -2541,6 +2461,7 @@
             }
         }
 
+        // RENDERIZAR HUB DE UTILIDADES COM ARRASTAR E SOLTAR
         function renderizarHubUtilidades() {
             const container = document.getElementById('hub-utilidades-grid');
             if(!container) return;
@@ -2588,7 +2509,7 @@
                                 '<input type="text" value="' + numSafe + '" oninput="atualizarContatoNumero(' + ct.id + ', this.value)" class="w-24 shrink-0 p-1 bg-slate-50 border border-slate-300 rounded-xl font-black text-xs text-center" placeholder="Número...">' +
                                 '<a href="' + telHref + '" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1.5 rounded-xl font-bold text-[10px] shrink-0 shadow-2xs transition active:scale-95" title="Ligar">📞</a>' +
                                 '<button onclick="moverItemArray(\'contatos\', ' + ct.id + ', -1)" class="bg-slate-100 hover:bg-slate-200 border border-slate-300 px-2 py-1.5 rounded-lg font-bold text-slate-700 transition active:scale-95">⬆️</button>' +
-                                '<button onclick="moverItemArray(\'contatos\', ' + ct.id + ', 1)" class="bg-slate-100 hover:bg-slate-200 border border-slate-300 px-2 py-1.5 rounded-lg font-bold text-slate-700 transition active:scale-95">⬇️️</button>' +
+                                '<button onclick="moverItemArray(\'contatos\', ' + ct.id + ', 1)" class="bg-slate-100 hover:bg-slate-200 border border-slate-300 px-2 py-1.5 rounded-lg font-bold text-slate-700 transition active:scale-95">⬇️</button>' +
                                 '<button onclick="apagarContato(' + ct.id + ')" class="text-rose-600 hover:text-rose-700 font-bold bg-rose-50 hover:bg-rose-100 border border-rose-200 px-2 py-1 rounded-xl text-xs transition active:scale-95">✕</button>' +
                             '</div>';
                         });
@@ -2660,6 +2581,236 @@
             });
         }
 
+        function iniciarArrastoHub(e, tipo) {
+            hubArrastadoTipo = tipo;
+            e.dataTransfer.setData('text/plain', tipo);
+        }
+
+        function permitirDropHub(e) {
+            e.preventDefault();
+        }
+
+        function soltarHub(e, tipoAlvo) {
+            e.preventDefault();
+            if (!hubArrastadoTipo || hubArrastadoTipo === tipoAlvo) return;
+            registarEstadoAnterior();
+            if(!dadosApp.ordemHub) dadosApp.ordemHub = ['voos', 'contatos', 'tarefas', 'checklist', 'vouchers', 'chat'];
+            let idxOrigem = dadosApp.ordemHub.indexOf(hubArrastadoTipo);
+            let idxAlvo = dadosApp.ordemHub.indexOf(tipoAlvo);
+            if(idxOrigem >= 0 && idxAlvo >= 0) {
+                dadosApp.ordemHub.splice(idxOrigem, 1);
+                dadosApp.ordemHub.splice(idxAlvo, 0, hubArrastadoTipo);
+                salvarStorage();
+                renderizarHubUtilidades();
+                mostrarToast("Seção reposicionada!", "sucesso");
+            }
+            hubArrastadoTipo = null;
+        }
+
+        function moverSecaoHub(tipo, direcao) {
+            registarEstadoAnterior();
+            if(!dadosApp.ordemHub) dadosApp.ordemHub = ['voos', 'contatos', 'tarefas', 'checklist', 'vouchers', 'chat'];
+            let idx = dadosApp.ordemHub.indexOf(tipo);
+            if(idx < 0) return;
+            let targetIdx = idx + direcao;
+            if(targetIdx < 0 || targetIdx >= dadosApp.ordemHub.length) return;
+            let temp = dadosApp.ordemHub[idx];
+            dadosApp.ordemHub[idx] = dadosApp.ordemHub[targetIdx];
+            dadosApp.ordemHub[targetIdx] = temp;
+            salvarStorage();
+            renderizarHubUtilidades();
+        }
+
+        function adicionarChat() {
+            registarEstadoAnterior();
+            if(!dadosApp.chat) dadosApp.chat = [];
+            dadosApp.chat.unshift({ id: Date.now(), texto: "Nova anotação..." });
+            salvarStorage();
+            renderizarHubUtilidades();
+            mostrarToast("Nota criada!", "sucesso");
+        }
+
+        function apagarChat(id) {
+            registarEstadoAnterior();
+            dadosApp.chat = dadosApp.chat.filter(c => c.id !== id);
+            salvarStorage();
+            renderizarHubUtilidades();
+        }
+
+        function atualizarChat(id, val) {
+            let c = dadosApp.chat.find(item => item.id === id);
+            if(c) { c.texto = val; salvarStorage(); }
+        }
+
+        function atualizarContatoNome(id, val) {
+            let c = dadosApp.contatos.find(item => item.id === id);
+            if(c) { c.nome = val; salvarStorage(); }
+        }
+
+        function atualizarContatoNumero(id, val) {
+            let c = dadosApp.contatos.find(item => item.id === id);
+            if(c) { c.numero = val; salvarStorage(); }
+        }
+
+        function adicionarContato() {
+            registarEstadoAnterior();
+            if(!dadosApp.contatos) dadosApp.contatos = [];
+            dadosApp.contatos.unshift({ id: Date.now(), nome: "Contato", numero: "" });
+            salvarStorage();
+            renderizarHubUtilidades();
+            mostrarToast("Contato criado!", "sucesso");
+        }
+
+        function apagarContato(id) {
+            registarEstadoAnterior();
+            dadosApp.contatos = dadosApp.contatos.filter(c => c.id !== id);
+            salvarStorage();
+            renderizarHubUtilidades();
+        }
+
+        function adicionarVoo() {
+            registarEstadoAnterior();
+            if(!dadosApp.voos) dadosApp.voos = [];
+            dadosApp.voos.unshift({ id: Date.now(), cia: "Latam", voo: "", pnr: "", rota: "GIG ➔ ZRH", data: "", pdfData: "", pdfNome: "" });
+            salvarStorage();
+            renderizarHubUtilidades();
+            mostrarToast("Voo criado!", "sucesso");
+        }
+
+        function apagarVoo(id) {
+            registarEstadoAnterior();
+            dadosApp.voos = dadosApp.voos.filter(v => v.id !== id);
+            salvarStorage();
+            renderizarHubUtilidades();
+        }
+
+        function atualizarVoo(id, campo, val) {
+            let v = dadosApp.voos.find(item => item.id === id);
+            if(v) { v[campo] = val; salvarStorage(); }
+        }
+
+        function anexarPdfVoo(id, event) {
+            const file = event.target.files[0];
+            if(file) {
+                registarEstadoAnterior();
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    const v = dadosApp.voos.find(item => item.id === id);
+                    if(v) { 
+                        v.pdfData = evt.target.result; 
+                        v.pdfNome = file.name; 
+                        salvarStorage(); 
+                        renderizarHubUtilidades(); 
+                        abrirLeitorArquivo(v.pdfData, 'Passagem ' + (v.voo || 'Voo'));
+                        mostrarToast("Passagem anexada!", "sucesso");
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function anexarPdfVoucher(id, event) {
+            const file = event.target.files[0];
+            if(file) {
+                registarEstadoAnterior();
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    const v = dadosApp.vouchers.find(item => item.id === id);
+                    if(v) { 
+                        v.pdfData = evt.target.result; 
+                        v.pdfNome = file.name; 
+                        salvarStorage(); 
+                        renderizarHubUtilidades(); 
+                        abrirLeitorArquivo(v.pdfData, v.titulo);
+                        mostrarToast("Voucher anexado!", "sucesso");
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function adicionarTarefa() {
+            registarEstadoAnterior();
+            if(!dadosApp.tarefas) dadosApp.tarefas = [];
+            dadosApp.tarefas.unshift({ id: Date.now(), texto: "Nova tarefa...", status: "", categoria: "" });
+            salvarStorage();
+            renderizarHubUtilidades();
+            mostrarToast("Tarefa criada!", "sucesso");
+        }
+
+        function apagarTarefa(id) {
+            registarEstadoAnterior();
+            dadosApp.tarefas = dadosApp.tarefas.filter(t => t.id !== id);
+            salvarStorage();
+            renderizarHubUtilidades();
+        }
+
+        function atualizarTarefaTexto(id, val) {
+            let t = dadosApp.tarefas.find(item => item.id === id);
+            if(t) { t.texto = val; salvarStorage(); }
+        }
+
+        function lidarSelecaoDestinoTarefa(id, val) {
+            registarEstadoAnterior();
+            let t = dadosApp.tarefas.find(item => item.id === id);
+            if(t) { t.categoria = val; salvarStorage(); renderizarHubUtilidades(); }
+        }
+
+        function lidarSelecaoStatusTarefa(id, val) {
+            registarEstadoAnterior();
+            let t = dadosApp.tarefas.find(item => item.id === id);
+            if(t) { t.status = val; salvarStorage(); renderizarHubUtilidades(); }
+        }
+
+        function adicionarItemChecklist() {
+            registarEstadoAnterior();
+            if(!dadosApp.checklist) dadosApp.checklist = [];
+            dadosApp.checklist.push({ id: Date.now(), item: "Novo item...", feito: false });
+            salvarStorage();
+            renderizarHubUtilidades();
+            mostrarToast("Item de checklist adicionado!", "sucesso");
+        }
+
+        function apagarItemChecklist(id) {
+            registarEstadoAnterior();
+            dadosApp.checklist = dadosApp.checklist.filter(c => c.id !== id);
+            salvarStorage();
+            renderizarHubUtilidades();
+        }
+
+        function alternarItemChecklist(id) {
+            registarEstadoAnterior();
+            let c = dadosApp.checklist.find(item => item.id === id);
+            if(c) { c.feito = !c.feito; salvarStorage(); renderizarHubUtilidades(); }
+        }
+
+        function atualizarItemChecklistText(id, val) {
+            let c = dadosApp.checklist.find(item => item.id === id);
+            if(c) { c.item = val; salvarStorage(); }
+        }
+
+        function adicionarVoucher() {
+            registarEstadoAnterior();
+            if(!dadosApp.vouchers) dadosApp.vouchers = [];
+            dadosApp.vouchers.unshift({ id: Date.now(), titulo: "Hotel / Reserva", pdfData: "", pdfNome: "" });
+            salvarStorage();
+            renderizarHubUtilidades();
+            mostrarToast("Voucher criado!", "sucesso");
+        }
+
+        function apagarVoucher(id) {
+            registarEstadoAnterior();
+            dadosApp.vouchers = dadosApp.vouchers.filter(v => v.id !== id);
+            salvarStorage();
+            renderizarHubUtilidades();
+        }
+
+        function atualizarVoucherTitulo(id, val) {
+            let v = dadosApp.vouchers.find(item => item.id === id);
+            if(v) { v.titulo = val; salvarStorage(); }
+        }
+
+        // ORÇAMENTO & GERAL
         function renderizarOrcamentoTab() {
             const container = document.getElementById('orcamento-conteudo');
             const resumoTotalGastoBrl = document.getElementById('resumo-total-gasto-brl');
@@ -2977,6 +3128,7 @@
             }
         }
 
+        // RENDERIZAR ABA DE COMPRAS
         function renderizarComprasTab() {
             const containerResumo = document.getElementById('compras-resumo-topo');
             const containerFiltros = document.getElementById('compras-filtros-titulo');
@@ -3328,13 +3480,81 @@
             };
             recognition.start();
         }
-
-        function togglePopupRelogio() {
-            const popup = document.getElementById('popupRelogioContainer');
-            if(!popup) return;
-            const estaVisivel = popup.style.display === 'flex';
-            popup.style.display = estaVisivel ? 'none' : 'flex';
-        }
     </script>
+    <!-- ================= INÍCIO: BOTÃO E POP-UP DE RELÓGIOS ================= -->
+<style>
+  /* Botão redondo flutuante no canto inferior direito */
+  .fab-relogio {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 52px;
+    height: 52px;
+    background-color: #2563eb;
+    color: #ffffff;
+    border-radius: 50%;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: transform 0.2s, background-color 0.2s;
+  }
+  .fab-relogio:hover {
+    background-color: #1d4ed8;
+    transform: scale(1.05);
+  }
+
+  /* Janela flutuante (Pop-up) */
+  .popup-relogio {
+    display: none;
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 360px;
+    max-width: calc(100vw - 40px);
+    height: 480px;
+    max-height: 80vh;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    z-index: 9999;
+    flex-direction: column;
+    border: 1px solid #e2e8f0;
+  }
+
+  /* Barra de cabeçalho do pop-up com botão de fechar */
+  .popup-relogio-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 14px;
+    background-color: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .popup-relogio-header span {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #475569;
+  }
+  .popup-relogio-header button {
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+    color: #64748b;
+  }
+
+  /* Iframe que carrega o Relógio.html */
+  .popup-relogio iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+</style>
 </body>
     </html>
