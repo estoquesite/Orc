@@ -1,21 +1,23 @@
 {
-  "name": "EuroTrain App",
-  "short_name": "EuroTrain",
-  "start_url": "/VIAGEM2/",
-  "scope": "/VIAGEM2/",
+  "name": "Roteiro Europa - Mariana",
+  "short_name": "Roteiro Europa",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#1e3a8a",
+  "orientation": "portrait",
+  "background_color": "#0f172a",
+  "theme_color": "#1e1b4b",
+  "lang": "pt-BR",
   "icons": [
     {
-      "src": "1790239427920.png",
-      "sizes": "512x512",
+      "src": "icon-192.png",
+      "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "1790239427920.png",
-      "sizes": "192x192",
+      "src": "icon-512.png",
+      "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
     }
