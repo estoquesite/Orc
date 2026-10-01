@@ -4048,6 +4048,40 @@ body.v-menu-off #v-top{bottom:92px!important}
   if(P){new MutationObserver(inject).observe(P,{childList:true});inject()}
 })();
 </script>
+<style>
+#v274-count{display:flex;justify-content:center;gap:8px;max-width:56rem;margin:10px auto 0;padding:0 12px}
+#v274-count .vc{flex:1;text-align:center;border-radius:16px;padding:7px 4px;background:linear-gradient(135deg,#2e1065,#5b21b6);border:1px solid rgba(103,232,249,.55);box-shadow:0 0 14px rgba(34,211,238,.25)}
+#v274-count .vc b{display:block;font-size:22px;line-height:1.1;color:#fff;font-variant-numeric:tabular-nums;text-shadow:0 0 10px rgba(103,232,249,.7)}
+#v274-count .vc small{font-size:9px;font-weight:800;letter-spacing:.08em;color:#67e8f9;text-transform:uppercase}
+#v274-count .msg{flex:1;text-align:center;border-radius:16px;padding:9px 12px;font-size:12px;font-weight:800;color:#fff;background:linear-gradient(135deg,#2e1065,#5b21b6)}
+</style>
+<script>
+(function(){
+  var clk=document.getElementById('v271-clocks');if(!clk)return;
+  var box=document.createElement('div');box.id='v274-count';clk.insertAdjacentElement('afterend',box);
+  function alvo(){
+    var d=typeof dadosApp!=='undefined'?dadosApp:null;if(!d)return null;
+    var ds=[];
+    (d.itinerario||[]).forEach(function(b){if(b.dataInicio)ds.push(new Date(b.dataInicio+'T00:00:00'))});
+    (d.voos||[]).forEach(function(v){if(v.data)ds.push(new Date(v.data+'T00:00:00'))});
+    ds=ds.filter(function(x){return !isNaN(x)});
+    if(!ds.length)return null;
+    ds.sort(function(a,b){return a-b});return ds[0];
+  }
+  function p(n){return n<10?'0'+n:''+n}
+  function cell(v,l){return '<div class="vc"><b>'+v+'</b><small>'+l+'</small></div>'}
+  function tick(){
+    var t=alvo();
+    if(!t){box.innerHTML='<div class="msg">⏳ Defina a data do primeiro bloco no Editar para ligar a contagem</div>';return}
+    var ms=t-new Date();
+    if(ms<=0){box.innerHTML='<div class="msg">✈️ Viagem em andamento!</div>';return}
+    var s=Math.floor(ms/1000),d=Math.floor(s/86400);s-=d*86400;
+    var h=Math.floor(s/3600);s-=h*3600;var m=Math.floor(s/60);s-=m*60;
+    box.innerHTML=cell(d,'dias')+cell(p(h),'horas')+cell(p(m),'min')+cell(p(s),'seg');
+  }
+  tick();setInterval(tick,1000);
+})();
+</script>
 <!-- ===== FIM DA CAMADA v274 ===== -->
 </body>
 </html>
