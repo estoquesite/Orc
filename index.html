@@ -149,8 +149,8 @@
         </div>
     </header>
 
-    <!-- CONTEÚDO PRINCIPAL COM SUPORTE A SWIPE (DESLIZAR) -->
-    <div class="max-w-4xl mx-auto p-3 sm:p-6 space-y-4 pt-4" id="app-swipe-container">
+    <!-- CONTEÚDO PRINCIPAL COM ROLAGEM FLUIDA NATURAL -->
+    <div class="max-w-4xl mx-auto p-3 sm:p-6 space-y-4 pt-4">
 
         <!-- SEPARADORES (TABS) - OS 5 CARTÕES PRINCIPAIS ALINHADOS -->
         <div class="grid grid-cols-5 gap-1.5 bg-slate-200/90 p-1.5 rounded-2xl shadow-inner text-center border border-slate-300/50">
@@ -578,7 +578,6 @@
         }
 
         const CHAVE_APP = "mariana_viagem_europa_dados_fixos_definitiva";
-        const ordemAbas = ['leitura', 'itinerario', 'utilidades', 'orcamento', 'compras'];
         let destinoFiltro = 'todos';
         let tarefaFiltro = 'todas';
         let utilidadeFiltro = 'todos';
@@ -801,7 +800,6 @@
                 let tabSalva = localStorage.getItem('tab_ativa_v269') || 'leitura';
                 mudarTab(tabSalva);
                 inicializarRelogiosTopo();
-                configurarSwipe();
             } catch(e) {
                 console.error("Erro ao iniciar interface:", e);
             }
@@ -832,44 +830,6 @@
                     });
             }
         });
-
-        // SWIPE RÁPIDO E FUNCIONAL NAS ABAS
-        function configurarSwipe() {
-            let touchStartX = 0;
-            let touchEndX = 0;
-            const container = document.getElementById('app-swipe-container');
-            if(!container) return;
-
-            container.addEventListener('touchstart', e => {
-                touchStartX = e.changedTouches[0].screenX;
-            }, {passive: true});
-
-            container.addEventListener('touchend', e => {
-                touchEndX = e.changedTouches[0].screenX;
-                lidarComSwipe();
-            }, {passive: true});
-
-            function lidarComSwipe() {
-                let diff = touchEndX - touchStartX;
-                if (Math.abs(diff) < 60) return; // Mínimo de 60px para considerar swipe
-
-                let tabAtual = localStorage.getItem('tab_ativa_v269') || 'leitura';
-                let idxAtual = ordemAbas.indexOf(tabAtual);
-                if (idxAtual < 0) idxAtual = 0;
-
-                if (diff < 0) {
-                    // Deslizou para a Esquerda -> Próxima Aba
-                    if (idxAtual < ordemAbas.length - 1) {
-                        mudarTab(ordemAbas[idxAtual + 1]);
-                    }
-                } else {
-                    // Deslizou para a Direita -> Aba Anterior
-                    if (idxAtual > 0) {
-                        mudarTab(ordemAbas[idxAtual - 1]);
-                    }
-                }
-            }
-        }
 
         // RELÓGIOS MUNDIAIS NO TOPO
         let clockConfigs = [
@@ -2269,7 +2229,7 @@
                         let itTextoSafe = (it.texto || '').replace(/"/g, '&quot;');
                         itensHtml += '<div class="flex items-center gap-1.5 bg-white p-2 rounded-xl border border-slate-200 text-xs min-w-0 mb-1.5 shadow-2xs">' +
                             '<input type="text" value="' + itTextoSafe + '" onchange="atualizarTextoItemBloco(\'' + item.id + '\', \'' + it.id + '\', this.value)" class="flex-1 min-w-0 bg-transparent outline-none font-bold text-slate-800 text-xs" placeholder="Escreva um texto livre...">' +
-                            '<button onclick="removerItemBloco(\'' + item.id + '\', \'' + it.id + '\')" class="text-rose-600 hover:text-rose-700 font-bold px-2.5 py-1.5 rounded-xl bg-rose-50 border border-rose-200 text-xs shrink-0 hover:bg-rose-100 transition active:scale-95">✕</button>' +
+                            '<button onclick="removerItemBloco(\'' + item.id + '\', \'' + it.id + '\')" class="text-rose-600 hover:text-rose-700 font-bold px-2.5 py-1.5 rounded-xl bg-rose-50 border border-slate-200 text-xs shrink-0 hover:bg-rose-100 transition active:scale-95">✕</button>' +
                         '</div>';
                     });
                 }
@@ -2324,7 +2284,7 @@
                             '<button onclick="alternarBloqueio(\'' + item.id + '\')" class="' + lockBg + ' px-3.5 py-1.5 rounded-xl font-bold text-xs shadow-xs transition active:scale-95">' + lockIcon + '</button>' +
                             '<button onclick="moverBloco(\'' + item.id + '\', -1)" class="bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 px-2.5 py-1.5 rounded-xl font-bold transition shadow-2xs active:scale-95">⬆️</button>' +
                             '<button onclick="moverBloco(\'' + item.id + '\', 1)" class="bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 px-2.5 py-1.5 rounded-xl font-bold transition shadow-2xs active:scale-95">⬇️</button>' +
-                            '<button onclick="apagarBloco(\'' + item.id + '\')" class="bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 px-3 py-1.5 rounded-xl font-bold transition active:scale-95">Excluir ✕</button>' +
+                            '<button onclick="apagarBloco(\'' + item.id + '\')" class="bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 px-3 py-1.5 rounded-bold transition active:scale-95">Excluir ✕</button>' +
                         '</div>' +
                     '</div>';
                 container.appendChild(card);
@@ -2608,8 +2568,8 @@
                                 '<input type="text" value="' + nomeSafe + '" oninput="atualizarContatoNome(' + ct.id + ', this.value)" class="flex-1 min-w-0 bg-transparent outline-none font-bold text-slate-800 text-xs truncate" placeholder="Nome...">' +
                                 '<input type="text" value="' + numSafe + '" oninput="atualizarContatoNumero(' + ct.id + ', this.value)" class="w-24 shrink-0 p-1 bg-slate-50 border border-slate-300 rounded-xl font-black text-xs text-center" placeholder="Número...">' +
                                 '<a href="' + telHref + '" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1.5 rounded-xl font-bold text-[10px] shrink-0 shadow-2xs transition active:scale-95" title="Ligar">📞</a>' +
-                                '<button onclick="moverItemArray(\'contatos\', ' + ct.id + ', -1)" class="bg-slate-100 hover:bg-slate-200 border border-slate-300 px-2 py-1.5 rounded-lg font-bold text-slate-700 transition active:scale-95">⬆️️</button>' +
-                                '<button onclick="moverItemArray(\'contatos\', ' + ct.id + ', 1)" class="bg-slate-100 hover:bg-slate-200 border border-slate-300 px-2 py-1.5 rounded-lg font-bold text-slate-700 transition active:scale-95">⬇️</button>' +
+                                '<button onclick="moverItemArray(\'contatos\', ' + ct.id + ', -1)" class="bg-slate-100 hover:bg-slate-200 border border-slate-300 px-2 py-1.5 rounded-lg font-bold text-slate-700 transition active:scale-95">⬆️</button>' +
+                                '<button onclick="moverItemArray(\'contatos\', ' + ct.id + ', 1)" class="bg-slate-100 hover:bg-slate-200 border border-slate-300 px-2 py-1.5 rounded-lg font-bold text-slate-700 transition active:scale-95">⬇️️</button>' +
                                 '<button onclick="apagarContato(' + ct.id + ')" class="text-rose-600 hover:text-rose-700 font-bold bg-rose-50 hover:bg-rose-100 border border-rose-200 px-2 py-1 rounded-xl text-xs transition active:scale-95">✕</button>' +
                             '</div>';
                         });
