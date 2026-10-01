@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roteiro Europa - Mariana (v271.0 Pro)</title>
+    <title>Roteiro Europa - Mariana (v272.0 Pro)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -123,38 +123,57 @@
         </div>
     </div>
 
-    <!-- CABEÇALHO SUPERIOR UNIFICADO COM A BARRA PRETA & RELÓGIOS -->
-    <header class="bg-slate-950 text-white px-3 py-2.5 shadow-md border-b border-slate-800 text-xs z-50 relative space-y-2.5">
-        <div class="flex justify-between items-center gap-1 flex-wrap">
-            <span class="font-black tracking-wide flex items-center gap-1.5 text-xs text-indigo-300">
-                <span>🚄</span> Roteiro Europa - Mariana
-            </span>
-            <div class="flex items-center gap-1.5 flex-wrap">
-                <a href="https://translate.google.com/?hl=pt&sl=auto&tl=pt&op=images" target="_blank" class="bg-indigo-600 hover:bg-indigo-700 text-white px-2.5 py-1.5 rounded-lg font-bold text-[10px] transition shadow-xs flex items-center gap-1 active:scale-95" title="Google Tradutor & Câmera">🌐 Tradutor</a>
-                <button onclick="window.location.reload()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white px-2.5 py-1.5 rounded-lg font-bold text-[10px] transition shadow-xs border border-slate-700 active:scale-95" title="Atualizar Página">🔄</button>
-                <button onclick="exportarPdfPrint()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1.5 rounded-lg font-bold text-[10px] transition shadow-xs active:scale-95" title="Imprimir Tudo">🖨️</button>
-                <span class="bg-indigo-950/80 text-indigo-200 border border-indigo-800/50 px-2 py-0.5 rounded-md font-mono font-bold text-[9px]">v271.0 (Pro)</span>
-            </div>
+    <!-- CABEÇALHO SUPERIOR COMPACTO COM ENGRENAGEM DE CONFIGURAÇÃO INTEGRADA -->
+    <header class="bg-slate-900 text-white px-3 py-2 shadow-md border-b border-slate-800 text-xs flex justify-between items-center z-50 relative gap-1 flex-wrap">
+        <span class="font-bold tracking-wide flex items-center gap-1.5">
+            <span>🚄</span> Roteiro Europa - Mariana
+        </span>
+        <div class="flex items-center gap-1.5 flex-wrap">
+            <a href="https://translate.google.com/?hl=pt&sl=auto&tl=pt&op=images" target="_blank" class="bg-indigo-600 hover:bg-indigo-700 text-white px-2.5 py-1.5 rounded-lg font-bold text-[10px] transition shadow-xs flex items-center gap-1 active:scale-95" title="Google Tradutor & Câmera">🌐 Tradutor</a>
+            <button onclick="toggleClockConfig()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white px-2.5 py-1.5 rounded-lg font-bold text-[10px] transition shadow-xs border border-slate-700 active:scale-95" title="Configurar Relógios & Cores Neon">⚙️</button>
+            <button onclick="window.location.reload()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white px-2.5 py-1.5 rounded-lg font-bold text-[10px] transition shadow-xs border border-slate-700 active:scale-95" title="Atualizar Página">🔄</button>
+            <button onclick="exportarPdfPrint()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1.5 rounded-lg font-bold text-[10px] transition shadow-xs active:scale-95" title="Imprimir Tudo">🖨️</button>
+            <span class="bg-indigo-950/80 text-indigo-200 border border-indigo-800/50 px-2 py-0.5 rounded-md font-mono font-bold text-[9px]">v272.0 (Pro)</span>
         </div>
-        
-        <!-- BARRA DE RELÓGIOS MUNDIAIS & CONTAGEM REGRESSIVA INTEGRADA NO TOPO -->
-        <div class="bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-900 text-white p-2.5 rounded-xl border border-indigo-800/40 space-y-1.5">
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <div class="max-w-4xl mx-auto p-3 sm:p-6 space-y-4 pt-4">
+
+        <!-- PAINEL SEPARADO DE RELÓGIOS: EUROPA & BRASIL + CONTAGEM REGRESSIVA INTEGRADA -->
+        <div class="bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-900 text-white p-3 rounded-2xl shadow-md border border-indigo-800/40 space-y-2">
             <div class="flex items-center gap-2.5 w-full py-0.5 overflow-x-auto no-scrollbar" id="barClockItems"></div>
-            <div class="border-t border-indigo-800/40 pt-1.5 flex items-center justify-between gap-2 px-1">
-                <div class="text-[9px] uppercase font-black tracking-wide text-indigo-200 flex items-center gap-1.5">
+            <div class="border-t border-indigo-800/40 pt-2 flex items-center justify-between gap-2 px-1">
+                <div class="text-[10px] uppercase font-black tracking-wide text-indigo-200 flex items-center gap-1.5">
                     <span>⏳</span> CONTAGEM PARA A VIAGEM
                 </div>
                 <div id="relogio-contagem-topo" class="font-mono font-black text-xs text-amber-300">--d --h --m --s</div>
             </div>
         </div>
-    </header>
 
-    <!-- CONTEÚDO PRINCIPAL COM ROLAGEM FLUIDA NATURAL -->
-    <div class="max-w-4xl mx-auto p-3 sm:p-6 space-y-4 pt-4">
+        <!-- MODAL DE CONFIGURAÇÃO DOS RELÓGIOS & CORES NEON -->
+        <div id="barClockModal" class="fixed inset-0 z-[300] bg-slate-900/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+            <div class="bg-white p-5 rounded-3xl shadow-2xl max-w-sm w-full space-y-3.5 text-xs border border-slate-200">
+                <div class="flex justify-between items-center border-b pb-2">
+                    <h3 class="font-black text-xs text-slate-900 flex items-center gap-1.5">
+                        <span>⚙️</span> Relógios & Cores Neon
+                    </h3>
+                    <button onclick="toggleClockConfig()" class="text-slate-400 hover:text-slate-600 font-bold text-sm p-1 rounded-lg">✕</button>
+                </div>
+                <div class="bg-indigo-50 text-indigo-950 p-2.5 rounded-xl text-[11px] font-bold">
+                    Personalize o nome e escolha a cor neon para cada relógio:
+                </div>
+                <div id="barClockForm" class="space-y-3 max-h-[60vh] overflow-y-auto pr-1"></div>
+                <div class="flex gap-2 pt-2 border-t border-slate-100">
+                    <button onclick="saveClockConfig()" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-xl font-bold text-xs shadow-xs active:scale-95 transition">Salvar</button>
+                    <button onclick="toggleClockConfig()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-xl text-xs font-bold border border-slate-300 active:scale-95 transition">Cancelar</button>
+                </div>
+            </div>
+        </div>
 
         <!-- SEPARADORES (TABS) - OS 5 CARTÕES PRINCIPAIS ALINHADOS -->
         <div class="grid grid-cols-5 gap-1.5 bg-slate-200/90 p-1.5 rounded-2xl shadow-inner text-center border border-slate-300/50">
-            <button onclick="mudarTab('leitura')" id="tab-btn-leitura" class="py-2.5 px-1 rounded-xl bg-indigo-600 text-white font-extrabold shadow-sm transition text-[11px] flex flex-col items-center gap-0.5 active:scale-95"><span>✈️</span><span class="text-[8px] uppercase tracking-wider">Roteiro</span></button>
+            <button onclick="mudarTab('leitura')" id="tab-btn-leitura" class="py-2.5 px-1 rounded-xl bg-indigo-600 text-white font-extrabold shadow-sm transition text-[11px] flex flex-col items-center gap-0.5 active:scale-95"><span>✈️️</span><span class="text-[8px] uppercase tracking-wider">Roteiro</span></button>
             <button onclick="mudarTab('itinerario')" id="tab-btn-itinerario" class="py-2.5 px-1 rounded-xl bg-white text-slate-700 font-extrabold shadow-xs transition text-[11px] flex flex-col items-center gap-0.5 hover:bg-slate-50 active:scale-95"><span>📅</span><span class="text-[8px] uppercase tracking-wider">Editar</span></button>
             <button onclick="mudarTab('utilidades')" id="tab-btn-utilidades" class="py-2.5 px-1 rounded-xl bg-white text-slate-700 font-extrabold shadow-xs transition text-[11px] flex flex-col items-center gap-0.5 hover:bg-slate-50 active:scale-95"><span>📋</span><span class="text-[8px] uppercase tracking-wider">Hub</span></button>
             <button onclick="mudarTab('orcamento')" id="tab-btn-orcamento" class="py-2.5 px-1 rounded-xl bg-white text-slate-700 font-extrabold shadow-xs transition text-[11px] flex flex-col items-center gap-0.5 hover:bg-slate-50 active:scale-95"><span>💰</span><span class="text-[8px] uppercase tracking-wider">Orç.</span></button>
@@ -511,7 +530,7 @@
                     <span class="text-base">🛠️</span>
                     <div>
                         <h4 class="font-black text-xs text-white">Ferramentas & Sistema</h4>
-                        <span class="text-[10px] text-indigo-400 font-mono font-bold">Versão 271.0 (Pro)</span>
+                        <span class="text-[10px] text-indigo-400 font-mono font-bold">Versão 272.0 (Pro)</span>
                     </div>
                 </div>
                 <button onclick="document.getElementById('menu-sistema-modal').classList.add('hidden')" class="text-slate-400 hover:text-white font-bold text-sm p-1 rounded-lg">✕</button>
@@ -831,7 +850,7 @@
             }
         });
 
-        // RELÓGIOS MUNDIAIS NO TOPO
+        // RELÓGIOS MUNDIAIS NO PAINEL SEPARADO
         let clockConfigs = [
             { id: 'zurique', label: 'Zurique', tz: 'Europe/Zurich', color: '#3b82f6' },
             { id: 'paris', label: 'Paris', tz: 'Europe/Paris', color: '#ec4899' },
@@ -840,7 +859,7 @@
 
         function inicializarRelogiosTopo() {
             try {
-                let salvo = localStorage.getItem('relogios_config_v271');
+                let salvo = localStorage.getItem('relogios_config_v272');
                 if (salvo) clockConfigs = JSON.parse(salvo);
             } catch(e){}
             atualizarRelogiosTopo();
@@ -899,7 +918,7 @@
                 if(lbl && lbl.value.trim() !== '') c.label = lbl.value.trim();
                 if(col) c.color = col.value;
             });
-            localStorage.setItem('relogios_config_v271', JSON.stringify(clockConfigs));
+            localStorage.setItem('relogios_config_v272', JSON.stringify(clockConfigs));
             toggleClockConfig();
             atualizarRelogiosTopo();
             mostrarToast("Configurações dos relógios salvas!", "sucesso");
@@ -2229,7 +2248,7 @@
                         let itTextoSafe = (it.texto || '').replace(/"/g, '&quot;');
                         itensHtml += '<div class="flex items-center gap-1.5 bg-white p-2 rounded-xl border border-slate-200 text-xs min-w-0 mb-1.5 shadow-2xs">' +
                             '<input type="text" value="' + itTextoSafe + '" onchange="atualizarTextoItemBloco(\'' + item.id + '\', \'' + it.id + '\', this.value)" class="flex-1 min-w-0 bg-transparent outline-none font-bold text-slate-800 text-xs" placeholder="Escreva um texto livre...">' +
-                            '<button onclick="removerItemBloco(\'' + item.id + '\', \'' + it.id + '\')" class="text-rose-600 hover:text-rose-700 font-bold px-2.5 py-1.5 rounded-xl bg-rose-50 border border-slate-200 text-xs shrink-0 hover:bg-rose-100 transition active:scale-95">✕</button>' +
+                            '<button onclick="removerItemBloco(\'' + item.id + '\', \'' + it.id + '\')" class="text-rose-600 hover:text-rose-700 font-bold px-2.5 py-1.5 rounded-xl bg-rose-50 border border-rose-200 text-xs shrink-0 hover:bg-rose-100 transition active:scale-95">✕</button>' +
                         '</div>';
                     });
                 }
