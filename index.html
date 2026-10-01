@@ -25,76 +25,6 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
-        /* Botão redondo flutuante no canto inferior direito */
-        .fab-relogio {
-            position: fixed;
-            bottom: 85px;
-            right: 18px;
-            width: 50px;
-            height: 50px;
-            background-color: #4f46e5;
-            color: #ffffff;
-            border-radius: 50%;
-            border: 2px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
-            cursor: pointer;
-            font-size: 22px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 45;
-            transition: transform 0.2s, background-color 0.2s;
-        }
-        .fab-relogio:hover {
-            background-color: #4338ca;
-            transform: scale(1.05);
-        }
-        /* Janela flutuante (Pop-up) */
-        .popup-relogio {
-            display: none;
-            position: fixed;
-            bottom: 145px;
-            right: 18px;
-            width: 350px;
-            max-width: calc(100vw - 36px);
-            height: 480px;
-            max-height: 70vh;
-            background: #ffffff;
-            border-radius: 20px;
-            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-            z-index: 48;
-            flex-direction: column;
-            border: 1px solid #cbd5e1;
-        }
-        .popup-relogio-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 14px;
-            background-color: #0f172a;
-            color: #ffffff;
-            border-bottom: 1px solid #334155;
-        }
-        .popup-relogio-header span {
-            font-size: 0.8rem;
-            font-weight: 700;
-        }
-        .popup-relogio-header button {
-            background: none;
-            border: none;
-            font-size: 1.1rem;
-            cursor: pointer;
-            color: #94a3b8;
-        }
-        .popup-relogio-header button:hover {
-            color: #ffffff;
-        }
-        .popup-relogio iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
     </style>
 </head>
 <body class="bg-slate-100 text-slate-800 min-h-screen pb-32 select-none transition-colors duration-200">
@@ -259,7 +189,7 @@
                 <!-- Filtros Hub -->
                 <div class="flex gap-1.5 overflow-x-auto no-scrollbar pt-1">
                     <button onclick="filtrarUtilidade('todos')" id="filt-util-todos" class="px-3 py-1.5 rounded-xl bg-white text-indigo-950 font-bold text-xs shrink-0 transition shadow-sm">🔍 Todos</button>
-                    <button onclick="filtrarUtilidade('voos')" id="filt-util-voos" class="px-3 py-1.5 rounded-xl bg-indigo-800/80 text-white border border-indigo-700/50 font-bold text-xs shrink-0 transition hover:bg-indigo-800">✈️ Voos</button>
+                    <button onclick="filtrarUtilidade('voos')" id="filt-util-voos" class="px-3 py-1.5 rounded-xl bg-indigo-800/80 text-white border border-indigo-700/50 font-bold text-xs shrink-0 transition hover:bg-indigo-800">✈️️ Voos</button>
                     <button onclick="filtrarUtilidade('contatos')" id="filt-util-contatos" class="px-3 py-1.5 rounded-xl bg-indigo-800/80 text-white border border-indigo-700/50 font-bold text-xs shrink-0 transition hover:bg-indigo-800">📞 Contatos</button>
                     <button onclick="filtrarUtilidade('tarefas')" id="filt-util-tarefas" class="px-3 py-1.5 rounded-xl bg-indigo-800/80 text-white border border-indigo-700/50 font-bold text-xs shrink-0 transition hover:bg-indigo-800">📋 Tarefas</button>
                     <button onclick="filtrarUtilidade('checklist')" id="filt-util-checklist" class="px-3 py-1.5 rounded-xl bg-indigo-800/80 text-white border border-indigo-700/50 font-bold text-xs shrink-0 transition hover:bg-indigo-800">🎒 Checklist</button>
@@ -483,16 +413,6 @@
                 <button onclick="fecharModalTarefa()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-xl text-xs font-bold border border-slate-300 active:scale-95 transition">Cancelar</button>
             </div>
         </div>
-    </div>
-
-    <!-- BOTÃO FLUTUANTE E MODAL DE RELÓGIOS MUNDIAIS -->
-    <button class="fab-relogio" onclick="togglePopupRelogio()" title="Abrir Relógio de Fusos">🕒</button>
-    <div id="popupRelogioContainer" class="popup-relogio">
-        <div class="popup-relogio-header">
-            <span>🌍 Relógio de Fusos</span>
-            <button onclick="togglePopupRelogio()">✕</button>
-        </div>
-        <iframe src="Relógio.html" id="iframeRelogio"></iframe>
     </div>
 
     <!-- BARRA DE FERRAMENTAS FLUTUANTE MODERNA (DOCK GLASSMORPHISM) -->
@@ -1264,7 +1184,7 @@
                 else if (code === 45 || code === 48) { condicao = "Neblina"; icone = "🌫️"; }
                 else if ((code >= 51 && code <= 65) || (code >= 80 && code <= 82)) { condicao = "Chuva"; icone = "🌧️"; }
                 else if ((code >= 71 && code <= 77) || code === 85 || code === 86) { condicao = "Neve"; icone = "❄️"; }
-                else if (code === 95 || code === 96 || code === 99) { condicao = "Tempestade"; icone = "⛈️"; }
+                else if (code === 95 || code === 96 || code === 99) { condicao = "Tempestade"; icone = "⛈️️"; }
 
                 let dicaVestuario = "";
                 if (temp < 5) dicaVestuario = "❄️ Frio intenso: Casaco térmico pesado, gorro, luvas e bota quente.";
@@ -3256,13 +3176,6 @@
             };
             recognition.start();
         }
-
-        function togglePopupRelogio() {
-            const popup = document.getElementById('popupRelogioContainer');
-            if(!popup) return;
-            const estaVisivel = popup.style.display === 'flex';
-            popup.style.display = estaVisivel ? 'none' : 'flex';
-        }
     </script>
 </body>
-</html>
+    </html>
