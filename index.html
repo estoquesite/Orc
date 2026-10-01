@@ -4054,6 +4054,8 @@ body.v-menu-off #v-top{bottom:92px!important}
 #v274-count .vc b{display:block;font-size:22px;line-height:1.1;color:#fff;font-variant-numeric:tabular-nums;text-shadow:0 0 10px rgba(103,232,249,.7)}
 #v274-count .vc small{font-size:9px;font-weight:800;letter-spacing:.08em;color:#67e8f9;text-transform:uppercase}
 #v274-count .msg{flex:1;text-align:center;border-radius:16px;padding:9px 12px;font-size:12px;font-weight:800;color:#fff;background:linear-gradient(135deg,#2e1065,#5b21b6)}
+#v274-count .vc-x{flex:0 0 auto;align-self:center;width:30px;height:30px;border-radius:50%;border:1px solid rgba(196,181,253,.5);background:rgba(46,16,101,.9);color:#fff;font-size:13px}
+#v274-count .vc-show{margin:0 auto;padding:6px 14px;border-radius:99px;border:1px solid rgba(103,232,249,.55);background:linear-gradient(135deg,#2e1065,#5b21b6);color:#fff;font-size:12px;font-weight:800}
 </style>
 <script>
 (function(){
@@ -4070,14 +4072,23 @@ body.v-menu-off #v-top{bottom:92px!important}
   }
   function p(n){return n<10?'0'+n:''+n}
   function cell(v,l){return '<div class="vc"><b>'+v+'</b><small>'+l+'</small></div>'}
+  var KH='v274_count_hidden';
+  function oculto(){try{return localStorage.getItem(KH)==='1'}catch(e){return false}}
+  box.addEventListener('click',function(e){
+    var b=e.target.closest('button');if(!b)return;
+    try{if(b.dataset.a==='hide')localStorage.setItem(KH,'1');else localStorage.removeItem(KH)}catch(x){}
+    tick();
+  });
   function tick(){
+    if(oculto()){box.innerHTML='<button type="button" data-a="show" class="vc-show">⏳ Mostrar contagem</button>';return}
+    var x='<button type="button" data-a="hide" class="vc-x" aria-label="Esconder contagem">✕</button>';
     var t=alvo();
-    if(!t){box.innerHTML='<div class="msg">⏳ Defina a data do primeiro bloco no Editar para ligar a contagem</div>';return}
+    if(!t){box.innerHTML='<div class="msg">⏳ Defina a data do primeiro bloco no Editar para ligar a contagem</div>'+x;return}
     var ms=t-new Date();
-    if(ms<=0){box.innerHTML='<div class="msg">✈️ Viagem em andamento!</div>';return}
+    if(ms<=0){box.innerHTML='<div class="msg">✈️ Viagem em andamento!</div>'+x;return}
     var s=Math.floor(ms/1000),d=Math.floor(s/86400);s-=d*86400;
     var h=Math.floor(s/3600);s-=h*3600;var m=Math.floor(s/60);s-=m*60;
-    box.innerHTML=cell(d,'dias')+cell(p(h),'horas')+cell(p(m),'min')+cell(p(s),'seg');
+    box.innerHTML=cell(d,'dias')+cell(p(h),'horas')+cell(p(m),'min')+cell(p(s),'seg')+x;
   }
   tick();setInterval(tick,1000);
 })();
