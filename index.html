@@ -25,6 +25,76 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
+        /* Botão redondo flutuante no canto inferior direito */
+        .fab-relogio {
+            position: fixed;
+            bottom: 85px;
+            right: 18px;
+            width: 50px;
+            height: 50px;
+            background-color: #4f46e5;
+            color: #ffffff;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+            cursor: pointer;
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 45;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+        .fab-relogio:hover {
+            background-color: #4338ca;
+            transform: scale(1.05);
+        }
+        /* Janela flutuante (Pop-up) */
+        .popup-relogio {
+            display: none;
+            position: fixed;
+            bottom: 145px;
+            right: 18px;
+            width: 350px;
+            max-width: calc(100vw - 36px);
+            height: 480px;
+            max-height: 70vh;
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            z-index: 48;
+            flex-direction: column;
+            border: 1px solid #cbd5e1;
+        }
+        .popup-relogio-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 14px;
+            background-color: #0f172a;
+            color: #ffffff;
+            border-bottom: 1px solid #334155;
+        }
+        .popup-relogio-header span {
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+        .popup-relogio-header button {
+            background: none;
+            border: none;
+            font-size: 1.1rem;
+            cursor: pointer;
+            color: #94a3b8;
+        }
+        .popup-relogio-header button:hover {
+            color: #ffffff;
+        }
+        .popup-relogio iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
     </style>
 </head>
 <body class="bg-slate-100 text-slate-800 min-h-screen pb-32 select-none transition-colors duration-200">
@@ -53,53 +123,34 @@
         </div>
     </div>
 
-    <!-- CABEÇALHO SUPERIOR COMPACTO COM ENGRENAGEM DE CONFIGURAÇÃO INTEGRADA -->
-    <header class="bg-slate-900 text-white px-3 py-2 shadow-md border-b border-slate-800 text-xs flex justify-between items-center z-50 relative gap-1 flex-wrap">
-        <span class="font-bold tracking-wide flex items-center gap-1.5">
-            <span>🚄</span> Roteiro Europa - Mariana
-        </span>
-        <div class="flex items-center gap-1.5 flex-wrap">
-            <a href="https://translate.google.com/?hl=pt&sl=auto&tl=pt&op=images" target="_blank" class="bg-indigo-600 hover:bg-indigo-700 text-white px-2.5 py-1.5 rounded-lg font-bold text-[10px] transition shadow-xs flex items-center gap-1 active:scale-95" title="Google Tradutor & Câmera">🌐 Tradutor</a>
-            <button onclick="toggleClockConfig()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white px-2.5 py-1.5 rounded-lg font-bold text-[10px] transition shadow-xs border border-slate-700 active:scale-95" title="Configurar Relógios & Cores Neon">⚙️</button>
-            <button onclick="window.location.reload()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white px-2.5 py-1.5 rounded-lg font-bold text-[10px] transition shadow-xs border border-slate-700 active:scale-95" title="Atualizar Página">🔄</button>
-            <button onclick="exportarPdfPrint()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1.5 rounded-lg font-bold text-[10px] transition shadow-xs active:scale-95" title="Imprimir Tudo">🖨️</button>
-            <span class="bg-indigo-950/80 text-indigo-200 border border-indigo-800/50 px-2 py-0.5 rounded-md font-mono font-bold text-[9px]">v271.0 (Pro)</span>
+    <!-- CABEÇALHO SUPERIOR UNIFICADO COM A BARRA PRETA & RELÓGIOS -->
+    <header class="bg-slate-950 text-white px-3 py-2.5 shadow-md border-b border-slate-800 text-xs z-50 relative space-y-2.5">
+        <div class="flex justify-between items-center gap-1 flex-wrap">
+            <span class="font-black tracking-wide flex items-center gap-1.5 text-xs text-indigo-300">
+                <span>🚄</span> Roteiro Europa - Mariana
+            </span>
+            <div class="flex items-center gap-1.5 flex-wrap">
+                <a href="https://translate.google.com/?hl=pt&sl=auto&tl=pt&op=images" target="_blank" class="bg-indigo-600 hover:bg-indigo-700 text-white px-2.5 py-1.5 rounded-lg font-bold text-[10px] transition shadow-xs flex items-center gap-1 active:scale-95" title="Google Tradutor & Câmera">🌐 Tradutor</a>
+                <button onclick="window.location.reload()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white px-2.5 py-1.5 rounded-lg font-bold text-[10px] transition shadow-xs border border-slate-700 active:scale-95" title="Atualizar Página">🔄</button>
+                <button onclick="exportarPdfPrint()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1.5 rounded-lg font-bold text-[10px] transition shadow-xs active:scale-95" title="Imprimir Tudo">🖨️</button>
+                <span class="bg-indigo-950/80 text-indigo-200 border border-indigo-800/50 px-2 py-0.5 rounded-md font-mono font-bold text-[9px]">v271.0 (Pro)</span>
+            </div>
         </div>
-    </header>
-
-    <!-- CONTEÚDO PRINCIPAL -->
-    <div class="max-w-4xl mx-auto p-3 sm:p-6 space-y-4 pt-4">
-
-        <!-- BARRA DE RELÓGIOS: EUROPA & BRASIL + CONTAGEM REGRESSIVA INTEGRADA -->
-        <div class="bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-900 text-white p-3 rounded-2xl shadow-md border border-indigo-800/40 space-y-2">
-            <div class="flex items-center gap-2.5 w-full py-0.5" id="barClockItems"></div>
-            <div class="border-t border-indigo-800/40 pt-2 flex items-center justify-between gap-2 px-1">
-                <div class="text-[10px] uppercase font-black tracking-wide text-indigo-200 flex items-center gap-1.5">
+        
+        <!-- BARRA DE RELÓGIOS MUNDIAIS & CONTAGEM REGRESSIVA INTEGRADA NO TOPO -->
+        <div class="bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-900 text-white p-2.5 rounded-xl border border-indigo-800/40 space-y-1.5">
+            <div class="flex items-center gap-2.5 w-full py-0.5 overflow-x-auto no-scrollbar" id="barClockItems"></div>
+            <div class="border-t border-indigo-800/40 pt-1.5 flex items-center justify-between gap-2 px-1">
+                <div class="text-[9px] uppercase font-black tracking-wide text-indigo-200 flex items-center gap-1.5">
                     <span>⏳</span> CONTAGEM PARA A VIAGEM
                 </div>
                 <div id="relogio-contagem-topo" class="font-mono font-black text-xs text-amber-300">--d --h --m --s</div>
             </div>
         </div>
+    </header>
 
-        <!-- MODAL DE CONFIGURAÇÃO DOS RELÓGIOS & CORES NEON -->
-        <div id="barClockModal" class="fixed inset-0 z-[300] bg-slate-900/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
-            <div class="bg-white p-5 rounded-3xl shadow-2xl max-w-sm w-full space-y-3.5 text-xs border border-slate-200">
-                <div class="flex justify-between items-center border-b pb-2">
-                    <h3 class="font-black text-xs text-slate-900 flex items-center gap-1.5">
-                        <span>⚙️</span> Relógios & Cores Neon
-                    </h3>
-                    <button onclick="toggleClockConfig()" class="text-slate-400 hover:text-slate-600 font-bold text-sm p-1 rounded-lg">✕</button>
-                </div>
-                <div class="bg-indigo-50 text-indigo-950 p-2.5 rounded-xl text-[11px] font-bold">
-                    Personalize o nome e escolha a cor neon para cada relógio:
-                </div>
-                <div id="barClockForm" class="space-y-3 max-h-[60vh] overflow-y-auto pr-1"></div>
-                <div class="flex gap-2 pt-2 border-t border-slate-100">
-                    <button onclick="saveClockConfig()" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-xl font-bold text-xs shadow-xs active:scale-95 transition">Salvar</button>
-                    <button onclick="toggleClockConfig()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-xl text-xs font-bold border border-slate-300 active:scale-95 transition">Cancelar</button>
-                </div>
-            </div>
-        </div>
+    <!-- CONTEÚDO PRINCIPAL COM SUPORTE A SWIPE (DESLIZAR) -->
+    <div class="max-w-4xl mx-auto p-3 sm:p-6 space-y-4 pt-4" id="app-swipe-container">
 
         <!-- SEPARADORES (TABS) - OS 5 CARTÕES PRINCIPAIS ALINHADOS -->
         <div class="grid grid-cols-5 gap-1.5 bg-slate-200/90 p-1.5 rounded-2xl shadow-inner text-center border border-slate-300/50">
@@ -189,7 +240,7 @@
                 <!-- Filtros Hub -->
                 <div class="flex gap-1.5 overflow-x-auto no-scrollbar pt-1">
                     <button onclick="filtrarUtilidade('todos')" id="filt-util-todos" class="px-3 py-1.5 rounded-xl bg-white text-indigo-950 font-bold text-xs shrink-0 transition shadow-sm">🔍 Todos</button>
-                    <button onclick="filtrarUtilidade('voos')" id="filt-util-voos" class="px-3 py-1.5 rounded-xl bg-indigo-800/80 text-white border border-indigo-700/50 font-bold text-xs shrink-0 transition hover:bg-indigo-800">✈️️ Voos</button>
+                    <button onclick="filtrarUtilidade('voos')" id="filt-util-voos" class="px-3 py-1.5 rounded-xl bg-indigo-800/80 text-white border border-indigo-700/50 font-bold text-xs shrink-0 transition hover:bg-indigo-800">✈️ Voos</button>
                     <button onclick="filtrarUtilidade('contatos')" id="filt-util-contatos" class="px-3 py-1.5 rounded-xl bg-indigo-800/80 text-white border border-indigo-700/50 font-bold text-xs shrink-0 transition hover:bg-indigo-800">📞 Contatos</button>
                     <button onclick="filtrarUtilidade('tarefas')" id="filt-util-tarefas" class="px-3 py-1.5 rounded-xl bg-indigo-800/80 text-white border border-indigo-700/50 font-bold text-xs shrink-0 transition hover:bg-indigo-800">📋 Tarefas</button>
                     <button onclick="filtrarUtilidade('checklist')" id="filt-util-checklist" class="px-3 py-1.5 rounded-xl bg-indigo-800/80 text-white border border-indigo-700/50 font-bold text-xs shrink-0 transition hover:bg-indigo-800">🎒 Checklist</button>
@@ -415,6 +466,16 @@
         </div>
     </div>
 
+    <!-- BOTÃO FLUTUANTE E MODAL DE RELÓGIOS MUNDIAIS -->
+    <button class="fab-relogio" onclick="togglePopupRelogio()" title="Abrir Relógio de Fusos">🕒</button>
+    <div id="popupRelogioContainer" class="popup-relogio">
+        <div class="popup-relogio-header">
+            <span>🌍 Relógio de Fusos</span>
+            <button onclick="togglePopupRelogio()">✕</button>
+        </div>
+        <iframe src="Relógio.html" id="iframeRelogio"></iframe>
+    </div>
+
     <!-- BARRA DE FERRAMENTAS FLUTUANTE MODERNA (DOCK GLASSMORPHISM) -->
     <nav class="fixed bottom-3 left-3 right-3 sm:left-auto sm:right-auto sm:w-[460px] sm:left-1/2 sm:-translate-x-1/2 z-50 bg-slate-950/90 backdrop-blur-xl text-white px-3 py-2 rounded-2xl shadow-2xl border border-white/10 flex items-center justify-between gap-1.5 transition-all">
         <!-- BOTÃO GEMINI -->
@@ -517,6 +578,7 @@
         }
 
         const CHAVE_APP = "mariana_viagem_europa_dados_fixos_definitiva";
+        const ordemAbas = ['leitura', 'itinerario', 'utilidades', 'orcamento', 'compras'];
         let destinoFiltro = 'todos';
         let tarefaFiltro = 'todas';
         let utilidadeFiltro = 'todos';
@@ -690,7 +752,6 @@
 
         // CARREGAMENTO INICIAL OFFLINE-FIRST (ZERO ESPERA, NUNCA TRAVA)
         window.addEventListener('DOMContentLoaded', () => {
-            // 1. Lê os dados salvos localmente no aparelho imediatamente
             try {
                 let salvo = localStorage.getItem(CHAVE_APP);
                 if (salvo) {
@@ -736,15 +797,15 @@
                 let selOrdBlocos = document.getElementById('select-ordenacao-blocos');
                 if(selOrdBlocos && dadosApp.blocoOrdenacao) selOrdBlocos.value = dadosApp.blocoOrdenacao;
 
-                // Renderiza imediatamente sem esperar nuvem
                 atualizarTudo();
                 let tabSalva = localStorage.getItem('tab_ativa_v269') || 'leitura';
                 mudarTab(tabSalva);
+                inicializarRelogiosTopo();
+                configurarSwipe();
             } catch(e) {
                 console.error("Erro ao iniciar interface:", e);
             }
 
-            // 2. Sincronização em segundo plano com timeout seguro de 3.5 segundos
             if (supabaseClient) {
                 const promessaSupabase = supabaseClient
                     .from('app_dados')
@@ -771,6 +832,118 @@
                     });
             }
         });
+
+        // SWIPE RÁPIDO E FUNCIONAL NAS ABAS
+        function configurarSwipe() {
+            let touchStartX = 0;
+            let touchEndX = 0;
+            const container = document.getElementById('app-swipe-container');
+            if(!container) return;
+
+            container.addEventListener('touchstart', e => {
+                touchStartX = e.changedTouches[0].screenX;
+            }, {passive: true});
+
+            container.addEventListener('touchend', e => {
+                touchEndX = e.changedTouches[0].screenX;
+                lidarComSwipe();
+            }, {passive: true});
+
+            function lidarComSwipe() {
+                let diff = touchEndX - touchStartX;
+                if (Math.abs(diff) < 60) return; // Mínimo de 60px para considerar swipe
+
+                let tabAtual = localStorage.getItem('tab_ativa_v269') || 'leitura';
+                let idxAtual = ordemAbas.indexOf(tabAtual);
+                if (idxAtual < 0) idxAtual = 0;
+
+                if (diff < 0) {
+                    // Deslizou para a Esquerda -> Próxima Aba
+                    if (idxAtual < ordemAbas.length - 1) {
+                        mudarTab(ordemAbas[idxAtual + 1]);
+                    }
+                } else {
+                    // Deslizou para a Direita -> Aba Anterior
+                    if (idxAtual > 0) {
+                        mudarTab(ordemAbas[idxAtual - 1]);
+                    }
+                }
+            }
+        }
+
+        // RELÓGIOS MUNDIAIS NO TOPO
+        let clockConfigs = [
+            { id: 'zurique', label: 'Zurique', tz: 'Europe/Zurich', color: '#3b82f6' },
+            { id: 'paris', label: 'Paris', tz: 'Europe/Paris', color: '#ec4899' },
+            { id: 'brasilia', label: 'Brasil', tz: 'America/Sao_Paulo', color: '#10b981' }
+        ];
+
+        function inicializarRelogiosTopo() {
+            try {
+                let salvo = localStorage.getItem('relogios_config_v271');
+                if (salvo) clockConfigs = JSON.parse(salvo);
+            } catch(e){}
+            atualizarRelogiosTopo();
+            setInterval(atualizarRelogiosTopo, 1000);
+        }
+
+        function atualizarRelogiosTopo() {
+            const bar = document.getElementById('barClockItems');
+            if(!bar) return;
+            let html = '';
+            clockConfigs.forEach(c => {
+                let horaStr = "--:--:--";
+                try {
+                    let d = new Date();
+                    horaStr = d.toLocaleTimeString('pt-BR', { timeZone: c.tz, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                } catch(e){}
+                html += `
+                    <div class="flex items-center gap-1.5 bg-slate-900/90 px-2.5 py-1.5 rounded-xl border border-indigo-800/50 shadow-2xs shrink-0">
+                        <span class="w-2 h-2 rounded-full inline-block" style="background-color: ${c.color};"></span>
+                        <span class="font-bold text-[10px] text-slate-300">${c.label}:</span>
+                        <span class="font-mono font-black text-xs text-white">${horaStr}</span>
+                    </div>
+                `;
+            });
+            bar.innerHTML = html;
+        }
+
+        function toggleClockConfig() {
+            const modal = document.getElementById('barClockModal');
+            if(!modal) return;
+            if(modal.classList.contains('hidden')) {
+                let form = document.getElementById('barClockForm');
+                let html = '';
+                clockConfigs.forEach((c, idx) => {
+                    html += `
+                        <div class="bg-slate-50 p-2.5 rounded-2xl border border-slate-200 space-y-1.5">
+                            <div class="font-bold text-xs text-slate-700">Relógio ${idx+1} (${c.tz})</div>
+                            <div class="flex gap-1.5">
+                                <input type="text" id="clk-lbl-${idx}" value="${c.label}" class="flex-1 p-1.5 bg-white border border-slate-300 rounded-xl font-bold text-xs outline-none" placeholder="Nome...">
+                                <input type="color" id="clk-col-${idx}" value="${c.color}" class="w-9 h-8 p-0 border border-slate-300 rounded-xl cursor-pointer bg-transparent">
+                            </div>
+                        </div>
+                    `;
+                });
+                form.innerHTML = html;
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        function saveClockConfig() {
+            clockConfigs.forEach((c, idx) => {
+                let lbl = document.getElementById('clk-lbl-' + idx);
+                let col = document.getElementById('clk-col-' + idx);
+                if(lbl && lbl.value.trim() !== '') c.label = lbl.value.trim();
+                if(col) c.color = col.value;
+            });
+            localStorage.setItem('relogios_config_v271', JSON.stringify(clockConfigs));
+            toggleClockConfig();
+            atualizarRelogiosTopo();
+            mostrarToast("Configurações dos relógios salvas!", "sucesso");
+        }
 
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
@@ -1184,7 +1357,7 @@
                 else if (code === 45 || code === 48) { condicao = "Neblina"; icone = "🌫️"; }
                 else if ((code >= 51 && code <= 65) || (code >= 80 && code <= 82)) { condicao = "Chuva"; icone = "🌧️"; }
                 else if ((code >= 71 && code <= 77) || code === 85 || code === 86) { condicao = "Neve"; icone = "❄️"; }
-                else if (code === 95 || code === 96 || code === 99) { condicao = "Tempestade"; icone = "⛈️️"; }
+                else if (code === 95 || code === 96 || code === 99) { condicao = "Tempestade"; icone = "⛈️"; }
 
                 let dicaVestuario = "";
                 if (temp < 5) dicaVestuario = "❄️ Frio intenso: Casaco térmico pesado, gorro, luvas e bota quente.";
@@ -2435,7 +2608,7 @@
                                 '<input type="text" value="' + nomeSafe + '" oninput="atualizarContatoNome(' + ct.id + ', this.value)" class="flex-1 min-w-0 bg-transparent outline-none font-bold text-slate-800 text-xs truncate" placeholder="Nome...">' +
                                 '<input type="text" value="' + numSafe + '" oninput="atualizarContatoNumero(' + ct.id + ', this.value)" class="w-24 shrink-0 p-1 bg-slate-50 border border-slate-300 rounded-xl font-black text-xs text-center" placeholder="Número...">' +
                                 '<a href="' + telHref + '" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1.5 rounded-xl font-bold text-[10px] shrink-0 shadow-2xs transition active:scale-95" title="Ligar">📞</a>' +
-                                '<button onclick="moverItemArray(\'contatos\', ' + ct.id + ', -1)" class="bg-slate-100 hover:bg-slate-200 border border-slate-300 px-2 py-1.5 rounded-lg font-bold text-slate-700 transition active:scale-95">⬆️</button>' +
+                                '<button onclick="moverItemArray(\'contatos\', ' + ct.id + ', -1)" class="bg-slate-100 hover:bg-slate-200 border border-slate-300 px-2 py-1.5 rounded-lg font-bold text-slate-700 transition active:scale-95">⬆️️</button>' +
                                 '<button onclick="moverItemArray(\'contatos\', ' + ct.id + ', 1)" class="bg-slate-100 hover:bg-slate-200 border border-slate-300 px-2 py-1.5 rounded-lg font-bold text-slate-700 transition active:scale-95">⬇️</button>' +
                                 '<button onclick="apagarContato(' + ct.id + ')" class="text-rose-600 hover:text-rose-700 font-bold bg-rose-50 hover:bg-rose-100 border border-rose-200 px-2 py-1 rounded-xl text-xs transition active:scale-95">✕</button>' +
                             '</div>';
@@ -3175,6 +3348,13 @@
                 mostrarToast("Erro ao capturar voz.", "erro");
             };
             recognition.start();
+        }
+
+        function togglePopupRelogio() {
+            const popup = document.getElementById('popupRelogioContainer');
+            if(!popup) return;
+            const estaVisivel = popup.style.display === 'flex';
+            popup.style.display = estaVisivel ? 'none' : 'flex';
         }
     </script>
 </body>
