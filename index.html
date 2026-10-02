@@ -4632,7 +4632,9 @@ body.v-menu-off #v-top{bottom:92px!important}
 
 
 
-<!-- ===== CAMADA v281 ===== -->
+
+
+<!-- ===== CAMADA v282 ===== -->
 <style>
 #lista-leitura-html{grid-template-columns:1fr!important}
 #lista-leitura-html>div{padding:14px!important}
@@ -4681,9 +4683,9 @@ body.v-menu-off #v-top{bottom:92px!important}
 .v281-cvb{width:32px;height:32px;border-radius:10px;border:1px solid #c7d2fe;background:#eef2ff;color:#3730a3;font-size:15px;font-weight:800;flex:none;padding:0}
 .v281-bulk{display:flex;gap:8px}
 .v281-bulk button{flex:1;padding:8px;border-radius:12px;border:1px solid #c7d2fe;background:#fff;color:#3730a3;font-weight:800;font-size:12px}
-#v281-off{position:fixed;left:14px;bottom:96px;z-index:70;border:0;border-radius:999px;padding:10px 14px;font-size:13px;font-weight:800;color:#fff;background:#16a34a;box-shadow:0 6px 18px rgba(0,0,0,.25);transition:bottom .28s}
-#v281-off.x{background:#ea580c}
-body.v-menu-off #v281-off{bottom:34px}
+#v271-bar>#v281-off.x{border-color:#fb923c!important;background:rgba(234,88,12,.4)!important}
+.v282-c>:not(:first-child){display:none!important}
+.v282-sm{font-size:11px;font-weight:800;color:#4338ca;background:#eef2ff;border-radius:999px;padding:2px 8px;white-space:nowrap;flex:none}
 </style>
 <script>
 (function(){
@@ -4954,8 +4956,8 @@ body.v-menu-off #v281-off{bottom:34px}
       if(t==='app_dados'&&off)return {select:function(){return {eq:function(){return {single:function(){return Promise.resolve({data:null,error:{message:'offline'}})}}}}},upsert:function(){return Promise.resolve({error:null})}};
       return prev(t)};
   }catch(e){}
-  var chip=document.createElement('button');chip.id='v281-off';chip.type='button';document.body.appendChild(chip);
-  function pinta(){chip.textContent=off?'📴 Offline':'🌐 Online';chip.classList.toggle('x',off);chip.setAttribute('aria-label',off?'Trabalhando offline. Toque para voltar online.':'Online. Toque para trabalhar offline.')}
+  var chip=document.createElement('button');chip.id='v281-off';chip.type='button';chip.innerHTML='<span>🌐</span>';var barra=$('v271-bar');if(barra)barra.appendChild(chip);else{chip.style.cssText='position:fixed;top:8px;right:8px;z-index:70';document.body.appendChild(chip)}
+  function pinta(){chip.firstChild.textContent=off?'📴':'🌐';chip.classList.toggle('x',off);chip.title=off?'Offline (toque para voltar online)':'Online (toque para trabalhar offline)';chip.setAttribute('aria-label',chip.title)}
   pinta();
   chip.addEventListener('click',function(){
     off=!off;try{localStorage.setItem(OK,off?'1':'0')}catch(e){}
@@ -4965,7 +4967,104 @@ body.v-menu-off #v281-off{bottom:34px}
   if(off)setTimeout(function(){window.dispatchEvent(new Event('offline'))},600);
 })();
 </script>
-<!-- ===== FIM DA CAMADA v281 ===== -->
+<script>
+(function(){
+  var $=function(i){return document.getElementById(i)};
+  var K='v282_s',S={open:{},shut:{}};
+  try{var x=JSON.parse(localStorage.getItem(K));if(x){S.open=x.open||{};S.shut=x.shut||{}}}catch(e){}
+  function sv(){try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}}
+  function chev(){var b=document.createElement('button');b.type='button';b.className='v281-cvb';b.setAttribute('aria-label','Fechar ou abrir');return b}
+  function barra(id,fn){
+    var bar=document.createElement('div');bar.id=id;bar.className='v281-bulk';bar.style.margin='0 0 8px';
+    bar.innerHTML='<button type="button" data-s="1">⏫ Fechar tudo</button><button type="button" data-s="0">⏬ Abrir tudo</button>';
+    bar.addEventListener('click',function(e){var b=e.target.closest('button');if(b)fn(b.dataset.s==='1')});return bar}
+
+  /* ---------- HUB: cada caixa fecha ---------- */
+  function hub(){
+    var g=$('hub-utilidades-grid');if(!g)return;
+    [].forEach.call(g.children,function(card){
+      if(card.dataset.m282||!card.id)return;
+      var head=card.firstElementChild,h3=head&&head.querySelector('h3');if(!h3)return;
+      card.dataset.m282=1;
+      var w=document.createElement('span');w.style.cssText='display:flex;align-items:center;gap:6px;min-width:0';
+      var b=chev(),k='h|'+card.id;
+      head.insertBefore(w,h3);w.appendChild(b);w.appendChild(h3);
+      function ap(){var c=!!S.shut[k];card.classList.toggle('v282-c',c);b.textContent=c?'▸':'▾'}
+      ap();card._ap=ap;card._k=k;
+      b.addEventListener('click',function(){if(S.shut[k])delete S.shut[k];else S.shut[k]=1;sv();ap()});
+    });
+    if(!$('v282-hb')&&g.children.length){
+      g.parentNode.insertBefore(barra('v282-hb',function(fechar){
+        [].forEach.call(g.children,function(c){if(!c._k)return;if(fechar)S.shut[c._k]=1;else delete S.shut[c._k];c._ap()});sv()}),g);
+    }
+  }
+
+  /* ---------- ITENS (Orçamento e Compras): nascem fechadinhos ---------- */
+  function itens(sel,prep){
+    [].forEach.call(document.querySelectorAll(sel),function(it){
+      if(it.dataset.m282)return;
+      if(it.querySelector('input[id^="desc-"],select[id^="orc-tr-transp-"]'))return; /* em edição: fica aberto */
+      var p=prep(it);if(!p)return;
+      it.dataset.m282=1;
+      var b=chev(),sm=document.createElement('span');sm.className='v282-sm';
+      p.row.insertBefore(b,p.row.firstChild);p.slot(sm);
+      function ap(){var c=!S.open[p.key];it.classList.toggle('v282-c',c);b.textContent=c?'▸':'▾';sm.style.display=c?'':'none';if(c)sm.textContent=p.sum()}
+      ap();it._ap=ap;it._k=p.key;
+      b.addEventListener('click',function(){if(S.open[p.key])delete S.open[p.key];else S.open[p.key]=1;sv();ap()});
+    });
+  }
+  function todos(sel,abrir){
+    [].forEach.call(document.querySelectorAll(sel),function(it){if(!it._k)return;if(abrir)S.open[it._k]=1;else delete S.open[it._k];it._ap()});sv()}
+
+  var SO='#orcamento-conteudo [class~="space-y-2.5"] > div';
+  function orc(){
+    var c=$('orcamento-conteudo');if(!c)return;
+    itens(SO,function(it){
+      var h=it.innerHTML,f=it.firstElementChild;if(!f)return null;
+      var m=h.match(/abrirEdicaoConducaoOrcamento\('[^']+',\s*'[^']+',\s*'([^']+)'\)/);
+      if(m&&f.tagName==='DIV'){
+        return {key:'oc|'+m[1],row:f,slot:function(s){f.insertBefore(s,f.lastElementChild)},
+          sum:function(){var v=it.querySelector('.font-black.text-sm'),r=it.querySelector('.text-emerald-700');return (v?v.textContent.trim():'')+(r?' ('+r.textContent.trim()+')':'')}};
+      }
+      var m2=h.match(/atualizarOrcamentoDescricao\((\d+)/);
+      if(m2&&f.tagName==='INPUT'){
+        var row=document.createElement('div');row.style.cssText='display:flex;align-items:center;gap:6px';
+        it.insertBefore(row,f);row.appendChild(f);f.style.flex='1';
+        return {key:'om|'+m2[1],row:row,slot:function(s){row.appendChild(s)},
+          sum:function(){var v=it.querySelector('input[id^="despesa-val-"]'),cu=it.textContent.match(/Valor \(([^)]+)\)/);return ((v&&v.value)||'0')+' '+(cu?cu[1]:'')}};
+      }
+      return null;
+    });
+    if(!c.querySelector('.v282-ob')&&document.querySelector(SO)){
+      var bar=barra('v282-ob',function(fechar){todos(SO,!fechar)});bar.classList.add('v282-ob');c.insertBefore(bar,c.firstChild);
+    }
+  }
+  /* despesa nova nasce aberta para digitar */
+  if(typeof window.adicionarDespesa==='function'){
+    var ad=window.adicionarDespesa;
+    window.adicionarDespesa=function(m){ad(m);var o=dadosApp.orcamento&&dadosApp.orcamento[0];if(o){S.open['om|'+o.id]=1;sv();try{renderizarOrcamentoTab()}catch(e){}}};
+  }
+
+  var SC='#compras-lista-itens > div';
+  function comp(){
+    var l=$('compras-lista-itens');if(!l)return;
+    itens(SC,function(it){
+      var f=it.firstElementChild,cb=it.querySelector('input[type=checkbox]');if(!f||!cb)return null;
+      var m=(cb.getAttribute('onchange')||'').match(/alternarConcluidoItemDireto\('([^']+)'/);if(!m)return null;
+      return {key:'c|'+m[1],row:f,slot:function(s){f.insertBefore(s,f.lastElementChild)},
+        sum:function(){var v=it.querySelector('.text-indigo-900'),r=it.querySelector('.text-emerald-700');return (v?v.textContent.trim():'')+(r?' ('+r.textContent.trim()+')':'')}};
+    });
+    if(!$('v282-cb')){
+      l.parentNode.insertBefore(barra('v282-cb',function(fechar){todos(SC,!fechar)}),l);
+    }
+  }
+
+  function obs(id,fn){var e=$(id);if(!e)return;new MutationObserver(function(){setTimeout(fn,0)}).observe(e,{childList:true});fn()}
+  obs('hub-utilidades-grid',hub);obs('orcamento-conteudo',orc);obs('compras-lista-itens',comp);
+  setTimeout(function(){hub();orc();comp()},800);
+})();
+</script>
+<!-- ===== FIM DA CAMADA v282 ===== -->
 
 </body>
 </html>
