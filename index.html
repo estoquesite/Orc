@@ -4626,5 +4626,102 @@ body.v-menu-off #v-top{bottom:92px!important}
 })();
 </script>
 <!--/V276-->
+<!-- ===== CAMADA v278 ===== -->
+<style>
+/* ---------- ROTEIRO: quadrado maior, uma coluna ---------- */
+#lista-leitura-html{grid-template-columns:1fr!important}
+#lista-leitura-html>div{padding:20px!important}
+
+/* ---------- ROTEIRO: início / paradas / fim ---------- */
+.v277-tl{gap:0!important;padding:4px 0}
+.v277-pt{position:relative;padding:14px 16px!important;border-radius:16px!important}
+.v277-pt .hd{font-size:16px!important;gap:10px!important}
+.v277-pt .nn{width:30px!important;height:30px!important;font-size:14px!important}
+.v277-pt .tx{font-size:16px!important;margin-left:40px!important}
+.v277-pt .mp{margin-left:40px!important;padding:8px 14px!important;font-size:13px!important}
+
+/* ponto seguido direto de outro ponto: 4 tracinhos entre eles */
+.v277-pt+.v277-pt{margin-top:52px}
+.v277-pt:has(+.v277-pt)::after{
+  content:"";position:absolute;left:25px;top:100%;width:4px;height:46px;margin-top:3px;
+  background:repeating-linear-gradient(to bottom,#6366f1 0 7px,transparent 7px 13px);
+  border-radius:3px}
+
+/* ponto seguido de condução (ônibus/trem): linha pontilhada em volta das conduções */
+.v277-pt+.v277-lg{margin:8px 0 8px 24px!important;padding:6px 0 6px 18px!important;border-left:4px dashed #6366f1!important}
+.v277-lg+.v277-pt{margin-top:8px}
+
+/* ---------- EDITAR: setas ---------- */
+.v278-mv{display:inline-flex;gap:3px;flex:none;margin-right:4px}
+.v278-mv button{width:30px;height:30px;border-radius:9px;border:1px solid #c7d2fe;background:#eef2ff;color:#3730a3;font-size:14px;line-height:1;padding:0}
+.v278-mv button:active{background:#c7d2fe}
+.v278-tr{background:#fde68a!important;border-color:#fcd34d!important}
+</style>
+<script>
+(function(){
+  var $=function(i){return document.getElementById(i)};
+  function item(id){return (dadosApp.itinerario||[]).filter(function(i){return String(i.id)===String(id)})[0]}
+  function trecho(it,id){return it&&(it.trechos||[]).filter(function(t){return String(t.id)===String(id)})[0]}
+  function T(m,t){if(window.mostrarToast)mostrarToast(m,t||'info')}
+  function aplicar(){try{salvarStorage()}catch(e){}try{atualizarTudo()}catch(e){}}
+  function undo(){try{registarEstadoAnterior()}catch(e){}}
+  function troca(arr,a,b){var t=arr[a];arr[a]=arr[b];arr[b]=t}
+
+  /* sobe/desce uma condução: primeiro dentro do mesmo trecho; no limite, passa para o trecho vizinho */
+  function moveCond(itId,trId,cId,d){
+    var it=item(itId),tr=trecho(it,trId);if(!tr)return;
+    var P=window.v277Percurso?window.v277Percurso(it,tr):null;if(!P)return;
+    var k=-1,pos=-1,c=null;
+    P.legs.forEach(function(l,i){l.forEach(function(x,j){if(String(x.c.id)===String(cId)){k=i;pos=j;c=x.c}})});
+    if(!c)return;
+    var leg=P.legs[k],n=P.legs.length;undo();
+    if(d<0){
+      if(pos>0)troca(tr.conducoes,leg[pos].i,leg[pos-1].i);
+      else if(k>0)c.perna=k;
+      else{T('Já é o primeiro do percurso.');return}
+    }else{
+      if(pos<leg.length-1)troca(tr.conducoes,leg[pos].i,leg[pos+1].i);
+      else if(k<n-1)c.perna=k+2;
+      else{T('Já é o último do percurso. Crie uma parada para ter mais trechos.');return}
+    }
+    aplicar();
+  }
+  /* sobe/desce a rota inteira (as paradas vão junto) */
+  function moveTrecho(itId,trId,d){
+    var it=item(itId);if(!it||!it.trechos)return;
+    var i=it.trechos.findIndex(function(t){return String(t.id)===String(trId)}),j=i+d;
+    if(i<0||j<0||j>=it.trechos.length){T(d<0?'Já é a primeira rota.':'Já é a última rota.');return}
+    undo();troca(it.trechos,i,j);aplicar();
+  }
+
+  function setas(){
+    var box=$('lista-blocos');if(!box)return;
+    /* conduções */
+    [].forEach.call(box.querySelectorAll('select[onchange*="\'transporte\'"]'),function(sel){
+      var row=sel.parentElement;if(!row||row.dataset.m278)return;
+      var m=sel.getAttribute('onchange').match(/atualizarConducaoItem\('([^']+)',\s*'([^']+)',\s*'([^']+)'/);if(!m)return;
+      row.dataset.m278=1;
+      var w=document.createElement('span');w.className='v278-mv';
+      w.innerHTML='<button type="button" data-d="-1" aria-label="Subir condução">⬆️</button><button type="button" data-d="1" aria-label="Descer condução">⬇️</button>';
+      w.addEventListener('click',function(e){var b=e.target.closest('button');if(b)moveCond(m[1],m[2],m[3],+b.dataset.d)});
+      row.insertBefore(w,row.firstChild);
+    });
+    /* rotas */
+    [].forEach.call(box.querySelectorAll('button[onclick^="removerTrecho("]'),function(btn){
+      var row=btn.parentElement;if(!row||row.dataset.m278)return;
+      var m=btn.getAttribute('onclick').match(/removerTrecho\('([^']+)',\s*'([^']+)'\)/);if(!m)return;
+      row.dataset.m278=1;
+      var w=document.createElement('span');w.className='v278-mv';
+      w.innerHTML='<button type="button" class="v278-tr" data-d="-1" aria-label="Subir rota">⬆️</button><button type="button" class="v278-tr" data-d="1" aria-label="Descer rota">⬇️</button>';
+      w.addEventListener('click',function(e){var b=e.target.closest('button');if(b)moveTrecho(m[1],m[2],+b.dataset.d)});
+      row.insertBefore(w,btn);
+    });
+  }
+  var lb=$('lista-blocos');
+  if(lb){new MutationObserver(function(){setTimeout(setas,0)}).observe(lb,{childList:true});setas()}
+})();
+</script>
+<!-- ===== FIM DA CAMADA v278 ===== -->
+
 </body>
 </html>
