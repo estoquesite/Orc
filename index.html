@@ -4279,6 +4279,7 @@ body.v-menu-off #v-top{bottom:92px!important}
 
 
 
+
 <!--V276-->
 <style>
 .v276-z{margin-bottom:8px;padding:6px 8px;border-radius:12px;background:#eef2ff;border:1px solid #c7d2fe;color:#1e1b4b}
@@ -4310,6 +4311,18 @@ body.v-menu-off #v-top{bottom:92px!important}
 .v277-rp .t1{font-weight:800;font-size:14px}
 .v277-rp .tx{font-size:15px;line-height:1.45;white-space:pre-wrap;word-break:break-word;margin:4px 0}
 .v277-rp .mp{display:inline-block;margin-top:4px;padding:6px 12px;border-radius:10px;background:#6366f1;color:#fff!important;font-size:12px;font-weight:800;text-decoration:none}
+
+.v277-tl{display:flex;flex-direction:column;gap:6px}
+.v277-pt{border-radius:12px;padding:8px 10px;background:#eef2ff;border:1px solid #c7d2fe;color:#0f172a}
+.v277-pt.p{background:#fef9c3;border-color:#fde047}.v277-pt.d{background:#dcfce7;border-color:#86efac}
+.v277-pt .hd{display:flex;gap:8px;align-items:center;font-size:14px}
+.v277-pt .nn{width:22px;height:22px;border-radius:50%;background:#4338ca;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none}
+.v277-pt .tx{font-size:15px;line-height:1.45;white-space:pre-wrap;word-break:break-word;margin:4px 0 0 30px}
+.v277-pt .mp{display:inline-block;margin:5px 0 0 30px;padding:6px 12px;border-radius:10px;background:#6366f1;color:#fff!important;font-size:12px;font-weight:800;text-decoration:none}
+.v277-lg{margin-left:11px;padding-left:12px;border-left:3px dashed #a5b4fc}
+.v277-p .ent{font-size:11px;color:#854d0e;margin:4px 0 0}
+.v277-p .mv{width:30px;height:30px;border:0;border-radius:9px;background:#fde68a;color:#713f12;font-weight:800}
+.v277-pn{height:26px;font-size:11px;font-weight:700;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#0f172a;padding:0 4px}
 #v276-m{position:fixed;inset:0;z-index:700;background:rgba(15,23,42,.88);display:flex;align-items:flex-end;justify-content:center}
 #v276-m>div{width:100%;max-width:640px;max-height:92vh;overflow-y:auto;background:#fff;color:#0f172a;border-radius:24px 24px 0 0;padding:18px 18px calc(24px + env(safe-area-inset-bottom,0px));font-size:17px;line-height:1.55}
 #v276-m h3{margin:0;font-size:20px}
@@ -4370,11 +4383,14 @@ body.v-menu-off #v-top{bottom:92px!important}
     var h='<button class="x" type="button" aria-label="Fechar">✕</button><h3>'+esc(it.categoria||'Destino')+'</h3><div class="d">📅 '+data(it.dataInicio)+' ➔ '+data(it.dataFim)+'</div>';
     if((it.zonasLista||[]).length||(it.zonas||'').trim())h+='<div class="z">🎫 Zonas<br>'+tags(it)+((it.zonas||'').trim()?'<div class="ob">'+esc(it.zonas)+'</div>':'')+'</div>';
     (it.trechos||[]).forEach(function(tr){
-      h+='<div class="t"><b>📍 '+esc(tr.origem||'?')+' ➔ '+esc(tr.destino||'?')+'</b>';
-      (tr.conducoes||[]).forEach(function(c){h+='<div>🚌 '+esc(c.transporte)+(c.valor?' • '+esc(c.valor)+' '+esc(c.moeda):'')+(c.notas?'<br>📝 '+esc(c.notas):'')+'</div>'});
-      h+='</div>';
-      (it.paradas||[]).filter(function(p){return String(p.apos)===String(tr.id)}).forEach(function(p){
-        h+='<div class="t" style="background:#fef9c3"><b>🛑 Parada: '+esc(p.local||'—')+'</b>'+(p.texto?'<div>'+esc(p.texto)+'</div>':'')+'<div><a href="'+esc(window.v277Mapa(it,tr,p))+'" target="_blank" rel="noopener" style="color:#4338ca;font-weight:800">🗺️ Como chegar</a></div></div>'});
+      var P=percurso(it,tr);
+      P.pts.forEach(function(pt,j){
+        var lab=pt.k==='o'?'📍 Saída':pt.k==='d'?'🏁 Chegada':'🛑 Parada';
+        h+='<div class="t" style="background:'+(pt.k==='p'?'#fef9c3':pt.k==='d'?'#dcfce7':'#eef2ff')+'"><b>'+(j+1)+'. '+lab+': '+esc(pt.nome||'—')+'</b>'+(pt.p&&pt.p.texto?'<div>'+esc(pt.p.texto)+'</div>':'');
+        if(j>0)h+='<div><a href="'+esc(mapaUrl(origemMapa(P,j),pt.nome))+'" target="_blank" rel="noopener" style="color:#4338ca;font-weight:800">🗺️ Como chegar</a></div>';
+        h+='</div>';
+        if(j<P.legs.length)P.legs[j].forEach(function(x){var c=x.c;h+='<div class="t" style="margin-left:16px;border-left:3px dashed #a5b4fc"><div>🚌 '+esc(c.transporte)+(c.valor?' • '+esc(c.valor)+' '+esc(c.moeda):'')+(c.notas?'<br>📝 '+esc(c.notas):'')+'</div></div>'});
+      });
     });
     var ns=(it.itens||[]).filter(function(n){return n.texto&&n.texto.trim()});
     if(ns.length){h+='<div class="t"><b>📌 Notas</b>';ns.forEach(function(n){h+='<div>• '+esc(n.texto)+'</div>'});h+='</div>'}
@@ -4399,13 +4415,29 @@ body.v-menu-off #v-top{bottom:92px!important}
   function anterior(it,tr,p){var l=(it.paradas||[]).filter(function(x){return String(x.apos)===String(tr.id)}),i=l.indexOf(p);
     if((p.de||'').trim())return p.de.trim();if(i>0&&l[i-1].local)return l[i-1].local;return tr.destino||tr.origem||''}
   window.v277Mapa=function(it,tr,p){return 'https://www.google.com/maps/dir/?api=1&origin='+encodeURIComponent(anterior(it,tr,p))+'&destination='+encodeURIComponent(p.local||'')+'&travelmode=transit'};
+  function percurso(it,tr){
+    var ps=(it.paradas||[]).filter(function(p){return String(p.apos)===String(tr.id)});
+    var pts=[{k:'o',nome:tr.origem||'',p:null}];ps.forEach(function(p){pts.push({k:'p',nome:p.local||'',p:p})});pts.push({k:'d',nome:tr.destino||'',p:null});
+    var n=pts.length-1,legs=[];for(var i=0;i<n;i++)legs.push([]);
+    (tr.conducoes||[]).forEach(function(c,i){var k=c.perna?Math.min(Math.max(+c.perna-1,0),n-1):Math.min(i,n-1);legs[k].push({c:c,i:i})});
+    return {pts:pts,legs:legs}}
+  window.v277Percurso=percurso;
+  function mapaUrl(o,d){return 'https://www.google.com/maps/dir/?api=1&origin='+encodeURIComponent(o||'')+'&destination='+encodeURIComponent(d||'')+'&travelmode=transit'}
+  function origemMapa(P,j){var pt=P.pts[j];return (pt.p&&(pt.p.de||'').trim())||P.pts[j-1].nome}
   function paradasLeitura(card,it){
     var bl=[].filter.call(card.querySelectorAll('div.my-2'),function(d){return /📍 Rota/.test(d.textContent)});
-    (it.trechos||[]).forEach(function(tr,k){var b=bl[k];if(!b)return;var ref=b;
-      (it.paradas||[]).filter(function(p){return String(p.apos)===String(tr.id)}).forEach(function(p){
-        var d=document.createElement('div');d.className='v277-rp';
-        d.innerHTML='<div class="t1">🛑 Parada: '+esc(p.local||'—')+'</div>'+(p.texto?'<div class="tx">'+esc(p.texto)+'</div>':'')+'<a class="mp" href="'+esc(window.v277Mapa(it,tr,p))+'" target="_blank" rel="noopener">🗺️ Como chegar (ônibus/trem)</a>';
-        ref.insertAdjacentElement('afterend',d);ref=d})})}
+    (it.trechos||[]).forEach(function(tr,k){var b=bl[k],holder=b&&b.children[1];if(!holder)return;
+      var cn=[].slice.call(holder.children),P=percurso(it,tr),tl=document.createElement('div');tl.className='v277-tl';
+      P.pts.forEach(function(pt,j){
+        var lab=pt.k==='o'?'📍 Saída':pt.k==='d'?'🏁 Chegada':'🛑 Parada',d=document.createElement('div');d.className='v277-pt '+pt.k;
+        var h='<div class="hd"><span class="nn">'+(j+1)+'</span><b>'+lab+': '+esc(pt.nome||'—')+'</b></div>';
+        if(pt.p&&pt.p.texto)h+='<div class="tx">'+esc(pt.p.texto)+'</div>';
+        if(j>0)h+='<a class="mp" href="'+esc(mapaUrl(origemMapa(P,j),pt.nome))+'" target="_blank" rel="noopener">🗺️ Como chegar (ônibus/trem)</a>';
+        d.innerHTML=h;tl.appendChild(d);
+        if(j<P.legs.length&&P.legs[j].length){var lg=document.createElement('div');lg.className='v277-lg';
+          P.legs[j].forEach(function(x){if(cn[x.i])lg.appendChild(cn[x.i])});tl.appendChild(lg)}
+      });
+      holder.innerHTML='';holder.appendChild(tl)})}
   function paradasEdit(){
     var box=$('lista-blocos');if(!box)return;
     [].forEach.call(box.children,function(card){
@@ -4414,25 +4446,42 @@ body.v-menu-off #v-top{bottom:92px!important}
         var tc=btn.closest('[class*="mb-3"]');if(!tc||tc.dataset.p277)return;tc.dataset.p277=1;
         var m=btn.getAttribute('onclick').match(/removerTrecho\('([^']+)',\s*'([^']+)'\)/);if(!m)return;var trId=m[2];
         var w=document.createElement('div');w.className='v277-pb';var u='v277'+Math.floor(Math.random()*1e9);
+        function trc(){return ((item(id)||{}).trechos||[]).filter(function(t){return String(t.id)===String(trId)})[0]||{}}
         function lista(){return ((item(id)||{}).paradas||[]).filter(function(p){return String(p.apos)===String(trId)})}
+        function ents(){var l=lista(),t=trc();[].forEach.call(w.querySelectorAll('.ent'),function(e,i){
+          var a=i===0?t.origem:l[i-1].local,b=i===l.length-1?t.destino:l[i+1].local;
+          e.innerHTML='↔ Fica entre <b>'+esc(a||'origem')+'</b> e <b>'+esc(b||'destino')+'</b> · posição '+(i+1)+' de '+l.length})}
         function draw(){
           w.innerHTML='<datalist id="'+u+'">'+opts(locais(item(id)||{}))+'</datalist>'+lista().map(function(p){
-            return '<div class="v277-p" data-id="'+esc(p.id)+'"><div class="r"><span>🛑</span><input class="l" list="'+u+'" placeholder="Parada (ex.: Zurich HB)" value="'+esc(p.local)+'"><button type="button" class="x" aria-label="Apagar parada">✕</button></div><input class="d" placeholder="Partindo de… (opcional; se vazio, sai do ponto anterior)" value="'+esc(p.de)+'"><textarea placeholder="O que fazer aqui (ex.: deixar a mala; pegar o ônibus 31)">'+esc(p.texto)+'</textarea></div>'}).join('')+
-            '<button type="button" class="v277-add">➕ Parada depois desta rota</button>'}
+            return '<div class="v277-p" data-id="'+esc(p.id)+'"><div class="r"><span>🛑</span><input class="l" list="'+u+'" placeholder="Parada (ex.: Zurich HB)" value="'+esc(p.local)+'"><button type="button" class="mv" data-d="-1" aria-label="Subir">⬆</button><button type="button" class="mv" data-d="1" aria-label="Descer">⬇</button><button type="button" class="x" aria-label="Apagar parada">✕</button></div><div class="ent"></div><input class="d" placeholder="Partindo de… (opcional; se vazio, sai do ponto anterior)" value="'+esc(p.de)+'"><textarea placeholder="O que fazer aqui (ex.: deixar a mala; pegar o ônibus 31)">'+esc(p.texto)+'</textarea></div>'}).join('')+
+            '<button type="button" class="v277-add">➕ Parada entre a origem e o destino desta rota</button>';ents()}
         draw();
-        function achar(e){var r=e.target.closest('.v277-p');var it=item(id);return r&&it?(it.paradas||[]).filter(function(p){return p.id===r.dataset.id})[0]:null}
+        function achar(e){var r=e.target.closest('.v277-p'),it=item(id);return r&&it?(it.paradas||[]).filter(function(p){return p.id===r.dataset.id})[0]:null}
         w.addEventListener('input',function(e){var p=achar(e);if(!p)return;var t=e.target;
-          if(t.classList.contains('l'))p.local=t.value;else if(t.classList.contains('d'))p.de=t.value;else p.texto=t.value;save()});
-        w.addEventListener('click',function(e){
-          if(e.target.closest('.v277-add')){var it=item(id);if(!it)return;if(!it.paradas)it.paradas=[];
+          if(t.classList.contains('l'))p.local=t.value;else if(t.classList.contains('d'))p.de=t.value;else p.texto=t.value;save();ents()});
+        w.addEventListener('click',function(e){var it=item(id);if(!it)return;
+          if(e.target.closest('.v277-add')){if(!it.paradas)it.paradas=[];
             it.paradas.push({id:'p'+Date.now()+Math.floor(Math.random()*999),apos:trId,local:'',de:'',texto:''});save();draw();
             var ls=w.querySelectorAll('.v277-p .l');if(ls.length)ls[ls.length-1].focus();return}
-          var x=e.target.closest('.x');if(x){var p=achar(e),it2=item(id);if(p&&it2){it2.paradas=it2.paradas.filter(function(q){return q!==p});save();draw()}}});
+          var p=achar(e);if(!p)return;
+          if(e.target.closest('.x')){it.paradas=it.paradas.filter(function(q){return q!==p});save();draw();return}
+          var mv=e.target.closest('.mv');if(mv){var l=lista(),i=l.indexOf(p),j=i+(+mv.dataset.d);if(j<0||j>=l.length)return;
+            var a=it.paradas.indexOf(l[i]),b=it.paradas.indexOf(l[j]),t=it.paradas[a];it.paradas[a]=it.paradas[b];it.paradas[b]=t;save();draw()}});
         tc.insertAdjacentElement('afterend',w);
       });
     });
   }
-  [['lista-blocos',injEdit],['lista-blocos',paradasEdit],['lista-leitura-html',injRead]].forEach(function(p){
+  function pernas(){
+    var box=$('lista-blocos');if(!box)return;
+    [].forEach.call(box.querySelectorAll('select[onchange*="\'transporte\'"]'),function(sel){
+      if(sel.dataset.pn)return;var m=sel.getAttribute('onchange').match(/^atualizarConducaoItem\('([^']+)',\s*'([^']+)',\s*'([^']+)'/);if(!m)return;sel.dataset.pn=1;
+      function cond(){var it=item(m[1]),tr=it&&(it.trechos||[]).filter(function(t){return String(t.id)===String(m[2])})[0];return tr&&(tr.conducoes||[]).filter(function(c){return String(c.id)===String(m[3])})[0]}
+      var c0=cond(),pn=document.createElement('select');pn.className='v277-pn';pn.title='Em qual trecho do percurso esta condução é usada';
+      pn.innerHTML='<option value="">Trecho: auto</option>'+[1,2,3,4,5].map(function(n){return '<option value="'+n+'">Trecho '+n+'</option>'}).join('');
+      pn.value=c0&&c0.perna?String(c0.perna):'';
+      pn.addEventListener('change',function(){var c=cond();if(!c)return;if(pn.value)c.perna=+pn.value;else delete c.perna;save()});
+      sel.insertAdjacentElement('afterend',pn)})}
+  [['lista-blocos',injEdit],['lista-blocos',paradasEdit],['lista-blocos',pernas],['lista-leitura-html',injRead]].forEach(function(p){
     var b=$(p[0]);if(!b)return;new MutationObserver(function(){setTimeout(p[1],0)}).observe(b,{childList:true});p[1]();
   });
 })();
@@ -4565,9 +4614,9 @@ body.v-menu-off #v-top{bottom:92px!important}
       if((b.zonasLista||[]).length)t+='  🎫 '+b.zonasLista.map(function(z){return z.local+' · '+z.zona}).join(', ')+'\n';
       if((b.zonas||'').trim())t+='  🎫 '+b.zonas.trim()+'\n';
       (b.trechos||[]).forEach(function(tr){
-        t+='  • '+(tr.origem||'?')+' ➔ '+(tr.destino||'?')+'\n';
-        (tr.conducoes||[]).forEach(function(c){t+='    - '+c.transporte+' ('+c.valor+' '+c.moeda+')'+(c.notas?' ['+c.notas+']':'')+'\n'});
-        (b.paradas||[]).filter(function(p){return String(p.apos)===String(tr.id)}).forEach(function(p){t+='    🛑 Parada: '+(p.local||'')+(p.texto?' — '+p.texto:'')+'\n'});
+        var P=window.v277Percurso(b,tr);
+        P.pts.forEach(function(pt,j){t+='  '+(j+1)+'. '+(pt.k==='o'?'📍 Saída':pt.k==='d'?'🏁 Chegada':'🛑 Parada')+': '+(pt.nome||'?')+(pt.p&&pt.p.texto?' — '+pt.p.texto:'')+'\n';
+          if(j<P.legs.length)P.legs[j].forEach(function(x){t+='      - '+x.c.transporte+' ('+x.c.valor+' '+x.c.moeda+')'+(x.c.notas?' ['+x.c.notas+']':'')+'\n'})});
       });t+='\n'});
     if(navigator.share){navigator.share({title:'Roteiro Europa Mariana',text:t}).catch(function(){})}
     else window.open('https://api.whatsapp.com/send?text='+encodeURIComponent(t),'_blank');
