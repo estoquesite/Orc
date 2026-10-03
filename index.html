@@ -5624,15 +5624,39 @@ body.v-menu-off #v-top{bottom:150px!important}
 
 <!--V287-->
 <style>
-.v287-ac{display:inline-flex;gap:4px;flex:none;align-items:center}
-.v287-b{width:28px;height:28px;border:1px solid #c7d2fe;background:#eef2ff;color:#3730a3!important;border-radius:9px;font-size:13px;line-height:1;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;padding:0;cursor:pointer}
+.v287-ac{display:inline-flex;gap:3px;flex:none;align-items:center}
+.v287-b{width:26px;height:26px;border:1px solid #c7d2fe;background:#eef2ff;color:#3730a3!important;border-radius:8px;font-size:12px;line-height:1;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;padding:0;cursor:pointer}
 .v287-b:active{background:#c7d2fe}
+.v287-b.ph{background:#fae8ff;border-color:#f0abfc}
 .v287-b.dl{background:#dcfce7;border-color:#86efac}
 .v287-b.ed{background:#fef9c3;border-color:#fde047}
-/* conducao da Saida dentro do card azul */
 .v277-pt>.v277-lg.v287-lgin{margin:6px 0 0 30px!important;padding:0!important;border:0!important}
+.v277-pt .mp{white-space:normal!important;word-break:break-word}
 @keyframes v287f{0%,100%{box-shadow:0 0 0 0 rgba(234,179,8,.8)}50%{box-shadow:0 0 0 8px rgba(234,179,8,0)}}
 .v287-flash{outline:3px solid #eab308;outline-offset:2px;border-radius:14px;animation:v287f 1s ease-in-out 2}
+/* cabeçalho do bloco no Roteiro: o ✕ fica ao lado, não embaixo */
+.v279-kh{flex-wrap:nowrap!important;align-items:flex-start!important;gap:6px!important}
+.v279-kh>div:first-child{flex:1 1 auto;min-width:0;flex-wrap:wrap!important;row-gap:4px!important;gap:6px!important}
+.v279-kh>button{flex:none}
+.v279-kh .text-xs{font-size:11px!important}
+/* zonas no cabeçalho: só "Zona 1", "Zona 2"... */
+.v287-zn{display:inline-flex;gap:3px;flex-wrap:wrap}
+.v287-z{background:#fef9c3;border:1px solid #fde047;color:#713f12;border-radius:999px;padding:1px 8px;font-size:11px;font-weight:800;white-space:nowrap}
+.v276-rz .v276-tg{display:none!important}
+/* botões flutuantes: menores, discretos e fora do caminho */
+#v-fab,#v283-act,#v-top{width:36px!important;height:36px!important;font-size:16px!important;right:8px!important;box-shadow:0 3px 10px rgba(0,0,0,.2)!important}
+#v-fab,#v283-act{opacity:.65}
+#v-fab{bottom:92px!important}#v283-act{bottom:136px!important}#v-top{bottom:180px!important}
+body.v-menu-off #v-fab{bottom:34px!important}body.v-menu-off #v283-act{bottom:78px!important}body.v-menu-off #v-top{bottom:122px!important}
+body.v287-typing #v-fab,body.v287-typing #v283-act,body.v287-typing #v-top{display:none!important}
+/* diagnóstico */
+#v287-dg{position:fixed;inset:0;z-index:900;background:rgba(15,23,42,.8);display:flex;align-items:center;justify-content:center;padding:16px}
+#v287-dg .b{background:#fff;color:#0f172a;border-radius:20px;padding:16px;width:100%;max-width:360px;max-height:80vh;overflow:auto;font-size:14px}
+#v287-dg h3{margin:0 0 8px;font-size:17px}
+#v287-dg .l{margin:6px 0;white-space:pre-wrap;word-break:break-word}
+#v287-dg .r{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
+#v287-dg button{padding:9px 14px;border:0;border-radius:10px;font-weight:700;background:#e2e8f0;color:#0f172a}
+#v287-dg button.k{background:#6366f1;color:#fff}
 </style>
 <script>
 (function(){
@@ -5641,11 +5665,13 @@ body.v-menu-off #v-top{bottom:150px!important}
   function idDe(c){var m=c.innerHTML.match(/(?:alternarBloqueio|removerDoRoteiro|apagarBloco)\('([^']+)'\)/);return m?m[1]:null}
   function T(m,t){if(window.mostrarToast)mostrarToast(m,t||'info')}
   function enc(x){return encodeURIComponent(x||'')}
+  function esc(t){return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
   function mapaUrl(o,d){return 'https://www.google.com/maps/dir/?api=1&origin='+enc(o)+'&destination='+enc(d)+'&travelmode=transit'}
   function btn(cls,txt,tit){var b=document.createElement('button');b.type='button';b.className='v287-b '+cls;b.textContent=txt;b.title=tit;b.setAttribute('aria-label',tit);
     b.addEventListener('click',function(e){e.stopPropagation()});return b}
+  function nomeAnt(P,j){for(var q=j-1;q>=0;q--)if((P.pts[q].nome||'').trim())return P.pts[q].nome;return ''}
+  function nomeProx(P,j){for(var q=j+1;q<P.pts.length;q++)if((P.pts[q].nome||'').trim())return P.pts[q].nome;return ''}
 
-  /* ---------- lapis: abre o Editar já no quadrado certo ---------- */
   function irEditar(itId,trId,pId,cId){
     if(typeof mudarTab==='function')mudarTab('itinerario');
     setTimeout(function(){
@@ -5662,8 +5688,6 @@ body.v-menu-off #v-top{bottom:150px!important}
       alvo.classList.add('v287-flash');setTimeout(function(){alvo.classList.remove('v287-flash')},2400);
     },500);
   }
-
-  /* ---------- baixar a imagem colada (mapa offline) sem abrir o card ---------- */
   function baixar(el,nome){
     var a=el.querySelector('.v279-mo .im a.dl');
     if(!a||!a.href||a.href.indexOf('data:')!==0){T('Este ponto ainda não tem imagem colada.','info');return}
@@ -5673,6 +5697,17 @@ body.v-menu-off #v-top{bottom:150px!important}
 
   function processa(card){
     var id=idDe(card),it=id&&item(id);if(!it||!window.v277Percurso)return;
+
+    /* zonas no cabeçalho do bloco: só "Zona 1", "Zona 2"... */
+    var kh=card.querySelector('.v279-kh'),left=kh&&kh.firstElementChild;
+    if(left&&!left.querySelector('.v287-zn')){
+      var zs=[];(it.zonasLista||[]).forEach(function(z){var n=(z.zona||'').trim();if(n&&zs.indexOf(n)<0)zs.push(n)});
+      if(zs.length){var zn=document.createElement('span');zn.className='v287-zn';
+        zn.innerHTML=zs.map(function(n){return '<span class="v287-z">🎫 '+esc(n)+'</span>'}).join('');left.appendChild(zn)}
+    }
+    var rz=card.querySelector('.v276-rz');
+    if(rz&&!rz.querySelector('.ob')&&rz.style.display!=='none')rz.style.display='none';
+
     var rotas=[].filter.call(card.querySelectorAll('div.my-2'),function(d){return /📍 Rota/.test(d.textContent)});
     rotas.forEach(function(rt,k){
       var tr=(it.trechos||[])[k],tl=rt.querySelector('.v277-tl');if(!tr||!tl)return;
@@ -5688,8 +5723,8 @@ body.v-menu-off #v-top{bottom:150px!important}
         }
         if(j<0||!P.pts[j])return;usados[j]=1;
         var pt=P.pts[j],org,dst;
-        if(j===0){org=pt.nome;dst=P.pts[1]?P.pts[1].nome:''}                       /* Saída: 1º item -> 2º item */
-        else{org=(pt.p&&(pt.p.de||'').trim())||P.pts[j-1].nome;dst=pt.nome}        /* demais: ponto anterior -> este */
+        if(j===0){org=pt.nome;dst=nomeProx(P,0)}                                         /* Saída: 1º -> 2º */
+        else{org=(pt.p&&(pt.p.de||'').trim())||nomeAnt(P,j);dst=pt.nome}                 /* demais: anterior -> este */
         var url=mapaUrl(org,dst);
         if(!el.dataset.m287){
           el.dataset.m287=1;
@@ -5698,32 +5733,33 @@ body.v-menu-off #v-top{bottom:150px!important}
             var w=document.createElement('span');w.className='v287-ac';
             var a=document.createElement('a');a.className='v287-b';a.target='_blank';a.rel='noopener';a.textContent='🗺️';a.title='Mapa (transporte público)';a.setAttribute('aria-label','Mapa em transporte público');
             a.href=url;a.addEventListener('click',function(e){e.stopPropagation()});
+            var ph=btn('ph','📷','Adicionar foto do mapa (escolher ou câmera)');
+            ph.addEventListener('click',function(){var inp=el.querySelector(':scope > .v279-mo input[type=file]');if(inp)inp.click();else T('Abra o card e use "Escolher" no Mapa offline.','info')});
             var d=btn('dl','📥','Baixar imagem colada');d.addEventListener('click',function(){baixar(el,pt.nome)});
             var p=btn('ed','✏️','Editar este ponto');
             var pid=(pt.k==='p'&&pt.p)?pt.p.id:null;
             p.addEventListener('click',function(){irEditar(id,tr.id,pid,null)});
-            w.appendChild(a);w.appendChild(d);w.appendChild(p);
+            w.appendChild(a);w.appendChild(ph);w.appendChild(d);w.appendChild(p);
             hd.insertBefore(w,hd.querySelector('.v279-ic')||hd.querySelector('.v279-cv')||null);
           }
         }
-        /* link interno da Saída: do 1º ao 2º ponto */
-        if(j===0){
-          var mp=el.querySelector(':scope > a.mp');
-          if(mp){mp.href=url;if(P.pts[1]&&P.pts[1].nome)mp.textContent='🗺️ Como chegar: '+(pt.nome||'1º ponto')+' ➔ '+P.pts[1].nome}
+        /* link "Como chegar" interno: sempre mostra de onde para onde */
+        var mp=el.querySelector(':scope > a.mp');
+        if(mp){
+          var txt=org?('🗺️ Como chegar: '+org+' ➔ '+(dst||'?')):('⚠️ Falta o nome do ponto anterior ➔ '+(dst||'?'));
+          if(mp.getAttribute('href')!==url)mp.setAttribute('href',url);
+          if(mp.textContent!==txt)mp.textContent=txt;
         }
         var mo=el.querySelector(':scope > .v279-mo');
-        /* Saída: condução dentro do card azul, em cima da foto */
         if(j===0){
           var lg=el.querySelector(':scope > .v277-lg');
           if(!lg){var n=el.nextElementSibling;if(n&&n.classList.contains('v277-lg'))lg=n}
           if(lg){lg.classList.add('v287-lgin');if(lg.parentElement!==el||(mo&&mo.previousElementSibling!==lg))el.insertBefore(lg,mo||null)}
         }
-        /* Paradas: trem em cima, foto embaixo */
         var rl=el.querySelector(':scope > .v286-rl');
         if(rl&&(rl.parentElement!==el||(mo&&mo.previousElementSibling!==rl)))el.insertBefore(rl,mo||null);
       });
     });
-    /* lápis também em cada condução (quadrado de transporte) */
     [].forEach.call(card.querySelectorAll('.v279-cd'),function(cd){
       if(cd.dataset.m287)return;
       var cb=cd.querySelector('input[type=checkbox]');if(!cb)return;
@@ -5734,11 +5770,45 @@ body.v-menu-off #v-top{bottom:150px!important}
       (cb.parentElement||cd).appendChild(p);
     });
   }
-
   function roda(){var box=$('lista-leitura-html');if(!box)return;[].forEach.call(box.children,processa)}
   var t=null,box=$('lista-leitura-html');
   if(box)new MutationObserver(function(){clearTimeout(t);t=setTimeout(roda,250)}).observe(box,{childList:true,subtree:true});
   [500,1300,2600].forEach(function(ms){setTimeout(roda,ms)});
+
+  /* botões flutuantes somem enquanto você digita */
+  var SKIP=/^(checkbox|radio|file|button|color)$/;
+  document.addEventListener('focusin',function(e){var x=e.target;if(/INPUT|TEXTAREA|SELECT/.test(x.tagName)&&!SKIP.test(x.type||''))document.body.classList.add('v287-typing')});
+  document.addEventListener('focusout',function(){setTimeout(function(){var a=document.activeElement;if(!(a&&/INPUT|TEXTAREA|SELECT/.test(a.tagName)&&!SKIP.test(a.type||'')))document.body.classList.remove('v287-typing')},150)});
+
+  /* ---------- diagnóstico da conexão com o Supabase (toque na bolinha 🟢/🔄 do topo) ---------- */
+  function ov(h){var o=$('v287-dg');if(!o){o=document.createElement('div');o.id='v287-dg';document.body.appendChild(o)}
+    o.innerHTML='<div class="b">'+h+'</div>';
+    o.onclick=function(e){if(e.target===o||e.target.closest('[data-c]'))o.remove();else if(e.target.closest('[data-s]')){o.remove();window.dispatchEvent(new Event('online'));T('Sincronizando...','info')}};return o}
+  function req(url,opt){
+    var c=new AbortController(),tm=setTimeout(function(){c.abort()},10000),t0=Date.now();
+    return fetch(url,Object.assign({signal:c.signal},opt)).then(function(r){return r.text().then(function(b){return {ok:r.ok,s:r.status,b:b,ms:Date.now()-t0}})}).finally(function(){clearTimeout(tm)})}
+  async function diag(){
+    ov('<h3>🔎 Testando conexão…</h3><div class="l">Aguarde até 10 segundos.</div>');
+    var L=[],H={apikey:SUPABASE_ANON_KEY,Authorization:'Bearer '+SUPABASE_ANON_KEY},base=SUPABASE_URL+'/rest/v1/app_dados';
+    L.push((navigator.onLine?'✅':'❌')+' Internet do aparelho: '+(navigator.onLine?'ligada':'desligada ou modo offline (🌐/📴) ativo'));
+    if(localStorage.getItem('v281_off')==='1')L.push('⚠️ Você está no MODO OFFLINE (botão 🌐 do topo). Nada sincroniza até voltar online.');
+    L.push((window.supabase&&window.supabase.createClient?'✅':'❌')+' Biblioteca do Supabase carregada');
+    try{
+      var r=await req(base+'?id=eq.1&select=id',{headers:H});
+      if(r.ok){var n=0;try{n=JSON.parse(r.b).length}catch(e){}
+        L.push('✅ Leitura: servidor respondeu em '+r.ms+' ms'+(n?' (dados do roteiro encontrados)':' — mas a linha id=1 ainda não existe'))}
+      else L.push('❌ Leitura recusada (código '+r.s+'): '+(r.s===401||r.s===403?'permissão (RLS) ou chave inválida':r.s===404?'tabela app_dados não existe':'erro')+'\n'+r.b.slice(0,160));
+    }catch(e){L.push('❌ Leitura falhou: '+(e&&e.name==='AbortError'?'o servidor não respondeu em 10 s':'sem conexão ou bloqueio de rede'))}
+    try{
+      var w=await req(base,{method:'POST',headers:Object.assign({'Content-Type':'application/json',Prefer:'resolution=merge-duplicates,return=minimal'},H),body:JSON.stringify([{id:'ping',conteudo:{t:Date.now()}}])});
+      if(w.ok)L.push('✅ Gravação: ok em '+w.ms+' ms (criou/atualizou a linha de teste "ping")');
+      else L.push('❌ Gravação recusada (código '+w.s+'): '+(w.s===401||w.s===403?'a política (RLS) não permite gravar com a chave pública':'erro')+'\n'+w.b.slice(0,160));
+    }catch(e){L.push('❌ Gravação falhou: '+(e&&e.name==='AbortError'?'o servidor não respondeu em 10 s':'sem conexão ou bloqueio de rede'))}
+    if(localStorage.getItem('v275_dirty')==='1')L.push('🟡 Há alterações só neste aparelho aguardando envio.');
+    ov('<h3>🔎 Conexão com o Supabase</h3>'+L.map(function(x){return '<div class="l">'+esc(x)+'</div>'}).join('')+'<div class="r"><button type="button" data-s="1">🔄 Sincronizar agora</button><button type="button" class="k" data-c="1">Fechar</button></div>');
+  }
+  function ligaDiag(){var s=$('v275-st');if(s&&!s.dataset.m287){s.dataset.m287=1;s.onclick=diag;s.title='Toque para testar a conexão com o Supabase'}}
+  [300,1200,2500].forEach(function(ms){setTimeout(ligaDiag,ms)});
 })();
 </script>
 <!--/V287-->
