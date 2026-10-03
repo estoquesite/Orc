@@ -5143,6 +5143,7 @@ body.v-menu-off #v-top{bottom:150px!important}
 </script>
 <!-- ===== FIM DA CAMADA v283 ===== -->
 
+
 <!--V284-->
 <style>
 @keyframes v284p{0%,100%{box-shadow:0 0 0 0 rgba(99,102,241,.6),0 6px 20px rgba(99,102,241,.2);outline-color:rgba(99,102,241,.95)}50%{box-shadow:0 0 0 10px rgba(99,102,241,0),0 6px 22px rgba(99,102,241,.4);outline-color:rgba(99,102,241,.2)}}
@@ -5284,5 +5285,145 @@ body.v-menu-off #v-top{bottom:150px!important}
 })();
 </script>
 <!--/V284-->
+<!--V285-->
+<style>
+.v285-ln{display:inline-flex;flex-wrap:wrap;gap:4px;align-items:center;vertical-align:middle;margin:2px 0 0 4px}
+.v285-ch{display:inline-flex;align-items:center;gap:5px;padding:2px 10px 2px 14px;color:#fff!important;font-size:12px;font-weight:800;line-height:1.5;border-radius:3px 9px 9px 3px;clip-path:polygon(9px 0,100% 0,100% 100%,0 100%);white-space:nowrap;text-shadow:0 1px 0 rgba(0,0,0,.18)}
+.v285-ch i{font-style:normal;opacity:.9;cursor:pointer;padding-left:2px}
+.v285-ed{margin-top:6px;padding:6px;border-radius:10px;background:#fff;border:1px dashed #cbd5e1}
+.v285-ed .r{display:flex;gap:5px;align-items:center}
+.v285-ed input{flex:1;min-width:0;height:30px;padding:0 8px;border:1px solid #cbd5e1;border-radius:9px;font-size:12px;font-weight:700;background:#fff;color:#0f172a}
+.v285-ed .p{width:32px;height:30px;border:0;border-radius:9px;background:#6366f1;color:#fff;font-size:17px;font-weight:800;padding:0;flex:none}
+.v285-ed .g{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.v285-ed .g:empty{display:none}
+.v285-ed .h{font-size:10px;color:#64748b;margin-top:4px}
+.v285-tx{margin:6px 0;display:flex;flex-direction:column;gap:5px}
+.v285-tx textarea,.v285-bx textarea{width:100%;min-height:52px;padding:7px;border:1px solid #c7d2fe;border-radius:10px;background:#fff;color:#0f172a;font:13px/1.4 system-ui,sans-serif;resize:vertical}
+.v285-bx{margin:6px 0 0 30px}
+.v285-bx textarea{background:rgba(255,255,255,.85);font-size:14px;min-height:64px}
+.v277-pt:not(.v279-o) .v285-bx{display:none!important}
+.v285-hm{font-size:14px;text-decoration:none;padding:1px 6px;border:1px solid #c7d2fe;border-radius:8px;background:#eef2ff;line-height:1.4}
+/* progresso: tudo numa linha, também no celular */
+.v284-pc{display:flex!important;flex-wrap:nowrap!important;align-items:center;justify-content:space-between;gap:8px}
+.v284-pc>div:first-child{flex:1;min-width:0}
+.v284-pc h2{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.v284-pw{flex:none;flex-wrap:nowrap}
+#tab-leitura .v284-pc #progresso-viagem{white-space:nowrap}
+</style>
+<script>
+(function(){
+  var $=function(i){return document.getElementById(i)};
+  function esc(t){return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+  function item(id){return (dadosApp.itinerario||[]).filter(function(i){return String(i.id)===String(id)})[0]}
+  function trecho(it,id){return it&&(it.trechos||[]).filter(function(t){return String(t.id)===String(id)})[0]}
+  function cond(it,trId,cId){var tr=trecho(it,trId);return tr&&(tr.conducoes||[]).filter(function(c){return String(c.id)===String(cId)})[0]}
+  function save(){try{salvarStorage()}catch(e){}}
+  function idDe(c){var m=c.innerHTML.match(/(?:alternarBloqueio|removerDoRoteiro|apagarBloco)\('([^']+)'\)/);return m?m[1]:null}
+
+  /* ---------- progresso: "4 / 4" sem a palavra Aprovados (cabe no celular) ---------- */
+  var pg=$('progresso-viagem');
+  function enc(){if(pg&&/Aprovados/.test(pg.textContent))pg.textContent=pg.textContent.replace(/\s*Aprovados/,'')}
+  if(pg){new MutationObserver(enc).observe(pg,{childList:true,characterData:true,subtree:true});enc()}
+
+  /* ---------- LINHAS (chips estilo Google) ---------- */
+  var PAL=['#e2231a','#6ab42d','#4caf7a','#1e3a6e','#0d9488','#ea580c','#7c3aed','#db2777','#0891b2','#475569'];
+  function hs(s){var h=0;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return h}
+  function corAuto(n){var u=String(n).toUpperCase().replace(/\s/g,'');
+    if(/^(IR|IC|ICE|EC|RJ|TGV|RE)/.test(u))return PAL[0];
+    if(/^S\d/.test(u)){var g=['#6ab42d','#4caf7a','#2e8b57','#1e3a6e','#0d9488'];return g[hs(u)%g.length]}
+    return PAL[hs(u)%PAL.length]}
+  function chips(c,rm){return (c.linhas||[]).map(function(l){return '<span class="v285-ch" data-id="'+esc(l.id)+'" style="background:'+esc(l.cor||corAuto(l.nome))+'">'+esc(l.nome)+(rm?'<i data-x="1">✕</i>':'')+'</span>'}).join('')}
+  function todasLinhas(){var s=[];(dadosApp.itinerario||[]).forEach(function(i){(i.trechos||[]).forEach(function(t){(t.conducoes||[]).forEach(function(c){(c.linhas||[]).forEach(function(l){if(s.indexOf(l.nome)<0)s.push(l.nome)})})})});return s}
+
+  function linhasEdit(){
+    var box=$('lista-blocos');if(!box)return;
+    [].forEach.call(box.querySelectorAll('select[onchange*="\'transporte\'"]'),function(sel){
+      if(sel.dataset.l285)return;
+      var m=sel.getAttribute('onchange').match(/atualizarConducaoItem\('([^']+)',\s*'([^']+)',\s*'([^']+)'/);if(!m)return;
+      var card=sel.parentElement&&sel.parentElement.parentElement;if(!card)return;
+      sel.dataset.l285=1;
+      var u='v285'+Math.floor(Math.random()*1e9),w=document.createElement('div');w.className='v285-ed';
+      w.innerHTML='<div class="r"><span>🚏</span><input list="'+u+'" placeholder="Linha (ex.: S2, IR75, 31) e toque ＋"><button type="button" class="p" aria-label="Adicionar linha">＋</button></div><datalist id="'+u+'"></datalist><div class="g"></div><div class="h">Toque na linha para mudar a cor.</div>';
+      var inp=w.querySelector('input'),G=w.querySelector('.g'),DL=w.querySelector('datalist');
+      function C(){return cond(item(m[1]),m[2],m[3])}
+      function draw(){var c=C()||{};G.innerHTML=chips(c,true);DL.innerHTML=todasLinhas().map(function(n){return '<option value="'+esc(n)+'">'}).join('')}
+      function add(){var c=C();if(!c)return;var v=inp.value.split(',').map(function(x){return x.trim()}).filter(Boolean);if(!v.length)return;
+        if(!c.linhas)c.linhas=[];
+        v.forEach(function(n){c.linhas.push({id:'l'+Date.now()+Math.floor(Math.random()*9999),nome:n,cor:corAuto(n)})});
+        inp.value='';save();draw()}
+      w.querySelector('.p').onclick=add;
+      inp.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();add()}});
+      G.addEventListener('click',function(e){var ch=e.target.closest('.v285-ch');if(!ch)return;var c=C();if(!c)return;
+        if(e.target.closest('[data-x]')){c.linhas=(c.linhas||[]).filter(function(l){return l.id!==ch.dataset.id})}
+        else{var l=(c.linhas||[]).filter(function(x){return x.id===ch.dataset.id})[0];if(l){var i=PAL.indexOf(l.cor);l.cor=PAL[(i+1)%PAL.length]}}
+        save();draw()});
+      draw();card.appendChild(w);
+    });
+  }
+
+  function linhasRead(){
+    var box=$('lista-leitura-html');if(!box)return;
+    [].forEach.call(box.querySelectorAll('input[type=checkbox][onchange*="alternarConcluidoConducao"]'),function(cb){
+      var m=cb.getAttribute('onchange').match(/alternarConcluidoConducao\('([^']+)',\s*'([^']+)',\s*'([^']+)'/);if(!m)return;
+      var info=cb.nextElementSibling,title=info&&info.firstElementChild;if(!title||title.dataset.l285)return;
+      title.dataset.l285=1;var c=cond(item(m[1]),m[2],m[3]);if(!c||!(c.linhas||[]).length)return;
+      var s=document.createElement('span');s.className='v285-ln';s.innerHTML=chips(c,false);title.appendChild(s);
+    });
+  }
+
+  /* ---------- TEXTO na saída (azul) e na chegada (verde) ---------- */
+  function textosEdit(){
+    var box=$('lista-blocos');if(!box)return;
+    [].forEach.call(box.children,function(card){
+      var id=idDe(card);if(!id)return;
+      [].forEach.call(card.querySelectorAll('button[onclick^="removerTrecho("]'),function(btn){
+        var row=btn.parentElement;if(!row||row.dataset.t285)return;
+        var m=btn.getAttribute('onclick').match(/removerTrecho\('([^']+)',\s*'([^']+)'\)/);if(!m)return;row.dataset.t285=1;
+        var tr=trecho(item(id),m[2])||{},w=document.createElement('div');w.className='v285-tx';
+        w.innerHTML='<textarea data-k="textoSaida" placeholder="📝 Texto da saída (aparece dentro da caixa azul)"></textarea><textarea data-k="textoChegada" placeholder="📝 Texto da chegada (aparece dentro da caixa verde)"></textarea>';
+        [].forEach.call(w.querySelectorAll('textarea'),function(t){t.value=tr[t.dataset.k]||'';
+          t.addEventListener('input',function(){var x=trecho(item(id),m[2]);if(x){x[t.dataset.k]=t.value;save()}})});
+        row.insertAdjacentElement('afterend',w);
+      });
+    });
+  }
+
+  function mapaUrl(o,d){return 'https://www.google.com/maps/dir/?api=1'+(o?'&origin='+encodeURIComponent(o):'')+'&destination='+encodeURIComponent(d||'')+'&travelmode=transit'}
+  function roteiro(){
+    var box=$('lista-leitura-html');if(!box)return;
+    [].forEach.call(box.children,function(card){
+      var id=idDe(card),it=id&&item(id);if(!it)return;
+      var rotas=[].filter.call(card.querySelectorAll('div.my-2'),function(d){return /📍 Rota/.test(d.textContent)});
+      rotas.forEach(function(rt,k){
+        var tr=(it.trechos||[])[k];if(!tr||rt.dataset.r285)return;
+        var hdr=rt.firstElementChild,tl=rt.querySelector('.v277-tl');if(!hdr||!tl||!hdr.classList.contains('v279-rh'))return;
+        rt.dataset.r285=1;
+        /* mapa da rota completa, no topo */
+        var r=hdr.lastElementChild;
+        if(r){var a=document.createElement('a');a.className='v285-hm';a.target='_blank';a.rel='noopener';a.textContent='🗺️';a.title='Mapa da rota';
+          a.href=mapaUrl(tr.origem,tr.destino);a.addEventListener('click',function(e){e.stopPropagation()});r.insertBefore(a,r.firstChild)}
+        /* texto dentro da caixa azul (saída) e verde (chegada) + mapa da saída */
+        [['.v277-pt.o','textoSaida'],['.v277-pt.d','textoChegada']].forEach(function(p){
+          var el=tl.querySelector(p[0]);if(!el)return;
+          var ref=el.querySelector('.v279-mo'),bx=document.createElement('div');bx.className='v285-bx';
+          bx.innerHTML='<textarea placeholder="Cole ou escreva um texto aqui…"></textarea>';
+          var ta=bx.querySelector('textarea');ta.value=tr[p[1]]||'';
+          ta.addEventListener('input',function(){var x=trecho(item(id),tr.id);if(x){x[p[1]]=ta.value;save()}});
+          el.insertBefore(bx,ref||null);
+          if(p[1]==='textoSaida'&&tr.origem){
+            var l=document.createElement('a');l.className='mp';l.target='_blank';l.rel='noopener';l.textContent='🗺️ Como chegar aqui (de onde estou)';l.href=mapaUrl('',tr.origem);
+            el.insertBefore(l,bx)}
+        });
+      });
+    });
+  }
+
+  function obs(id,fn,ms){var e=$(id);if(!e)return;new MutationObserver(function(){setTimeout(fn,ms||0)}).observe(e,{childList:true});setTimeout(fn,ms||0)}
+  obs('lista-blocos',linhasEdit);obs('lista-blocos',textosEdit);
+  obs('lista-leitura-html',linhasRead,300);obs('lista-leitura-html',roteiro,350);
+  setTimeout(function(){linhasEdit();textosEdit();linhasRead();roteiro()},1500);
+})();
+</script>
+<!--/V285-->
 </body>
 </html>
