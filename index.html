@@ -4634,7 +4634,9 @@ body.v-menu-off #v-top{bottom:92px!important}
 
 
 
-<!-- ===== CAMADA v282 ===== -->
+
+
+<!-- ===== CAMADA v283 ===== -->
 <style>
 #lista-leitura-html{grid-template-columns:1fr!important}
 #lista-leitura-html>div{padding:14px!important}
@@ -4686,6 +4688,20 @@ body.v-menu-off #v-top{bottom:92px!important}
 #v271-bar>#v281-off.x{border-color:#fb923c!important;background:rgba(234,88,12,.4)!important}
 .v282-c>:not(:first-child){display:none!important}
 .v282-sm{font-size:11px;font-weight:800;color:#4338ca;background:#eef2ff;border-radius:999px;padding:2px 8px;white-space:nowrap;flex:none}
+/* v283 */
+#banner-contagem-regressiva{display:none!important}
+#v281-bulk{display:none!important}
+#v283-tb{background:#fff;border-radius:22px;padding:10px;box-shadow:0 4px 16px rgba(99,102,241,.12);display:flex;flex-direction:column;gap:8px}
+#v283-tb .r{display:flex;gap:6px;align-items:center}
+#v283-tb .t{flex:1;min-width:0;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:#0f172a}
+#v283-tb select{flex:1;min-width:0;padding:8px!important;font-size:12px!important}
+.v283-b{padding:8px 11px;border-radius:12px;border:1px solid #c7d2fe;background:#eef2ff;color:#3730a3;font-weight:800;font-size:12px;white-space:nowrap}
+.v283-b.p{background:linear-gradient(135deg,var(--va1,#6366f1),var(--va2,#7c3aed));color:#fff;border-color:transparent}
+#v283-act{position:fixed;right:14px;width:48px;height:48px;border-radius:50%;border:0;color:#fff;font-size:22px;z-index:70;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,.25);background:linear-gradient(135deg,#6366f1,#7c3aed);bottom:154px;transition:bottom .28s}
+#v283-act.g{background:linear-gradient(135deg,#22c55e,#15803d)}
+body.v-menu-off #v283-act{bottom:92px}
+#v-top{bottom:212px!important}
+body.v-menu-off #v-top{bottom:150px!important}
 </style>
 <script>
 (function(){
@@ -5064,7 +5080,68 @@ body.v-menu-off #v-top{bottom:92px!important}
   setTimeout(function(){hub();orc();comp()},800);
 })();
 </script>
-<!-- ===== FIM DA CAMADA v282 ===== -->
+<script>
+(function(){
+  var $=function(i){return document.getElementById(i)};
+  function call(n){return function(){if(typeof window[n]==='function')window[n]()}}
+
+  /* ---------- EDITAR: barra unica e compacta ---------- */
+  function tb(){
+    var tab=$('tab-itinerario'),lista=$('lista-blocos'),sel=$('select-ordenacao-blocos');
+    if(!tab||!lista||!sel||$('v283-tb'))return;
+    var velhos=[].filter.call(tab.children,function(c){return c!==lista&&c.id!=='filtros-container'&&c.id!=='v281-bulk'&&(c.contains(sel)||/Blocos de Destino/i.test(c.textContent))});
+    var card=document.createElement('div');card.id='v283-tb';
+    card.innerHTML='<div class="r"><span class="t">📦 Blocos de destino</span><button type="button" class="v283-b" data-a="u">↩️ Voltar</button><button type="button" class="v283-b p" data-a="n">➕ Novo</button></div><div class="r" id="v283-r2"><button type="button" class="v283-b" data-a="f">⏫ Fechar</button><button type="button" class="v283-b" data-a="o">⏬ Abrir</button></div>';
+    card.querySelector('#v283-r2').insertBefore(sel,card.querySelector('#v283-r2').firstChild);
+    velhos.forEach(function(c){c.style.display='none'});
+    card.addEventListener('click',function(e){
+      var b=e.target.closest('button');if(!b)return;var a=b.dataset.a;
+      if(a==='u')call('desfazerUltimaAcao')();
+      else if(a==='n')call('adicionarBloco')();
+      else{var x=document.querySelector('#v281-bulk button[data-s="'+(a==='f'?1:0)+'"]');if(x)x.click()}
+    });
+    tab.insertBefore(card,$('v281-bulk')||lista);
+  }
+
+  /* ---------- ROTEIRO: fechar tudo / abrir tudo ---------- */
+  function rot(){
+    var l=$('lista-leitura-html');if(!l||$('v283-rb'))return;
+    var bar=document.createElement('div');bar.id='v283-rb';bar.className='v281-bulk';
+    bar.innerHTML='<button type="button" data-s="1">⏫ Fechar tudo</button><button type="button" data-s="0">⏬ Abrir tudo</button>';
+    bar.addEventListener('click',function(e){
+      var b=e.target.closest('button');if(!b)return;var fechar=b.dataset.s==='1';
+      if(fechar){
+        [].forEach.call(l.children,function(c){if(!c.classList.contains('v279-cc')){var h=c.querySelector('.v279-kh');if(h)h.click()}});
+        return;
+      }
+      [].forEach.call(l.children,function(c){if(c.classList.contains('v279-cc')){var h=c.querySelector('.v279-kh');if(h)h.click()}});
+      [].forEach.call(l.querySelectorAll('.v279-rc .v279-rh'),function(h){h.click()});
+      [].forEach.call(l.querySelectorAll('.v277-pt:not(.v279-o):not(.v279-d) .hd'),function(h){if(h.querySelector('.v279-cv'))h.click()});
+      [].forEach.call(l.querySelectorAll('.v279-cd:not(.v279-o):not(.v279-cdd)'),function(c){if(c.querySelector('.v279-cv'))c.click()});
+    });
+    l.parentNode.insertBefore(bar,l);
+  }
+
+  /* ---------- botao flutuante que muda conforme a pagina ---------- */
+  var ACT={
+    leitura:['📲','Compartilhar roteiro no WhatsApp',call('compartilharRoteiroWhatsApp'),1],
+    itinerario:['➕','Novo bloco',call('adicionarBloco'),0],
+    utilidades:['↩️','Desfazer última ação',call('desfazerUltimaAcao'),0],
+    orcamento:['🖨️','Imprimir orçamento (PDF)',function(){if(typeof imprimirSeccaoCustom==='function')imprimirSeccaoCustom('Orçamento & Câmbio',$('tab-orcamento').innerHTML)},0],
+    compras:['📲','Compartilhar lista de compras no WhatsApp',call('compartilharComprasWhatsApp'),1]
+  };
+  var fab=document.createElement('button');fab.id='v283-act';fab.type='button';document.body.appendChild(fab);
+  var cur='leitura';
+  function upd(t){if(!ACT[t])return;cur=t;var a=ACT[t];fab.textContent=a[0];fab.title=a[1];fab.setAttribute('aria-label',a[1]);fab.classList.toggle('g',!!a[3])}
+  fab.addEventListener('click',function(){ACT[cur][2]()});
+  var om=window.mudarTab;
+  if(typeof om==='function'){window.mudarTab=function(t){var r=om.apply(this,arguments);upd(t);return r}}
+  upd(localStorage.getItem('tab_ativa_v269')||'leitura');
+
+  tb();rot();setTimeout(function(){tb();rot()},600);setTimeout(function(){tb();rot()},1800);
+})();
+</script>
+<!-- ===== FIM DA CAMADA v283 ===== -->
 
 </body>
 </html>
