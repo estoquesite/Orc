@@ -5425,5 +5425,202 @@ body.v-menu-off #v-top{bottom:150px!important}
 })();
 </script>
 <!--/V285-->
+<!--V286-->
+<style>
+/* 3) caixas removidas */
+.v285-tx,.v285-bx{display:none!important}
+
+/* Editar: bloco de conduções da parada */
+.v286-box{margin-top:8px;padding:8px;border-radius:14px;background:#f8fafc;border:1px solid #e2e8f0;color:#0f172a}
+.v286-box>.t{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:#475569}
+.v286-c{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:8px;margin-top:6px}
+.v286-r{display:flex;gap:5px;align-items:center;flex-wrap:wrap}
+.v286-r select,.v286-in{height:32px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;color:#0f172a;font-size:12px;font-weight:700;padding:0 8px;min-width:0}
+.v286-r .tp{width:104px}.v286-r .vl{width:58px;text-align:right;height:32px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;color:#0f172a;font-size:12px;font-weight:700;padding:0 6px}
+.v286-r .mo{width:66px}
+.v286-in{width:100%;margin-top:6px;font-weight:500}
+.v286-b{display:inline-flex;align-items:center;gap:3px;height:32px;padding:0 10px;border:1px solid #cbd5e1;border-radius:10px;background:#f1f5f9;color:#334155;font-size:11px;font-weight:800;cursor:pointer}
+.v286-b.d{background:#fee2e2;border-color:#fecaca;color:#b91c1c}
+.v286-ph{position:relative;display:inline-block}
+.v286-ph img{width:38px;height:38px;object-fit:cover;border-radius:50%;border:2px solid #6366f1;cursor:pointer}
+.v286-ph i{position:absolute;top:-4px;right:-4px;width:16px;height:16px;border-radius:50%;background:#b91c1c;color:#fff;font-size:9px;font-style:normal;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.v286-add{width:100%;margin-top:8px;padding:10px;border:0;border-radius:12px;color:#fff;font-weight:800;font-size:12px;background:linear-gradient(135deg,var(--va1,#6366f1),var(--va2,#7c3aed))}
+
+/* Roteiro: conduções dentro da caixa da parada */
+.v286-rl{margin:6px 0 0 30px}
+.v286-rc{display:flex;gap:8px;align-items:flex-start;background:#e0f2fe;border:1px solid #7dd3fc;border-radius:12px;padding:7px 10px;margin-top:5px;color:#0f172a}
+.v286-rc.dn{background:#dcfce7;border-color:#86efac}
+.v286-rc.dn .tt{text-decoration:line-through;color:#64748b}
+.v286-rc .tt{font-size:13px;font-weight:800}
+.v286-rc .nt{font-size:12px;font-style:italic;color:#334155;margin-top:3px;word-break:break-word}
+.v286-rc .ph{display:flex;gap:6px;flex-wrap:wrap;margin-top:5px}
+.v286-rc .ph img{width:40px;height:40px;object-fit:cover;border-radius:50%;border:2px solid #6366f1;cursor:pointer}
+</style>
+<script>
+(function(){
+  var $=function(i){return document.getElementById(i)};
+  function esc(t){return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+  function item(id){return (dadosApp.itinerario||[]).filter(function(i){return String(i.id)===String(id)})[0]}
+  function idDe(c){var m=c.innerHTML.match(/(?:alternarBloqueio|removerDoRoteiro|apagarBloco)\('([^']+)'\)/);return m?m[1]:null}
+  function save(){try{salvarStorage()}catch(e){}}
+  function undo(){try{registarEstadoAnterior()}catch(e){}}
+  function parada(itId,pId){var it=item(itId);return it&&(it.paradas||[]).filter(function(p){return String(p.id)===String(pId)})[0]}
+
+  /* cores das linhas (mesma lógica da v285) */
+  var PAL=['#e2231a','#6ab42d','#4caf7a','#1e3a6e','#0d9488','#ea580c','#7c3aed','#db2777','#0891b2','#475569'];
+  function hs(s){var h=0;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return h}
+  function corAuto(n){var u=String(n).toUpperCase().replace(/\s/g,'');
+    if(/^(IR|IC|ICE|EC|RJ|TGV|RE)/.test(u))return PAL[0];
+    if(/^S\d/.test(u)){var g=['#6ab42d','#4caf7a','#2e8b57','#1e3a6e','#0d9488'];return g[hs(u)%g.length]}
+    return PAL[hs(u)%PAL.length]}
+  function chips(c,rm){return (c.linhas||[]).map(function(l){return '<span class="v285-ch" data-id="'+esc(l.id)+'" style="background:'+esc(l.cor||corAuto(l.nome))+'">'+esc(l.nome)+(rm?'<i data-x="1">✕</i>':'')+'</span>'}).join('')}
+  function opt(v,cur,lab){return '<option value="'+v+'"'+(cur===v?' selected':'')+'>'+lab+'</option>'}
+  function novaCond(){return {id:'pc'+Date.now()+Math.floor(Math.random()*9999),transporte:'Ônibus',valor:0,moeda:'EUR',notas:'',fotosExtras:[],linhas:[]}}
+
+  /* ---------------- EDITAR ---------------- */
+  function cardHtml(c){
+    var fotos=(c.fotosExtras||[]).map(function(u,k){return '<span class="v286-ph"><img data-a="ver" data-f="'+k+'" src="'+u+'" alt="Foto"><i data-a="rf" data-f="'+k+'">✕</i></span>'}).join('');
+    return '<div class="v286-c" data-id="'+esc(c.id)+'">'+
+      '<div class="v286-r">'+
+        '<span class="v278-mv"><button type="button" data-a="up" aria-label="Subir">⬆️</button><button type="button" data-a="dn" aria-label="Descer">⬇️</button></span>'+
+        '<select class="tp" data-k="transporte">'+opt('Trem',c.transporte,'🚂 Trem')+opt('Ônibus',c.transporte,'🚌 Ônibus')+opt('Avião',c.transporte,'✈️ Avião')+opt('Metrô',c.transporte,'🚇 Metrô')+opt('Carro',c.transporte,'🚗 Carro')+opt('Outro',c.transporte,'📦 Outro')+'</select>'+
+        '<input type="text" inputmode="decimal" class="vl" data-k="valor" value="'+esc(c.valor||0)+'">'+
+        '<select class="mo" data-k="moeda">'+opt('EUR',c.moeda,'EUR')+opt('CHF',c.moeda,'CHF')+'</select>'+
+        '<label class="v286-b">📁 Anexar<input type="file" accept="image/*" hidden data-a="foto"></label>'+
+        '<label class="v286-b">📷 Câmera<input type="file" accept="image/*" capture="environment" hidden data-a="foto"></label>'+
+        '<button type="button" class="v286-b d" data-a="del" aria-label="Remover condução">✕</button>'+
+      '</div>'+
+      (fotos?'<div class="v286-r" style="margin-top:6px">'+fotos+'</div>':'')+
+      '<input type="text" class="v286-in" data-k="notas" placeholder="Detalhes desta condução (ex: Linha 8)..." value="'+esc(c.notas||'')+'">'+
+      '<div class="v285-ed"><div class="r"><span>🚏</span><input class="ln" placeholder="Linha (ex.: S2, IR75, 31) e toque ＋"><button type="button" class="p" data-a="al" aria-label="Adicionar linha">＋</button></div><div class="g">'+chips(c,true)+'</div><div class="h">Toque na linha para mudar a cor.</div></div>'+
+    '</div>';
+  }
+
+  function editar(){
+    var box=$('lista-blocos');if(!box)return;
+    [].forEach.call(box.children,function(card){
+      var itId=idDe(card);if(!itId)return;
+      [].forEach.call(card.querySelectorAll('.v277-p'),function(el){
+        if(el.dataset.m286)return;var pid=el.dataset.id;if(!pid)return;el.dataset.m286=1;
+        var wrap=document.createElement('div');wrap.className='v286-box';
+        function P(){return parada(itId,pid)}
+        function draw(){
+          var p=P();if(!p)return;var cs=p.conducoes||[];
+          wrap.innerHTML='<div class="t">🚌 Conduções desta parada</div>'+cs.map(cardHtml).join('')+
+            '<button type="button" class="v286-add" data-a="add">➕ Adicionar mais um Ônibus / Condução ( + )</button>';
+        }
+        function addLinha(cEl,c){
+          var inp=cEl.querySelector('.ln'),v=inp.value.split(',').map(function(x){return x.trim()}).filter(Boolean);if(!v.length)return;
+          if(!c.linhas)c.linhas=[];
+          v.forEach(function(n){c.linhas.push({id:'l'+Date.now()+Math.floor(Math.random()*9999),nome:n,cor:corAuto(n)})});
+          save();draw();
+        }
+        function achar(e){
+          var cEl=e.target.closest('.v286-c'),p=P();if(!cEl||!p)return {};
+          var c=(p.conducoes||[]).filter(function(x){return String(x.id)===cEl.dataset.id})[0];
+          return {cEl:cEl,c:c,p:p};
+        }
+        wrap.addEventListener('click',function(e){
+          var p=P();if(!p)return;
+          var b=e.target.closest('[data-a]');
+          if(b&&b.dataset.a==='add'){undo();(p.conducoes=p.conducoes||[]).push(novaCond());save();draw();return}
+          var r=achar(e);if(!r.c)return;var c=r.c,cs=p.conducoes;
+          var chip=e.target.closest('.v285-ch');
+          if(chip){
+            if(e.target.closest('[data-x]'))c.linhas=(c.linhas||[]).filter(function(l){return l.id!==chip.dataset.id});
+            else{var l=(c.linhas||[]).filter(function(x){return x.id===chip.dataset.id})[0];if(l){var i=PAL.indexOf(l.cor);l.cor=PAL[(i+1)%PAL.length]}}
+            save();draw();return;
+          }
+          if(!b)return;var a=b.dataset.a,f=+b.dataset.f;
+          if(a==='del'){undo();p.conducoes=cs.filter(function(x){return x!==c});save();draw()}
+          else if(a==='up'||a==='dn'){var i=cs.indexOf(c),j=i+(a==='up'?-1:1);if(j<0||j>=cs.length)return;undo();var t=cs[i];cs[i]=cs[j];cs[j]=t;save();draw()}
+          else if(a==='al')addLinha(r.cEl,c);
+          else if(a==='ver'){if(window.abrirLeitorArquivo)abrirLeitorArquivo(c.fotosExtras[f],'Foto')}
+          else if(a==='rf'){if(confirm('Remover esta foto?')){undo();c.fotosExtras.splice(f,1);save();draw()}}
+        });
+        function campo(e){
+          var t=e.target,r=achar(e);if(!r.c)return;
+          if(t.dataset.a==='foto'){
+            var file=t.files&&t.files[0];if(!file)return;
+            var go=(typeof comprimirImagem==='function')?comprimirImagem(file,800,0.7):Promise.resolve(null);
+            go.then(function(u){if(!u)return;undo();if(!r.c.fotosExtras)r.c.fotosExtras=[];r.c.fotosExtras.push(u);save();draw();if(window.mostrarToast)mostrarToast('Foto adicionada!','sucesso')});
+            t.value='';return;
+          }
+          var k=t.dataset.k;if(!k)return;
+          r.c[k]=(k==='valor')?limparNumero(t.value):t.value;save();
+        }
+        wrap.addEventListener('input',campo);
+        wrap.addEventListener('change',campo);
+        wrap.addEventListener('keydown',function(e){
+          if(e.key==='Enter'&&e.target.classList.contains('ln')){e.preventDefault();var r=achar(e);if(r.c)addLinha(r.cEl,r.c)}
+        });
+        /* impede que a lógica da parada (v277) leia os campos daqui */
+        ['click','input','change','keydown'].forEach(function(n){wrap.addEventListener(n,function(e){e.stopPropagation()})});
+        draw();el.appendChild(wrap);
+      });
+    });
+  }
+
+  /* ---------------- ROTEIRO ---------------- */
+  function roteiro(){
+    var box=$('lista-leitura-html');if(!box)return;
+    [].forEach.call(box.children,function(card){
+      var itId=idDe(card),it=itId&&item(itId);if(!it)return;
+      var rotas=[].filter.call(card.querySelectorAll('div.my-2'),function(d){return /📍 Rota/.test(d.textContent)});
+      rotas.forEach(function(rt,k){
+        var tr=(it.trechos||[])[k];if(!tr)return;
+        var ps=(it.paradas||[]).filter(function(p){return String(p.apos)===String(tr.id)});
+        [].forEach.call(rt.querySelectorAll('.v277-pt.p'),function(el,j){
+          var p=ps[j];if(!p||el.dataset.m286)return;el.dataset.m286=1;
+          var cs=p.conducoes||[];if(!cs.length)return;
+          var rl=document.createElement('div');rl.className='v286-rl';
+          cs.forEach(function(c){
+            var d=document.createElement('label');d.className='v286-rc'+(c.concluido?' dn':'');
+            var cb=document.createElement('input');cb.type='checkbox';cb.className='v279-cb';cb.checked=!!c.concluido;
+            var info=document.createElement('div');info.style.cssText='flex:1;min-width:0';
+            var val=limparNumero(c.valor);
+            info.innerHTML='<div class="tt">🚌 '+esc(c.transporte)+(val>0?' • <b>'+esc(val)+' '+esc(c.moeda)+'</b>':'')+' <span class="v285-ln">'+chips(c,false)+'</span></div>'+(c.notas?'<div class="nt">📝 '+esc(c.notas)+'</div>':'');
+            if((c.fotosExtras||[]).length){
+              var ph=document.createElement('div');ph.className='ph';
+              c.fotosExtras.forEach(function(u){var im=document.createElement('img');im.src=u;im.alt='Foto';
+                im.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();if(window.abrirLeitorArquivo)abrirLeitorArquivo(u,'Foto')});ph.appendChild(im)});
+              info.appendChild(ph);
+            }
+            cb.addEventListener('change',function(){c.concluido=cb.checked;d.classList.toggle('dn',cb.checked);save()});
+            d.appendChild(cb);d.appendChild(info);rl.appendChild(d);
+          });
+          el.appendChild(rl);
+        });
+      });
+    });
+  }
+
+  /* ---------------- ORÇAMENTO: soma das conduções das paradas ---------------- */
+  var oR=window.renderizarOrcamentoTab;
+  if(typeof oR==='function'){
+    window.renderizarOrcamentoTab=function(){
+      var r=oR.apply(this,arguments);
+      try{
+        var cotE=parseFloat(dadosApp.cotacaoEur)||6.20,cotC=parseFloat(dadosApp.cotacaoChf)||6.50,extra=0;
+        (dadosApp.itinerario||[]).forEach(function(it){(it.paradas||[]).forEach(function(p){(p.conducoes||[]).forEach(function(c){
+          var v=limparNumero(c.valor);if(v>0)extra+=v*(c.moeda==='CHF'?cotC:cotE)})})});
+        var el=$('resumo-total-gasto-brl');
+        if(el&&extra>0){var base=parseFloat((el.innerText.match(/[\d.]+/)||['0'])[0])||0;el.innerText='R$ '+(base+extra).toFixed(2)}
+      }catch(e){}
+      return r;
+    };
+  }
+
+  /* ---------------- observadores ---------------- */
+  var tE=null;
+  var lb=$('lista-blocos');
+  if(lb){new MutationObserver(function(){clearTimeout(tE);tE=setTimeout(editar,80)}).observe(lb,{childList:true,subtree:true});}
+  var lr=$('lista-leitura-html');
+  if(lr){new MutationObserver(function(){setTimeout(roteiro,520)}).observe(lr,{childList:true});}
+  [300,1200,2500].forEach(function(ms){setTimeout(function(){editar();roteiro()},ms)});
+})();
+</script>
+<!--/V286-->
+
 </body>
 </html>
